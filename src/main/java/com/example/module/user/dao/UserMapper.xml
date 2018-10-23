@@ -160,4 +160,8 @@
       department_cid = #{departmentCid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
+  
+  <select id="getUserPage" resultMap="BaseResultMap">
+  	select * from system_user
+  </select>
 </mapper>

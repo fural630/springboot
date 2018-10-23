@@ -1,5 +1,7 @@
 package com.example.module.user.dao;
 
+import java.util.List;
+
 import com.example.module.user.po.UserPO;
 
 public interface UserMapper {
@@ -14,4 +16,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(UserPO record);
 
     int updateByPrimaryKey(UserPO record);
+    
+    List<UserPO> getUserPage();
 }
