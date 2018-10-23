@@ -42,6 +42,14 @@
 			table.render({
 				elem: '#userManageTable'
 				,url:'/user/getUserTable'
+				,request : {
+					pageName : 'nowPage',
+					limitName : 'pageSize'
+				}
+				,response : {
+					countName : 'totalNum',
+					dataName : 'items'
+				}
 				,cols: [[
 				  {type:'checkbox'}
 				  ,{field:'id', width:80, title: 'ID', sort: true}
