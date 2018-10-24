@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>layout 后台大布局 - Layui</title>
-<link rel="stylesheet" href="lib/layui/css/layui.css">
-<link rel="stylesheet" href="css/frame.css">
+<link rel="stylesheet" href="plugins/layui/css/layui.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body class="layui-layout-body">
 	<div class="layui-layout layui-layout-admin">
@@ -93,7 +93,7 @@
 			© layui.com - 底部固定区域
 		</div>
 	</div>
-	<script src="lib/layui/layui.js"></script>
+	<script src="plugins/layui/layui.js"></script>
 	<script>
 		layui.use('element', function() {
 			var element = layui.element;

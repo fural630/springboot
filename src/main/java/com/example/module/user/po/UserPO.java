@@ -9,8 +9,6 @@ public class UserPO {
 
     private String passWord;
 
-    private Integer age;
-
     private Integer sex;
 
     private String email;
@@ -22,6 +20,10 @@ public class UserPO {
     private String avatarId;
 
     private String departmentCid;
+
+    private String account;
+
+    private Integer status;
 
     public String getId() {
         return id;
@@ -53,14 +55,6 @@ public class UserPO {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public Integer getSex() {
@@ -111,10 +105,19 @@ public class UserPO {
         this.departmentCid = departmentCid;
     }
 
-	@Override
-	public String toString() {
-		return "UserPO [id=" + id + ", name=" + name + ", birthDay=" + birthDay + ", passWord=" + passWord + ", age="
-				+ age + ", sex=" + sex + ", email=" + email + ", phone=" + phone + ", idCard=" + idCard + ", avatarId="
-				+ avatarId + ", departmentCid=" + departmentCid + "]";
-	}
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }

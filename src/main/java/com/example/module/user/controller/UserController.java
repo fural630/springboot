@@ -1,7 +1,5 @@
 package com.example.module.user.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +39,6 @@ public class UserController {
 	@ResponseBody
 	public RePage<UserPO> getUserTable (PageBean pageBean) {
 		RePage<UserPO> rePage = userService.getUserManagePage(pageBean);
-		Dumper.dump(rePage);
 		return rePage;
 	}
 	

@@ -6,16 +6,18 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="birth_day" jdbcType="CHAR" property="birthDay" />
     <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
-    <result column="age" jdbcType="INTEGER" property="age" />
     <result column="sex" jdbcType="INTEGER" property="sex" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="CHAR" property="phone" />
     <result column="id_card" jdbcType="CHAR" property="idCard" />
     <result column="avatar_id" jdbcType="VARCHAR" property="avatarId" />
     <result column="department_cid" jdbcType="VARCHAR" property="departmentCid" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, birth_day, pass_word, age, sex, email, phone, id_card, avatar_id, department_cid
+    id, name, birth_day, pass_word, sex, email, phone, id_card, avatar_id, department_cid, 
+    account, status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -29,13 +31,15 @@
   </delete>
   <insert id="insert" parameterType="com.example.module.user.po.UserPO">
     insert into system_user (id, name, birth_day, 
-      pass_word, age, sex, 
-      email, phone, id_card, avatar_id, 
-      department_cid)
+      pass_word, sex, email, 
+      phone, id_card, avatar_id, 
+      department_cid, account, status
+      )
     values (#{id,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, #{birthDay,jdbcType=CHAR}, 
-      #{passWord,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}, 
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=CHAR}, #{idCard,jdbcType=CHAR}, #{avatarId,jdbcType=VARCHAR}, 
-      #{departmentCid,jdbcType=VARCHAR})
+      #{passWord,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=CHAR}, #{idCard,jdbcType=CHAR}, #{avatarId,jdbcType=VARCHAR}, 
+      #{departmentCid,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.example.module.user.po.UserPO">
     insert into system_user
@@ -51,9 +55,6 @@
       </if>
       <if test="passWord != null">
         pass_word,
-      </if>
-      <if test="age != null">
-        age,
       </if>
       <if test="sex != null">
         sex,
@@ -73,6 +74,12 @@
       <if test="departmentCid != null">
         department_cid,
       </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -86,9 +93,6 @@
       </if>
       <if test="passWord != null">
         #{passWord,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null">
-        #{age,jdbcType=INTEGER},
       </if>
       <if test="sex != null">
         #{sex,jdbcType=INTEGER},
@@ -108,6 +112,12 @@
       <if test="departmentCid != null">
         #{departmentCid,jdbcType=VARCHAR},
       </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.module.user.po.UserPO">
@@ -121,9 +131,6 @@
       </if>
       <if test="passWord != null">
         pass_word = #{passWord,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null">
-        age = #{age,jdbcType=INTEGER},
       </if>
       <if test="sex != null">
         sex = #{sex,jdbcType=INTEGER},
@@ -143,6 +150,12 @@
       <if test="departmentCid != null">
         department_cid = #{departmentCid,jdbcType=VARCHAR},
       </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=CHAR}
   </update>
@@ -151,17 +164,23 @@
     set name = #{name,jdbcType=VARCHAR},
       birth_day = #{birthDay,jdbcType=CHAR},
       pass_word = #{passWord,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER},
       sex = #{sex,jdbcType=INTEGER},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=CHAR},
       id_card = #{idCard,jdbcType=CHAR},
       avatar_id = #{avatarId,jdbcType=VARCHAR},
-      department_cid = #{departmentCid,jdbcType=VARCHAR}
+      department_cid = #{departmentCid,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=CHAR}
   </update>
+  
   
   <select id="getUserPage" resultMap="BaseResultMap">
   	select * from system_user
   </select>
+  
+  
+  
+  
 </mapper>

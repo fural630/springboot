@@ -2,13 +2,13 @@ package com.example.code.web.page;
 
 import java.util.List;
 
-import com.example.code.constant.web.respones.RepageConstant;
+import com.example.code.constant.web.respones.ResponesConstant;
 import com.github.pagehelper.PageInfo;
 
 public class RePage<T> {
 	
 	// 返回状态
-	private Integer code = RepageConstant.SUCCESS;
+	private Integer code = ResponesConstant.SUCCESS;
 	
 	// 提示消息
 	private String msg;
