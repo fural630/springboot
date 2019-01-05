@@ -3,7 +3,4 @@
 .settings/
 src/main/webapp/.gitignore
 */target/
-xhz-common/.factorypath
-xhz-admin/.factorypath
-xhz-gen/.factorypath
-xhz-front/.factorypath
+*/.factorypath
