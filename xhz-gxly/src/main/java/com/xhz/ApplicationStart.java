@@ -20,5 +20,5 @@ public class ApplicationStart {
 		ConfigurableEnvironment env = context.getEnvironment();
 		String[] activeProfiles = env.getActiveProfiles();
 		logger.debug("系统已启动，当前启动的 profile 是 ：{} , port : {}", activeProfiles[0], env.getProperty("server.port"));
-	}
+	} 
 }
