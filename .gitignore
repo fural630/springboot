@@ -1,6 +1,5 @@
 .classpath
 .project
 .settings/
-src/main/webapp/.gitignore
 */target/
 */.factorypath
