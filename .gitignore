@@ -1,5 +1,13 @@
-target/
 .classpath
 .project
 .settings/
 src/main/webapp/.gitignore
+/target
+xhz-common/target
+xhz-admin/target
+xhz-gen/target
+xhz-gxly/target
+xhz-common/.factorypath
+xhz-admin/.factorypath
+xhz-gen/.factorypath
+xhz-gxly/.factorypath
