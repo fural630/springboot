@@ -57,12 +57,6 @@
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
                         class="fa fa-bars"></i> </a>
-                    <form role="search" class="navbar-form-custom" method="post" action="#">
-                        <div class="form-group">
-                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search"
-                                   id="top-search">
-                        </div>
-                    </form>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
 
@@ -301,7 +295,16 @@
         data: {
             password: '',
             newPassword: '',
-            menuList: {},
+            menuList: [{
+            	type : 0,
+            	name : '用户管理',
+            	list : [{
+            		type : 1,
+            		name : '用户',
+            		url : 'sys/user.html'
+            	}]
+            	
+        	}],
             user: {}
         },
         methods: {
@@ -369,16 +372,6 @@
                         toUrl('logout?_' + $.now());
                     }, 500);
                 });
-            },
-            love: function () {
-                setTimeout(function () {
-                    openWindow({
-                        type: 2,
-                        title: '腾讯云为数百万企业和开发者提供安全、稳定的云服务器、云数据库、CDN等云服务',
-                        closeBtn: 2,
-                        content: ['https://cloud.tencent.com/redirect.php?redirect=1005&cps_key=30280f92fc381dfc9e1d9e0e23d25a18']
-                    });
-                }, 3000)
             }
         },
         created: function () {

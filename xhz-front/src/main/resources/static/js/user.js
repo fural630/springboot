@@ -151,7 +151,6 @@ layui.use('table', function() {
 
 	table.render({
 		elem : '#userTable',
-		toolbar : '#userToolbar',
 		url : '/sys/user/page',
 		autoSort : false,
 		parseData : function(res) {

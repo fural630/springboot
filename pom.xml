@@ -14,7 +14,7 @@
         <module>xhz-common</module>
         <module>xhz-gen</module>
         <module>xhz-admin</module>
-        <module>xhz-gxly</module>
+        <module>xhz-front</module>
     </modules>
 
 	<properties>

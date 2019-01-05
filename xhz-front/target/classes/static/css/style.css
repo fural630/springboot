@@ -5,6 +5,22 @@
  *
 */
 
+.frame-card {
+	background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+}
+
+.frame-card-header {
+	padding-left:10px;
+	padding-top:10px;
+	border-bottom: 1px solid #e8eaec;
+}
+
+.frame-card-padding {
+	padding:10px 10px 0px 10px;
+}
+
 h1,
 h2,
 h3,
