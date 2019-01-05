@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frame.web.module.sys.dao.CzryDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.frame.web.module.sys.entity.CzryDO">
+        <id column="CZRY_ID" property="czryId" />
+        <result column="CZRY_DM" property="czryDm" />
+        <result column="CZRY_MC" property="czryMc" />
+        <result column="CZRY_PASS" property="czryPass" />
+        <result column="SZBM_ID" property="szbmId" />
+        <result column="EMAIL" property="email" />
+        <result column="SJHM" property="sjhm" />
+        <result column="XBDM" property="xbdm" />
+        <result column="JG" property="jg" />
+        <result column="MZ" property="mz" />
+        <result column="SFZHM" property="sfzhm" />
+        <result column="LZYG" property="lzyg" />
+        <result column="YGTX" property="ygtx" />
+        <result column="CZRY_ZH" property="czryZh" />
+        <result column="XZRQ" property="xzrq" />
+        <result column="QM" property="qm" />
+        <result column="PYM" property="pym" />
+        
+        <result column="BMMC" property="bmmc" />
+		<result column="BMDM" property="bmdm" />
+		<result column="DWID" property="dwid" />
+		<result column="DWMC" property="dwmc" />
+		<result column="DWDM" property="dwdm" />
+		
+		<result column="GWZZID" property="gwzzid" />
+		<result column="GWZZMC" property="gwzzmc" />
+		<result column="ZFZH" property="zfzh" />
+		<result column="ZJYXKSRQ" property="zjyxksrq" />
+		<result column="ZJYXJZRQ" property="zjyxjzrq" />
+		
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        CZRY_ID, CZRY_DM, CZRY_MC, CZRY_PASS, SZBM_ID, EMAIL, SJHM, XBDM, 
+        JG, MZ, SFZHM, LZYG, YGTX, CZRY_ZH, XZRQ, QM, PYM, BMMC, BMDM, DWID,
+        DWMC, DWDM, GWZZID, GWZZMC, ZFZH, ZJYXKSRQ, ZJYXJZRQ
+    </sql>
+    
+    <select id="queryPage" resultMap="BaseResultMap">
+	     SELECT
+			c.BMMC DWMC,
+			c.BMDM DWDM,
+			c.ZZID DWID,
+			b.BMMC,
+			b.BMDM,
+			t.SZBM_ID,
+			t.CZRY_MC,
+			t.CZRY_DM,
+			t.CZRY_ID,
+			t.CZRY_ZH,
+			t.CZRY_PASS,
+			bary.ZFZH,
+			bary.ZJYXKSRQ,
+			bary.ZJYXJZRQ,
+			gwzz.GWZZMC,
+			gw.GWZZID,
+			t.EMAIL,
+			t.SJHM,
+			t.XBDM,
+			t.JG,
+			t.MZ,
+			t.SFZHM,
+			t.LZYG,
+			t.YGTX,
+			t.XZRQ,
+			t.QM,
+			t.PYM
+			from
+		XT_ZZJG_CZRY t
+		LEFT JOIN XT_ZZJG_ZZBM b on t.SZBM_ID = b.ZZID
+		LEFT JOIN XT_ZZJG_ZZBM c on b.SJID = c.ZZID
+		LEFT JOIN BAZX_BARY_BARYXX bary on bary.ID = t.CZRY_ID
+		LEFT JOIN XT_ZZJG_CZRY_GWZZ gw on gw.CZRYID = t.CZRY_ID and gw.BMID = c.ZZID
+		LEFT JOIN XT_ZZJG_GWZZ gwzz on gw.GWZZID = gwzz.ID
+		<where>
+			<if test="czryMc != null and czryMc.trim() != ''">
+    			and t.CZRY_MC like concat('%',#{czryMc},'%')
+			</if>
+			<if test="czryZh != null and czryZh.trim() != ''">
+				and t.CZRY_ZH = #{czryZh}
+    		</if>
+    		<if test="gwzzid != null and gwzzid.trim() != ''">
+				and gw.GWZZID = #{gwzzid}
+    		</if>
+    		<if test="dwId != null and dwId.trim() != ''">
+				and c.ZZID = #{dwId}
+    		</if>
+    		<if test="szbmId != null and szbmId.trim() != ''">
+				and t.SZBM_ID = #{szbmId}
+    		</if>
+		</where>
+    </select>
+    
+    <select id="getById" parameterType="String" resultMap="BaseResultMap">
+    	 SELECT
+			c.BMMC DWMC,
+			c.BMDM DWDM,
+			c.ZZID DWID,
+			b.BMMC,
+			b.BMDM,
+			t.SZBM_ID,
+			t.CZRY_MC,
+			t.CZRY_DM,
+			t.CZRY_ID,
+			t.CZRY_ZH,
+			t.CZRY_PASS,
+			bary.ZFZH,
+			bary.ZJYXKSRQ,
+			bary.ZJYXJZRQ,
+			gwzz.GWZZMC,
+			gw.GWZZID,
+			t.EMAIL,
+			t.SJHM,
+			t.XBDM,
+			t.JG,
+			t.MZ,
+			t.SFZHM,
+			t.LZYG,
+			t.YGTX,
+			t.XZRQ,
+			t.QM,
+			t.PYM
+			from
+		XT_ZZJG_CZRY t
+		LEFT JOIN XT_ZZJG_ZZBM b on t.SZBM_ID = b.ZZID
+		LEFT JOIN XT_ZZJG_ZZBM c on b.SJID = c.ZZID
+		LEFT JOIN BAZX_BARY_BARYXX bary on bary.ID = t.CZRY_ID
+		LEFT JOIN XT_ZZJG_CZRY_GWZZ gw on gw.CZRYID = t.CZRY_ID and gw.BMID = c.ZZID
+		LEFT JOIN XT_ZZJG_GWZZ gwzz on gw.GWZZID = gwzz.ID
+		where t.CZRY_ID = #{id}
+    </select>
+    
+	<select id="selectMaxBmCzryDm" parameterType="String" resultType="String">
+		select
+		MAX(t.CZRY_DM)
+		from
+		XT_ZZJG_CZRY t
+		LEFT JOIN XT_ZZJG_ZZBM b on t.SZBM_ID = b.ZZID
+		LEFT JOIN
+		XT_ZZJG_ZZBM c on b.SJID = c.ZZID where t.SZBM_ID = #{bmid}
+	</select>
+	
+	<select id="acountUnique" resultType="int">
+		select count(1) from XT_ZZJG_CZRY 
+		where CZRY_ZH = #{czryZh, jdbcType=VARCHAR}
+		<if test="myCzryZh != null and !myCzryZh.equals('')">
+			and CZRY_ZH != #{myCzryZh, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+</mapper>

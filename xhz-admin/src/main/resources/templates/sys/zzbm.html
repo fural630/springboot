@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>组织架构管理</title>
+<#include "/common/header.html">
+</head>
+<body class="frame-body">
+	<div class="frame-fluid" id="app">
+		<Row :gutter="16">
+	        <i-col span="5">
+	        	<Card>
+					<i-button type="primary" @click="add"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;添加</i-button>
+					<i-button type="warning" @click="update"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;修改</i-button>
+					<i-button type="error" @click="del"><i class="fa fa-trash-o" aria-hidden="true"></i>&nbsp;删除</i-button>
+					<i-button @click="expand"><i class="fa fa-expand" aria-hidden="true"></i>&nbsp;全展开</i-button>
+					<div style="margin-top:10px;">
+						<ul id="zzbmTree" class="ztree"></ul>
+					</div>
+	        	</Card>
+	        </i-col>
+	        <i-col span="19">
+	        	<Card>
+					<p slot="title">{{ title }}</p>
+					<Row v-show="!showList">
+				        <i-col span="12">
+							<i-form ref="formValidate" :model="zzbm" :rules="ruleValidate" :label-width="90">
+					            <Form-item>
+					                <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
+					                <i-button type="warning" @click="reload" style="margin-left: 8px">返回</i-button>
+					                <i-button @click="handleReset('formValidate')" style="margin-left: 8px">重置</i-button>
+					            </Form-item>
+					            <Form-item label="组织类型" prop="bmlx">
+					            	<Radio-group v-model="zzbm.bmlx">
+					                	<Radio v-for="item in zzlxList" :label="item.value" :key="item.value">
+					                		<span>{{ item.label }}</span>
+					                	</Radio>
+					                </Radio-group>
+					            </Form-item>
+					            <Row>
+							        <i-col span="12">
+							        	<Form-item label="组织名称" prop="bmmc">
+							                <i-input v-model="zzbm.bmmc" placeholder="点击树节点自动填充"/>
+							            </Form-item>
+							        </i-col>
+							        <i-col span="12">
+							        	 <Form-item label="管辖区域" prop="qyid">
+							        	 	<i-select v-model="zzbm.qyid" filterable placeholder="输入可搜索">
+								                <i-option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</i-option>
+								            </i-select>
+							            </Form-item>
+							        </i-col>
+							    </Row>
+							    <Row>
+							        <i-col span="12">
+							        	<Form-item label="上级组织" prop="sjdwmc">
+							                <i-input readonly="readonly" type="text" v-model="zzbm.sjdwmc" placeholder="若不填写，则添加根组织"/>
+							            </Form-item>
+							        </i-col>
+							        <i-col span="12">
+							            <Form-item label="制文简称" prop="bmjc">
+							            	<i-input v-model="zzbm.bmjc"></i-input>
+							            </Form-item>
+							        </i-col>
+							    </Row>
+					            <Form-item label="联系地址" prop="lxdz">
+					            	<i-input v-model="zzbm.lxdz"></i-input>
+					            </Form-item>
+					            <Form-item label="联系电话" prop="lxdh">
+					            	<i-input v-model="zzbm.lxdh"></i-input>
+					            </Form-item>
+					            <Form-item label="缴款银行" prop="jkyh">
+					            	<i-input v-model="zzbm.jkyh"></i-input>
+					            </Form-item>
+					            <Form-item label="缴款银行账号" prop="jkyhzh">
+					            	<i-input v-model="zzbm.jkyhzh"></i-input>
+					            </Form-item>
+					            <Form-item label="复议单位1" prop="fydw1">
+					            	<i-input v-model="zzbm.fydw1"></i-input>
+					            </Form-item>
+					            <Form-item label="复议单位2" prop="fydw2">
+					            	<i-input v-model="zzbm.fydw2"></i-input>
+					            </Form-item>
+					            <Form-item label="地方编码" prop="dfbm">
+					            	<i-input v-model="zzbm.dfbm"></i-input>
+					            </Form-item>
+					            <Form-item label="邮编" prop="yb">
+					            	<i-input v-model="zzbm.yb"></i-input>
+					            </Form-item>
+					        </i-form>
+				        </i-col>
+				    </Row>
+				</Card>
+	        </i-col>
+		</Row>
+	</div>
+	
+	<script src="${basePath}/js/zzbm.js"></script>
+</body>
+</html>

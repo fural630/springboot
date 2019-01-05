@@ -1,0 +1,28 @@
+.mainframe {
+	position: absolute;
+	width: 100%;
+	height:100%;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 0;
+}
+
+.frame-body {
+	background: #f2f2f2;
+}
+
+.frame-fluid {
+	padding:15px;
+}
+
+.frame-card {
+	background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+}
+
+.frame-card-header {
+	padding:15px;
+	border-bottom: 1px solid #e8eaec;
+}

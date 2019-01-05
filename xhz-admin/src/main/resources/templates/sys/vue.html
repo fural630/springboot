@@ -1,0 +1,611 @@
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+<table width="100%">
+	<tr>
+		<td width="50%">
+				<div id="app">{{ message }}</div>
+				<div id="app-2">
+					<span v-bind:title="message"> 鼠标悬停几秒钟查看此处动态绑定的提示信息！ </span>
+				</div>
+				
+				<div id="app-3">
+				  <p v-if="seen">现在你看到我了</p>
+				</div>
+				
+				<div id="app-4">
+					<ol>
+						<li v-for="todo in todos">
+							{{ todo.text }}
+						</li>
+					</ol>
+				</div>
+				
+				<div id="app-5">
+					<p>{{ message }}</p>
+					<button v-on:click="reverseMessage">逆转消息</button>
+				</div>
+				
+				<div id="app-6">
+					<p>{{ message }}</p>
+					<input v-model="message">
+				</div>
+				
+				<div id="app-7">
+					<ol>
+						<todo-item 
+							v-for = 'item in groceryList'
+							v-bind:todo = 'item'
+							v-bind:key = 'item.id'>
+						</todo-item>
+						<done-item
+							v-for = 'item in doneList'
+							v-bind:done = 'item'
+							v-bind:key = 'item.id'>
+						</done-item>
+					</ol>
+				</div>
+				
+				<div id="app-8">
+					
+				</div>
+				
+				<div id="app-9">
+					<span>初始值为{{ username }}</span>
+				</div>
+				
+				<div id="app-10"> <!-- 文本 -->
+					<span v-once>看这个值是否会被改变： {{ msg }}</span>
+				</div>
+				
+				<div id="app-11"> <!-- 原始 HTML -->
+					<p>Using mustache : {{ rawHtml }}</p>
+					<p>Using v-html directive : <span v-html = 'rawHtml'></span></p>
+				</div>
+				
+				<div id="app-12"><!-- 特性 -->
+					<div v-bind:id = 'dynamicId'>dynamicIdDiv</div>
+					<button v-bind:disabled='isButtonDisabled'>Button</button>
+				</div>
+				
+				<div id="app-13"><!-- 使用 JavaScript 表达式 -->
+					<span>number : {{ number + 1}}</span>
+					<span>ok : {{ ok? 'YES' : 'NO' }}</span>
+					<span>message : {{ message.split('').reverse().join('') }}</span>
+					
+					<div v-bind:id = "'list-' + id">{{ id }}</div>
+				</div>
+				
+				<div id="app-14"><!-- 缩写 -->
+					完整语法 ： <a v-bind:href = "href">baidu</a>
+					完整语法  ： <a v-on:click = "doSomething">doSomethind</a>
+					
+					缩写  ： <a :href = "href">百度缩写</a>
+					缩写 ：<a @click = "doSomething">doSomething</a>
+					
+				</div>
+				
+				<div id="app-15"><!-- 计算属性 -->
+					<p>Orgginal message : {{ message }}</p>
+					<p>Computed reversed message : "{{reversedMessage}}"</p>
+					<p>now : {{ now }}</p>
+				</div>
+				
+				<div id="app-16">
+					<span>{{ fullName }}</span>
+				</div>
+				
+				<div id="app-17">
+					<span>{{ fullName }}</span>
+				</div>
+				
+				<div id="app-18">
+					<p>Ask a yes/no question:
+						<input v-model="question">
+					</p>
+					<p>{{ answer }}</p>
+				</div>
+				
+				<div id="app-19">
+					<div class="static" v-bind:class="{active : isActive}"></div>
+				</div>
+		</td>
+		<td width="50%">
+			<div id="app-20">
+				<h1 v-if="ok">YES</h1>
+				<h1 v-else>No</h1>
+			</div>
+			
+			<div id="app-21">
+				<template v-if="ok">
+					<h1>Title</h1>
+					<p>content</p>
+				</template>
+				
+				<div v-if="Math.random() > 0.5">
+					Now you see me
+				</div>
+				<div v-else>
+					Now you don't
+				</div>
+				<div v-if="type === 'A'">
+					A
+				</div>
+				<div v-else-if="type === 'B'">
+					B
+				</div>
+				<div v-else-if="type === 'C'">
+					C
+				</div>
+				<div v-else>
+					No A/B/C
+				</div>
+			</div>
+			
+			<div id="app-22">
+				<template v-if="loginType === 'username'">
+					<label>Username</label>
+					<input class="a" placeholder="Enter your username" key="username-input">
+				</template>
+				<template v-else>
+					<label>Email</label>
+					<input class="b" placeholder="Enter your email address" key="email-input">
+				</template>
+				<button @click="toggleLoginType">toggle login type</button>
+			</div>
+			
+			<div id="app-23">
+				<ul>
+					<li v-for="(item, index) of items">
+						{{ parentMessage }}-{{ index }}-{{ item.message }}
+					</li>
+				</ul>
+			</div>
+			
+			<div id="app-24">
+				<ul>
+					<li v-for="(value, key, index) in object">
+						{{ index }} - {{ key }} : {{ value }}
+					</li>
+				</ul>
+			</div>
+			
+			<div id="app-25">
+				<button v-on:click="counter += 1">Add 1</button>
+				<p>clicked {{ counter }} times</p>
+			</div>
+			
+			<div id="app-26">
+				<p> {{ counter }} </p>
+				<a v-on:click.stop="doThis">doThis</a>
+			</div>
+			
+			<div id="app-27">
+				<input v-model="message" placeholder="edit me">
+				<p>Message is : {{message}}</p>
+				
+				<span>Multiline message is:</span>
+				<p style="white-space: pre-line;">{{ multilinemessage }}</p>
+				<br>
+				<textarea v-model="multilinemessage" placeholder="add multiple lines"></textarea>
+				
+				<input type="checkbox" id="checkbox" v-model="checked">
+				<label for="test">{{checked}}</label>
+				<div>
+					<input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+					<label for="jack">Jack</label>
+					<input type="checkbox" id="john" value="John" v-model="checkedNames">
+					<label for="john">John</label>
+					<input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+					<label for="mike">Mike</label>
+					<br>
+					<span>Checked names: {{ checkedNames }}</span>
+				</div>
+				
+				<div id="example-4">
+				  <input type="radio" id="one" value="One" v-model="picked">
+				  <label for="one">One</label>
+				  <br>
+				  <input type="radio" id="two" value="Two" v-model="picked">
+				  <label for="two">Two</label>
+				  <br>
+				  <span>Picked: {{ picked }}</span>
+				</div>
+				
+				<div id="example-5">
+				  <select v-model="selected">
+				    <option disabled value="">请选择</option>
+				    <option value="a">A</option>
+				    <option value="b">B</option>
+				    <option value="c">C</option>
+				  </select>
+				  <span>Selected: {{ selected }}</span>
+				</div>
+
+				<select v-model="selecteds">
+					<option v-for="option in options" v-bind:value="option.value">
+    					{{ option.text }}
+  					</option>
+				</select> 
+				<span>Selected: {{ selecteds }}</span>
+				
+				<input type="number">
+				
+				<input v-model.trim="msg">
+			</div>
+			
+			<div id="app-28">
+				<button-counter></button-counter>
+				<button-counter></button-counter>
+				<button-counter></button-counter>
+				<blog-post id="a" title="My journey with Vue"></blog-post>
+				<blog-post id="b" title="Blogging with Vue"></blog-post>
+				<blog-post id="c" title="Why Vue is so fun"></blog-post>
+				
+				<blog-post v-for="post in posts"
+					v-bind:key="post.id"
+					v-bind:id="post.id"
+					v-bind:title="post.title">
+				</blog-post>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<script>
+
+Vue.component('blog-post', {
+	props : ['title', 'id'],
+	template : '<h3>{{id}} -- {{ title }}</h3>'
+});
+
+Vue.component('button-counter',{
+	data : function () {
+		return {
+			count : 0
+		}
+	},
+	template : '<button v-on:click="count++">You clicked me {{ count }} times</button>'
+});
+
+var app28 = new Vue({
+	el : '#app-28',
+	data : {
+		posts : [
+			{id : '1', title : '1-My journey with Vue'},
+			{id : '2', title : '2-Blogging with Vue'},
+			{id : '3', title : '3-Why Vue is so fun'}
+		]
+	}
+});
+
+
+var app27 = new Vue({
+	el : '#app-27',
+	data : {
+		message : '',
+		multilinemessage : '',
+		checked : true,
+		checkedNames : [],
+		picked : '',
+		selected : '',
+		selecteds : '1',
+		options : [
+			{text : 'A', value : '1'},
+			{text : 'B', value : '2'},
+			{text : 'C', value : '3'}
+		],
+		age : 0,
+		msg : '11'
+	}
+});
+
+var app26 = new Vue({
+	el : '#app-26',
+	data : {
+		counter : 0
+	},
+	methods : {
+		doThis : function () {
+			this.counter++;
+		}
+	}
+});
+
+var app25 = new Vue({
+	el : '#app-25',
+	data : {
+		counter : 0
+	}
+});
+
+var app24 = new Vue({
+	el : '#app-24',
+	data : {
+		object : {
+			firstName : 'zhang',
+			lastName : 'ziming',
+			age : 18
+		}
+	}
+	
+});
+
+var app23 = new Vue({
+	el : '#app-23',
+	data : {
+		parentMessage : 'Parent',
+		items : [
+			{ message : 'Foo' },
+			{ message : 'Bar' }
+		]
+	}
+});
+
+var app22 = new Vue({
+	el : '#app-22',
+	data : {
+		loginType : 'username'
+	},
+	methods : {
+		toggleLoginType : function () {
+			this.loginType = this.loginType == 'username' ? '' : 'username'
+		}
+	}
+});
+
+var app21 = new Vue({
+	el : '#app-21',
+	data : {
+		ok : true,
+		type : 'B'
+	}
+});
+
+var app20 = new Vue({
+	el : '#app-20',
+	data : {
+		ok : true
+	}
+});
+
+var app19 = new Vue({
+	el : '#app-19',
+	data : {
+		isActive : true
+	}
+	
+});
+
+var app18 = new Vue({
+	el : '#app-18',
+	data : {
+		question : '',
+		answer : 'I cannot give you an answer until you ask a question!'
+	},
+	watch : {
+		question : function (newQuestion, oldQuestion) {
+			this.answer = 'Waiting for you to stop typing...'
+			this.debouncedGetAnswer()
+		}
+	},
+	created : function (){
+		this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+	},
+	methods : {
+		getAnswer : function () {
+			if (this.question.indexOf('?') === -1) {
+				this.answer = 'Questions usually contain a question mark. ;-)'
+				return
+			}
+			this.answer = 'Thinking...'
+			var vm = this
+			axios.get('https://yesno.wtf/api')
+				.then(function(response) {
+					vm.answer = _.capitalize(response.data.answer)
+				})
+				.catch(function(error) {
+					vm.answer = 'Error! Could not reach the API. ' + error
+				})
+		}
+	}
+});
+
+var app17 = new Vue({
+	el : '#app-17',
+	data : {
+		firstName : 'Foo',
+		lastName : 'Bar'
+	},
+	computed : {
+		fullName : function () {
+			return this.firstName + ' ' + this.lastName
+		}
+	}
+});
+
+
+var app16 = new Vue({
+	el : '#app-16',
+	data : {
+		firstName : 'Foo',
+		lastName : 'Bar',
+		fullName : 'Foo Bar'
+	},
+	watch : {
+		firstName : function (val) {
+			this.fullName = val + ' ' + this.lastName
+		},
+		lastName : function (val) {
+			this.fullName = this.firstName + ' ' + val;
+		}
+	}
+});
+
+var app15 = new Vue({
+	el : '#app-15',
+	data : {
+		message : 'hello'
+	},
+	computed : {
+		reversedMessage : function () {
+			return this.message.split('').reverse().join('')
+		},
+		now : function () {
+			return Date.now()
+		}
+	}
+});
+
+var app14 = new Vue({
+	el : '#app-14',
+	data : {
+		href : 'www.baidu.com'
+	},
+	methods : {
+		doSomething : function () {
+			alert("doSomething!");
+		}
+	}
+});
+
+var app13 = new Vue({
+	el : '#app-13',
+	data : {
+		number : 0,
+		ok : false,
+		message : 'zhangziming',
+		id : 1
+	}
+});
+
+var app12 = new Vue({
+	el : '#app-12',
+	data : {
+		dynamicId : 'aaa',
+		isButtonDisabled : true
+	}
+});
+
+var app11 = new Vue({
+	el : '#app-11',
+	data : {
+		rawHtml : '<span style="color:red">This should be red.</span>'
+	}
+	
+});
+
+var app10 = new Vue({
+	el : '#app-10',
+	data : {
+		msg : '原始值'
+	}
+});
+
+var app9 = new Vue({
+	el : '#app-9',
+	data : {
+		username : '张三'
+	},
+	created : function () {
+		console.log('a is : ' + this.username);
+	}
+});
+
+
+var data = {a : 1};
+
+var app8 = new Vue({
+	el : '#app-8',
+	data : data
+});
+
+
+Vue.component('todo-item', {
+	props : ['todo'],
+  	template: '<li>{{ todo.text }}</li>'
+});
+
+Vue.component('done-item', {
+	props : ['done'],
+  	template: '<li>{{ done.text }} - done</li>'
+});
+
+
+var app7 = new Vue({
+	el : '#app-7',
+	data : {
+		groceryList : [
+			{id : '1', text : '蔬菜'},
+			{id : '2', text : '奶酪'},
+			{id : '3', text : '随便'}
+		],
+		doneList : [
+			{id : '8', text : '苹果'},
+			{id : '9', text : '安卓'},
+			{id : '10', text : 'Java'}
+		]
+	}
+});
+
+
+var app6 = new Vue({
+	el : '#app-6',
+	data : {
+		message : 'Hello Vue!'
+	}
+});
+
+var app5 = new Vue({
+	el : '#app-5', 
+	data : {
+		message : 'hello vue!'
+	},
+	methods : {
+		reverseMessage : function () {
+			this.message = 'aaaa';
+		}
+	}
+});
+
+var app4 = new Vue({
+	el : '#app-4',
+	data : {
+		todos : [
+			{text : '学习javaScript'},
+			{text : '学习 Vue'},
+			{text : '整个牛项目'}
+		]
+	}
+});
+
+var app3 = new Vue({
+	el : '#app-3',
+	data : {
+		seen : true
+	}
+}); 
+
+var app2 = new Vue({
+	el : '#app-2',
+	data : {
+		message : '页面加载于 ' + new Date().toLocaleString()
+	}
+});
+
+var app = new Vue({
+	el : '#app',
+	data : {
+		message : 'Hello Vue!'
+	}
+});
+
+
+	
+
+	
+
+	
+	
+</script>

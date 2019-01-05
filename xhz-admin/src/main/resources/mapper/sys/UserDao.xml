@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhz.web.module.sys.dao.UserDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xhz.web.module.sys.entity.UserDO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="birth_day" property="birthDay" />
+        <result column="pass_word" property="passWord" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="id_card" property="idCard" />
+        <result column="avatar_id" property="avatarId" />
+        <result column="department_cid" property="departmentCid" />
+        <result column="account" property="account" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="update_user_id" property="updateUserId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, birth_day, pass_word, sex, email, phone, id_card, avatar_id, department_cid, account, status, create_time, update_time, create_user_id, update_user_id
+    </sql>
+    
+    <select id="queryPage" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List"/>
+    	from sys_user
+    	<where>
+    		<if test="name != null and name.trim() != ''">
+    			and name like concat('%',#{name},'%')
+    		</if>
+    		<if test="status != null and status.trim() != ''">
+    			and status = #{status}
+    		</if>
+    	</where>
+    	<choose>
+            <when test="field != null and field.trim() != ''">
+                order by ${field} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

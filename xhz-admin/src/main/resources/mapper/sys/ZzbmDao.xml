@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frame.web.module.sys.dao.ZzbmDao">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.frame.web.module.sys.entity.ZzbmDO">
+		<id column="ZZID" property="zzid" />
+		<result column="QYID" property="qyid" />
+		<result column="BMMC" property="bmmc" />
+		<result column="SJID" property="sjid" />
+		<result column="BMDM" property="bmdm" />
+		<result column="BMLX" property="bmlx" />
+		<result column="LXDZ" property="lxdz" />
+		<result column="LXDH" property="lxdh" />
+		<result column="BMJC" property="bmjc" />
+		<result column="DWQZ" property="dwqz" />
+		<result column="PYM" property="pym" />
+		<result column="JKYH" property="jkyh" />
+		<result column="JKYHZH" property="jkyhzh" />
+		<result column="FYDW1" property="fydw1" />
+		<result column="FYDW2" property="fydw2" />
+		<result column="SSFY" property="ssfy" />
+		<result column="DFBM" property="dfbm" />
+		<result column="YB" property="yb" />
+		<result column="SYBS" property="sybs" />
+		<result column="SEQ" property="seq" />
+
+		<result column="REGION_NAME" property="regionName" />
+		<result column="AGENCY_CODE" property="agencyCode" />
+		<result column="TYPE" property="type" />
+		<result column="SJDWMC" property="sjdwmc" />
+		<result column="SJDWDM" property="sjdwdm" />
+
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		ZZID, QYID, BMMC, SJID, BMDM, BMLX, LXDZ, LXDH, BMJC, DWQZ,
+		PYM, JKYH, JKYHZH, FYDW1, FYDW2, SSFY, DFBM, YB, SYBS, SEQ,
+		REGION_NAME,
+		AGENCY_CODE,
+		TYPE, SJDWMC, SJDWDM
+	</sql>
+
+	<select id="selectMaxZzbmDm" resultType="String"
+		parameterType="String">
+		select max(BMDM) from XT_ZZJG_ZZBM where SJID = #{zzid}
+	</select>
+	
+	<select id="selectByParentId" parameterType="String" resultMap="BaseResultMap">
+		select * from XT_ZZJG_ZZBM where SJID = #{zzid}
+	</select>
+	
+	<select id="selectById" parameterType="String" resultMap="BaseResultMap">
+		SELECT
+		z.QYID,
+		re.REGION_NAME,
+		re.AGENCY_CODE,
+		re.TYPE,
+		z.ZZID,
+		z.BMMC,
+		z.BMDM,
+		z.BMLX,
+		z.SJID,
+		zz.BMMC SJDWMC,
+		zz.BMDM SJDWDM,
+		z.PYM,
+		z.SYBS,
+		z.LXDZ,
+		z.LXDH,
+		z.BMJC,
+		z.DWQZ,
+		z.JKYH,
+		z.JKYHZH,
+		z.FYDW1,
+		z.FYDW2,
+		z.SSFY,
+		z.DFBM,
+		z.YB,
+		z.SEQ
+		FROM XT_ZZJG_ZZBM z
+		LEFT JOIN XT_ZZJG_ZZBM zz ON z.SJID = zz.ZZID
+		LEFT JOIN XT_REGION re ON re.REGION_ID = z.QYID
+		where z.ZZID = #{zzid,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryPage" resultMap="BaseResultMap">
+		SELECT
+		z.QYID,
+		re.REGION_NAME,
+		re.AGENCY_CODE,
+		re.TYPE,
+		z.ZZID,
+		z.BMMC,
+		z.BMDM,
+		z.BMLX,
+		z.SJID,
+		zz.BMMC SJDWMC,
+		zz.BMDM SJDWDM,
+		z.PYM,
+		z.SYBS,
+		z.LXDZ,
+		z.LXDH,
+		z.BMJC,
+		z.DWQZ,
+		z.JKYH,
+		z.JKYHZH,
+		z.FYDW1,
+		z.FYDW2,
+		z.SSFY,
+		z.DFBM,
+		z.YB,
+		z.SEQ
+		FROM XT_ZZJG_ZZBM z
+		LEFT JOIN XT_ZZJG_ZZBM zz ON z.SJID = zz.ZZID
+		LEFT JOIN XT_REGION re ON re.REGION_ID = z.QYID
+    	<where>
+    		<if test="qyid != null and qyid.trim() != ''">
+    			and z.QYID = #{qyid}
+    		</if>
+    		<if test="type != null and type.trim() != ''">
+    			and re.TYPE = #{type}
+    		</if>
+    		<if test="bmmc != null and bmmc.trim() != ''">
+    			and z.BMMC like concat('%',#{bmmc},'%')
+    		</if>
+    		<if test="bmdm != null and bmdm.trim() != ''">
+    			and z.BMDM = #{bmdm}
+    		</if>
+    		<if test="bmlx != null and bmlx.trim() != ''">
+    			and z.BMLX = #{bmlx}
+    		</if>
+    		<if test="sjdwmc != null and sjdwmc.trim() != ''">
+    			and zz.BMMC like concat('%',#{sjdwmc},'%')
+    		</if>
+    		<if test="sjdwdm != null and sjdwdm.trim() != ''">
+    			and zz.BMDM = #{sjdwdm}
+    		</if>
+    	</where>
+    	<choose>
+            <when test="field != null and field.trim() != ''">
+                order by ${field} ${order}
+            </when>
+            <otherwise>
+                order by z.SEQ
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+    	SELECT
+			z.QYID,
+			re.REGION_NAME,
+			re.AGENCY_CODE,
+			re.TYPE,
+			z.ZZID,
+			z.BMMC,
+			z.BMDM,
+			z.BMLX,
+			z.SJID,
+			zz.BMMC SJDWMC,
+			zz.BMDM SJDWDM,
+			z.PYM,
+			z.SYBS,
+			z.LXDZ,
+			z.LXDH,
+			z.BMJC,
+			z.DWQZ,
+			z.JKYH,
+			z.JKYHZH,
+			z.FYDW1,
+			z.FYDW2,
+			z.SSFY,
+			z.DFBM,
+			z.YB,
+			z.SEQ
+			FROM XT_ZZJG_ZZBM z
+			LEFT JOIN XT_ZZJG_ZZBM zz ON z.SJID = zz.ZZID
+			LEFT JOIN XT_REGION re ON re.REGION_ID = z.QYID
+		order by z.BMLX desc
+    </select>
+
+</mapper>
