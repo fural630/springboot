@@ -267,7 +267,7 @@ Ajax = function () {
 
 function dialogLoading(flag) {
     if (flag) {
-        layer.load(1, {
+        layer.load(2, {
             shade: [0.2, '#000'],
             time: 5000
         });

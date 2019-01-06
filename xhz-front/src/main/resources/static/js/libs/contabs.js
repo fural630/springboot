@@ -145,9 +145,12 @@ $(function () {
             // 添加选项卡对应的iframe
             var str1 = '<iframe class="J_iframe" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
             $('.J_mainContent').find('iframe.J_iframe').hide().parents('.J_mainContent').append(str1);
-
+            
             // 显示loading提示
-            var loading = layer.load();
+            var loading = layer.load(2, {
+                shade: [0.2, '#000'],
+                time: 5000
+            });
 
             $('.J_mainContent iframe:visible').load(function () {
                 //iframe加载完成后隐藏loading提示
