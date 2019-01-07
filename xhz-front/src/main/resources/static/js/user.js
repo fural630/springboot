@@ -32,7 +32,7 @@ var vm = new Vue({
 			status : [ {
 				required : true,
 				message : '状态必须设置',
-				trigger : 'change',
+				trigger : 'blur',
 				type : 'number'
 			} ],
 		},
@@ -67,11 +67,11 @@ var vm = new Vue({
 			var checkStatus = layui.table.checkStatus('userTable');
 			var length = checkStatus.data.length;
 			if (length == 0) {
-				iview.Message.warning('请勾选要修改的数据!');
+				this.$message.warning('请勾选要修改的数据!');
 				return;
 			}
 			if (length > 1) {
-				iview.Message.warning('请只勾选一条要修改的数据!');
+				this.$message.warning('请只勾选一条要修改的数据!');
 				return;
 			}
 			this.title = '修改';
@@ -92,7 +92,7 @@ var vm = new Vue({
 			var checkStatus = layui.table.checkStatus('userTable');
 			var length = checkStatus.data.length;
 			if (length == 0) {
-				iview.Message.warning('请勾选要删除的数据!');
+				this.$message.warning('请勾选要删除的数据!');
 				return;
 			}
 			var ids = [];
@@ -196,7 +196,7 @@ layui.use('table', function() {
 			title : '出生日期',
 			sort : true,
 			templet : function(d) {
-				return transDate(d.birthDay, 'yyyy年MM月dd日')
+				return constant.transDate(d.birthDay, 'yyyy年MM月dd日')
 			}
 		}, {
 			field : 'departmentCid',

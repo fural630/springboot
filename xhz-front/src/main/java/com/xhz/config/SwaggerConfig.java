@@ -11,7 +11,11 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
+/**
+ * Swagger API 配置页面
+ * @author zhangzm
+ *
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -25,7 +29,7 @@ public class SwaggerConfig {
 				// 是否开启
 				.enable(swaggerEnabled).select()
 				// 扫描的路径包
-				.apis(RequestHandlerSelectors.basePackage("com.frame.web.module"))
+				.apis(RequestHandlerSelectors.basePackage("com.xhz.web.module"))
 				// 指定路径处理PathSelectors.any()代表所有的路径
 				.build().pathMapping("/");
 	}

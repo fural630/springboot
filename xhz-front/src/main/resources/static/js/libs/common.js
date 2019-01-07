@@ -71,28 +71,6 @@ window.openWindow = function (options) {
 
 /**
  * 预览图片
- * @param url
- */
-function eyeImage(url) {
-    if (!url) {
-        iview.Message.error('请先上传图片');
-        return;
-    }
-    layer.photos({
-        photos: {
-            "title": "预览", //相册标题
-            "start": 0, //初始显示的图片序号，默认0
-            "data": [   //相册包含的图片，数组格式
-                {
-                    "src": url //原图地址
-                }
-            ]
-        }, anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
-    });
-};
-
-/**
- * 预览图片
  * @param data
  */
 function eyeImages(data) {
@@ -125,39 +103,15 @@ function handleSubmitValidate(vue, name, callback) {
         if (valid) {
             callback();
         } else {
-            iview.Message.error('请填写完整信息!');
+        	vue.$message.error('请填写完整信息!');
             return false;
         }
     })
 };
 
-
-/**
- * 翻译日期
- * @param date
- * @param fmt
- * @returns {*}
- */
-function transDate(date, fmt) {
-    if (date) {
-        if (typeof date == 'string') {
-            return new Date(date).dateFormat(fmt);
-        } else {
-            try {
-                return new Date(date.replace('-', '/').replace('-', '/')).dateFormat(fmt);
-            } catch (e) {
-                return '-';
-            }
-        }
-    } else {
-        return '';
-    }
-};
-
 function toUrl(href) {
     window.location.href = href;
 }
-
 
 /**
  * 

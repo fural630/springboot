@@ -6,7 +6,11 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-
+/**
+ * 404页面统一跳转
+ * @author zhangzm
+ *
+ */
 @Configuration
 public class ErrorPageConfig {
 	@Bean

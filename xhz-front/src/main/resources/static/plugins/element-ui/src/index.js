@@ -152,7 +152,7 @@ const install = function(Vue, opts = {}) {
   Vue.use(Loading.directive);
 
   Vue.prototype.$ELEMENT = {
-    size: opts.size || '',
+    size: opts.size || 'small',
     zIndex: opts.zIndex || 2000
   };
 
