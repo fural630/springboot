@@ -3,7 +3,13 @@ var vm = new Vue({
 	data : {
 		q : {
 			name : ''
-		}
+		},
+		iconItems : iconLib
+	},
+	methods : {
+		query : function() {
+			conosle.log(11);
+		},
 	}
 });
 

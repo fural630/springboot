@@ -140,7 +140,7 @@ var vm = new Vue({
 			});
 		},
 		handleReset : function(name) {
-			this.$refs[name].resetFields();
+			handleResetForm(vm, name);
 		}
 	}
 });

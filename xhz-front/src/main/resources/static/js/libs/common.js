@@ -1,52 +1,52 @@
 //iframe自适应
-$(window).on('resize', function () {
-    var $content = $('#mainApp');
-    $content.height($(this).height());
-    $content.find('iframe').each(function () {
-        $(this).height($content.height() - 150);
-    });
-    var $rrapp = $('#rrapp').parent();
-    $rrapp.height($(this).height());
-    $(this).height($content.height());
+$(window).on('resize', function() {
+	var $content = $('#mainApp');
+	$content.height($(this).height());
+	$content.find('iframe').each(function() {
+		$(this).height($content.height() - 150);
+	});
+	var $rrapp = $('#rrapp').parent();
+	$rrapp.height($(this).height());
+	$(this).height($content.height());
 }).resize();
 
 $.ajaxSetup({
-    dataType: "json",
-    cache: false
+	dataType : "json",
+	cache : false
 });
 
 //重写alert
-window.alert = function (msg, callback) {
-    // parent.layer.alert 弹出在iframe外的页面。
-    layer.alert(msg, function (index) {
-        layer.close(index);
-        if (typeof(callback) === "function") {
-            callback("ok");
-        }
-    });
+window.alert = function(msg, callback) {
+	// parent.layer.alert 弹出在iframe外的页面。
+	layer.alert(msg, function(index) {
+		layer.close(index);
+		if (typeof (callback) === "function") {
+			callback("ok");
+		}
+	});
 };
 
-//重写confirm式样框
-window.confirm = function (msg, callback) {
-    //如果没有定义回调函数，直接返回true
-    if (!callback) {
-        return true;
-    }
-    layer.confirm(msg, {
-            skin: 'layui-layer-molv', btn: ['确定', '取消']
-        },
-        function () {//确定事件
-            if (typeof(callback) === "function") {
-                callback("ok");
-            }
-        });
+// 重写confirm式样框
+window.confirm = function(msg, callback) {
+	// 如果没有定义回调函数，直接返回true
+	if (!callback) {
+		return true;
+	}
+	layer.confirm(msg, {
+		skin : 'layui-layer-molv',
+		btn : [ '确定', '取消' ]
+	}, function() {// 确定事件
+		if (typeof (callback) === "function") {
+			callback("ok");
+		}
+	});
 };
 
 
 /**
-*
-* @param options
-*/
+ * 
+ * @param options
+ */
 window.openWindow = function (options) {
    let globalParams = {
        skin: 'layui-layer-molv',//皮肤
@@ -220,21 +220,21 @@ Ajax = function () {
 
 
 function dialogLoading(flag) {
-    if (flag) {
-        layer.load(2, {
-            shade: [0.2, '#000'],
-            time: 5000
-        });
-    } else {
-        layer.closeAll('loading');
-    }
+	if (flag) {
+		layer.load(2, {
+			shade : [ 0.2, '#000' ],
+			time : 5000
+		});
+	} else {
+		layer.closeAll('loading');
+	}
 }
 
 
 /**
- * 用JS获取地址栏参数的方法
- * 使用示例 location.href = http://localhost:8080/index.html?id=123
- *          getQueryString('id') --> 123;
+ * 用JS获取地址栏参数的方法 使用示例 location.href = http://localhost:8080/index.html?id=123
+ * getQueryString('id') --> 123;
+ * 
  * @param name
  * @returns {null}
  * @constructor
