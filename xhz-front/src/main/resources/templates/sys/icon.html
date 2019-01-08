@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Icon</title>
 <#include "/common/header.html">
+<style>
+	.bg2 {
+		background-color:#DCDFE6;
+	}
+</style>
 </head>
 <body>
 	<div id="app">
@@ -13,52 +18,60 @@
 				<el-row>
 					<el-col :span="4">
 						<el-form-item prop="name" label="图标搜索">
-							<el-input v-model="q.name" clearable></el-input>
+							<el-input v-model="q.name" clearable prefix-icon="el-icon-search"></el-input>
 						</el-form-item>
 					</el-col>
 					&nbsp;&nbsp;
 					<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+					<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;刷新</el-button>
 				</el-row>
 			</el-form>
 		</div>
 		<div class="layui-card-body">
+<!-- 			<fieldset class="layui-elem-field"> -->
+<!-- 			  <legend>常用图标</legend> -->
+<!-- 			  <div class="layui-field-box"> -->
+<!-- 			  	<el-card class="box-card"> -->
+<!-- 				  	<el-button type="primary"><i class="fa fa-plus"></i>&nbsp;添加</el-button> -->
+<!-- 					<el-button type="warning"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button> -->
+<!-- 					<el-button type="danger"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button> -->
+<!-- 				</el-card> -->
+<!-- 				<el-card class="box-card"> -->
+<!-- 				  	<el-button type="primary"><i class="fa fa-plus"></i>&nbsp;添加</el-button> -->
+<!-- 					<el-button type="warning"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button> -->
+<!-- 					<el-button type="danger"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button> -->
+<!-- 				</el-card> -->
+<!-- 			  </div> -->
+<!-- 			</fieldset> -->
+		
 			<fieldset class="layui-elem-field">
 			  <legend>图标库</legend>
 			  <div class="layui-field-box">
-			  	<div v-for="(item, index) in iconItems">
-			  		<el-row :gutter="5">
-			  			<el-col :span="1">
-			  				<i :class="item.icon"></i>
-			  			</el-col>
-			  			<el-col :span="3">
-			  				{{item.icon}}
-			  			</el-col>
-			  			<el-col :span="3">
-			  				<el-tag type="success">{{item.label}}</el-tag>
-			  			</el-col>
-			  			<el-col :span="2">
-			  				<i class="fa fa-clipboard"></i>
-			  			</el-col>
-			  		</el-row>
-			  	</div>
-<!-- 			    	<el-row :gutter="20"> -->
-<!-- 					  <el-col :span="6"> -->
-<!-- 				  		<i class="fa fa-address-book"></i> address-book 地址薄  -->
-<!-- 					  </el-col> -->
-<!-- 					  <el-col :span="6"> -->
-<!-- 					  	<i class="fa fa-address-book-o"></i> address-book-o -->
-<!-- 					  </el-col> -->
-<!-- 					  <el-col :span="6"> -->
-<!-- 					  	<i class="fa fa-address-card"></i> address-card -->
-<!-- 					  </el-col> -->
-<!-- 					  <el-col :span="6"> -->
-<!-- 					  	<i class="fa fa-address-card-o"></i> address-card-o -->
-<!-- 					  </el-col> -->
-<!-- 					</el-row> -->
+		  		<template v-for="(item,index) in iconItems">
+		  			<el-row :class="{bg2 : index%2 == 0}" style="line-height:40px;">
+						<el-col :span="1">
+							&nbsp;&nbsp;<i :class="item.icon"></i>
+						</el-col>
+						<el-col :span="3">
+							<span>{{item.icon}}</span>
+						</el-col>
+						<el-col :span="3">
+							<span v-for="label in item.label.split(',')">
+								&nbsp;<el-tag>{{label}}</el-tag>
+							</span>
+						</el-col>
+						<el-col :span="2">
+							<el-button :id="'btn-' + index" :data-clipboard-text="'<i class=\'' + item.icon + '\'></i>'" @click="copyIcon('btn-' + index)" type="warning">
+								<i class="fa fa-clipboard"></i>&nbsp;复制
+							</el-button>
+						</el-col>
+					</el-row>
+				</template>
 			  </div>
 			</fieldset>
 		</div>
 	</div>
+	<script src="${basePath}/plugins/clipboard/dist/clipboard.min.js"></script>
 	<script src="${basePath}/js/libs/iconLib.js"></script>
 	<script src="${basePath}/js/icon.js"></script>
 </body>

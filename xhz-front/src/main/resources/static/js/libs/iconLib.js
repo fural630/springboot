@@ -1,6 +1,6 @@
 const iconLib = [ {
 	'icon' : 'fa fa-address-book',
-	'label' : '地址薄'
+	'label' : '地址薄,电话本'
 }, {
 	'icon' : 'fa fa-address-book-o',
 	'label' : '地址薄卡'
