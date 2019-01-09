@@ -102,7 +102,7 @@
 										<el-row>
 											<el-col :span="12">
 												<el-form-item prop="space" label="空格">
-													<el-input-number v-model="commonIcon.space" :min="0" :max="10"></el-input-number>
+													<el-input-number v-model="commonIcon.space" :min="0" :max="4"></el-input-number>
 												</el-form-item>
 											</el-col>
 											<el-col :span="12">
@@ -113,12 +113,12 @@
 										</el-row>
 										<el-row>
 											<el-form-item label="旋转">
-												<el-button size="mini" v-html="iconShow"></el-button>
-												<el-button size="mini" v-html="iconShow90"></el-button>
-												<el-button size="mini" v-html="iconShow180"></el-button>
-												<el-button size="mini" v-html="iconShow270"></el-button>
-												<el-button size="mini" v-html="iconShowHorizontal"></el-button>
-												<el-button size="mini" v-html="iconShowVertical"></el-button>
+												<el-button size="mini" @click="setRotate(0)" v-html="iconShow"></el-button>
+												<el-button size="mini" @click="setRotate(1)" v-html="iconShow90"></el-button>
+												<el-button size="mini" @click="setRotate(2)" v-html="iconShow180"></el-button>
+												<el-button size="mini" @click="setRotate(3)" v-html="iconShow270"></el-button>
+												<el-button size="mini" @click="setRotate(4)" v-html="iconShowHorizontal"></el-button>
+												<el-button size="mini" @click="setRotate(5)" v-html="iconShowVertical"></el-button>
 											</el-form-item>
 										</el-row>
 									</fieldset>
@@ -130,21 +130,85 @@
 								<legend>代码</legend>
 							</fieldset>
 							<pre class="layui-code">{{iconCopyCode}}</pre>
-							<el-button type="warning">
-								<i class="fa fa-clipboard"></i>&nbsp;复制
+							<el-button class="configCopyBtn" type="success" @click="copyConfigIcon">
+								<i class="fa fa-clipboard"></i>&nbsp;复制代码
+							</el-button>
+							<el-button @click="resetCommonConfig">
+								<i class="fa fa-reply"></i></i>&nbsp;重置配制
 							</el-button>
 						</el-row>
 					</el-tab-pane>
-					<el-tab-pane label="按钮图标1">
+					<el-tab-pane label="按钮图标">
+						<el-form @submit.native.prevent :model="commonIcon" label-width="60px">
+							<el-row :gutter="20">
+								<el-col :span="6">
+									<fieldset class="layui-elem-field">
+										<legend>预览</legend>
+										<div class="layui-field-box">
+											<div style="text-align:center;line-height:130px;" v-html="iconCopyCode"></div>
+										</div>
+									</fieldset>
+								</el-col>
+								<el-col :span="18">
+									<fieldset class="layui-elem-field">
+										<legend>配置</legend>
+										<el-row>
+											<el-form-item prop="iconName" label="文字">
+												<el-input style="width:90%" v-model.trim="commonIcon.iconName" clearable></el-input>
+											</el-form-item>
+										</el-row>
+										<el-row>
+											<el-col :span="12">
+												<el-form-item prop="space" label="空格">
+													<el-input-number v-model="commonIcon.space" :min="0" :max="4"></el-input-number>
+												</el-form-item>
+											</el-col>
+											<el-col :span="12">
+												<el-form-item prop="zoom" label="缩放">
+													<el-input-number v-model="commonIcon.zoom" :min="1" :max="5"></el-input-number>
+												</el-form-item>
+											</el-col>
+										</el-row>
+										<el-row>
+											<el-form-item label="颜色">
+										   		<el-button size="mini">无色</el-button>
+												<el-button size="mini" type="primary">蓝色</el-button> 
+												<el-button size="mini" type="success">绿色</el-button>
+												<el-button size="mini" type="info">灰色</el-button>
+												<el-button size="mini" type="warning">橙色</el-button>
+												<el-button size="mini" type="danger">红色</el-button>
+											</el-form-item>
+										</el-row>
+										<el-row>
+											<el-col :span="12">
+												<el-form-item label="样式">
+													<el-button size="mini" type="primary" plain>朴素</el-button> 
+													<el-button size="mini" type="primary" round>圆角</el-button>
+													<el-button size="mini" type="primary" circle>圆形</el-button>
+												</el-form-item>
+											</el-col>
+											<el-col :span="12">
+												<el-form-item label="位置">
+													<el-button size="mini"><i class="fa fa-sort-desc fa-rotate-90"></i></el-button>
+													<el-button size="mini"><i class="fa fa-sort-asc fa-rotate-90"></i></el-button>
+												</el-form-item>
+											</el-col>
+										</el-row>
+									</fieldset>
+								</el-col>
+							</el-row>
+						</el-form>
 						<el-row>
-							<!-- 							<el-form-item label="颜色"> -->
-							<!-- 								<el-button size="mini">无色</el-button> -->
-							<!-- 								<el-button size="mini" type="primary">蓝色</el-button> -->
-							<!-- 								<el-button size="mini" type="success">绿色</el-button> -->
-							<!-- 								<el-button size="mini" type="info">灰色</el-button> -->
-							<!-- 								<el-button size="mini" type="warning">橙色</el-button> -->
-							<!-- 								<el-button size="mini" type="danger">红色</el-button> -->
-							<!-- 							</el-form-item> -->
+							<fieldset class="layui-elem-field layui-field-title">
+								<legend>代码</legend>
+							</fieldset>
+							<pre class="layui-code">{{iconCopyCode}}</pre>
+							<el-button class="configCopyBtn" type="success" @click="copyConfigIcon">
+								<i class="fa fa-clipboard"></i>&nbsp;复制代码
+							</el-button>
+							<el-button @click="resetCommonConfig">
+								<i class="fa fa-reply"></i></i>&nbsp;重置配制
+							</el-button>
 						</el-row>
 					</el-tab-pane>
 				</el-tabs>

@@ -63,9 +63,9 @@ window.openWindow = function (options) {
    };
    globalParams = $.extend(globalParams, options);
    if (globalParams.top) {
-       parent.layer.open(globalParams);
+       return parent.layer.open(globalParams);
    } else {
-       layer.open(globalParams);
+	   return layer.open(globalParams);
    }
 };
 
