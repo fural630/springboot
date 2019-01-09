@@ -1,78 +1,157 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Icon</title>
-<#include "/common/header.html">
-<style>
-	.bg2 {
-		background-color:#DCDFE6;
-	}
-</style>
-</head>
-<body>
-	<div id="app">
-		<div class="frame-card-header">
-			<el-form ref="queryForm" :model="q" label-width="80px">
-				<el-row>
-					<el-col :span="4">
-						<el-form-item prop="name" label="图标搜索">
-							<el-input v-model="q.name" clearable prefix-icon="el-icon-search"></el-input>
-						</el-form-item>
-					</el-col>
-					&nbsp;&nbsp;
-					<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-					<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;刷新</el-button>
-				</el-row>
-			</el-form>
-		</div>
-		<div class="layui-card-body">
-<!-- 			<fieldset class="layui-elem-field"> -->
-<!-- 			  <legend>常用图标</legend> -->
-<!-- 			  <div class="layui-field-box"> -->
-<!-- 			  	<el-card class="box-card"> -->
-<!-- 				  	<el-button type="primary"><i class="fa fa-plus"></i>&nbsp;添加</el-button> -->
-<!-- 					<el-button type="warning"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button> -->
-<!-- 					<el-button type="danger"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button> -->
-<!-- 				</el-card> -->
-<!-- 				<el-card class="box-card"> -->
-<!-- 				  	<el-button type="primary"><i class="fa fa-plus"></i>&nbsp;添加</el-button> -->
-<!-- 					<el-button type="warning"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button> -->
-<!-- 					<el-button type="danger"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button> -->
-<!-- 				</el-card> -->
-<!-- 			  </div> -->
-<!-- 			</fieldset> -->
-		
-			<fieldset class="layui-elem-field">
-			  <legend>图标库</legend>
-			  <div class="layui-field-box">
-		  		<template v-for="(item,index) in iconItems">
-		  			<el-row :class="{bg2 : index%2 == 0}" style="line-height:40px;">
-						<el-col :span="1">
-							&nbsp;&nbsp;<i :class="item.icon"></i>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>Icon</title>
+		<#include "/common/header.html">
+			<style>
+				.bg2 {
+				background-color:#DCDFE6;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="frame-card-header">
+				<el-form @submit.native.prevent ref="queryForm" :model="q" label-width="80px">
+					<el-row>
+						<el-col :span="4">
+							<el-form-item prop="name" label="图标搜索">
+								<el-input v-model.trim="q.name" clearable prefix-icon="el-icon-search" @keyup.enter.native="query"></el-input>
+							</el-form-item>
 						</el-col>
-						<el-col :span="3">
-							<span>{{item.icon}}</span>
-						</el-col>
-						<el-col :span="3">
-							<span v-for="label in item.label.split(',')">
-								&nbsp;<el-tag>{{label}}</el-tag>
-							</span>
-						</el-col>
-						<el-col :span="2">
-							<el-button :id="'btn-' + index" :data-clipboard-text="'<i class=\'' + item.icon + '\'></i>'" @click="copyIcon('btn-' + index)" type="warning">
+						&nbsp;&nbsp;
+						<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+						<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;刷新</el-button>
+					</el-row>
+				</el-form>
+			</div>
+			<div class="layui-card-body">
+				<!-- 			<fieldset class="layui-elem-field"> -->
+				<!-- 			  <legend>常用图标</legend> -->
+				<!-- 			  <div class="layui-field-box"> -->
+				<!-- 			  	<el-card class="box-card"> -->
+				<!-- 				  	<el-button type="primary"><i class="fa fa-plus"></i>&nbsp;添加</el-button> -->
+				<!-- 					<el-button type="warning"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button> -->
+				<!-- 					<el-button type="danger"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button> -->
+				<!-- 				</el-card> -->
+				<!-- 				<el-card class="box-card"> -->
+				<!-- 				  	<el-button type="primary"><i class="fa fa-plus"></i>&nbsp;添加</el-button> -->
+				<!-- 					<el-button type="warning"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button> -->
+				<!-- 					<el-button type="danger"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button> -->
+				<!-- 				</el-card> -->
+				<!-- 			  </div> -->
+				<!-- 			</fieldset> -->
+
+				<fieldset class="layui-elem-field">
+					<legend>图标库</legend>
+					<div class="layui-field-box">
+						<h3 v-if="hasResult">未查询到结果！</h3>
+						<template v-for="(item,index) in iconItems">
+							<el-row :class="{bg2 : index%2 == 0}" style="line-height:40px;">
+								<el-col :span="1">
+									&nbsp;&nbsp;{{item.id}}
+								</el-col>
+								<el-col :span="1">
+									&nbsp;&nbsp;<i :class="'fa fa-' + item.icon"></i>
+								</el-col>
+								<el-col :span="4">
+									<span>{{item.icon}}</span>
+								</el-col>
+								<el-col :span="4">
+									<span v-for="label in item.label.split(',')">
+										&nbsp;<el-tag>{{label}}</el-tag>
+									</span>
+								</el-col>
+								<el-col :span="4">
+									<el-button class="copyBtn" @click="copyIcon(item.icon)" type="warning">
+										<i class="fa fa-clipboard"></i>&nbsp;复制
+									</el-button>
+									<el-button @click="configCopy(item.icon)" type="primary">
+										<i class="fa fa-clipboard"></i>&nbsp;高级复制
+									</el-button>
+								</el-col>
+							</el-row>
+						</template>
+					</div>
+				</fieldset>
+			</div>
+			<!-- 高级复制配置 -->
+			<div id="configCopyDialog" style="display: none;padding:10px;">
+				<el-tabs type="border-card">
+					<el-tab-pane label="常规图标">
+						<el-form @submit.native.prevent :model="commonIcon" label-width="60px">
+							<el-row :gutter="20">
+								<el-col :span="6">
+									<fieldset class="layui-elem-field">
+										<legend>预览</legend>
+										<div class="layui-field-box">
+											<div style="text-align:center;line-height:130px;" v-html="iconCopyCode"></div>
+										</div>
+									</fieldset>
+								</el-col>
+								<el-col :span="18">
+									<fieldset class="layui-elem-field">
+										<legend>配置</legend>
+										<el-row>
+											<el-form-item prop="iconName" label="文字">
+												<el-input style="width:90%" v-model.trim="commonIcon.iconName" clearable></el-input>
+											</el-form-item>
+										</el-row>
+										<el-row>
+											<el-col :span="12">
+												<el-form-item prop="space" label="空格">
+													<el-input-number v-model="commonIcon.space" :min="0" :max="10"></el-input-number>
+												</el-form-item>
+											</el-col>
+											<el-col :span="12">
+												<el-form-item prop="zoom" label="缩放">
+													<el-input-number v-model="commonIcon.zoom" :min="1" :max="5"></el-input-number>
+												</el-form-item>
+											</el-col>
+										</el-row>
+										<el-row>
+											<el-form-item label="旋转">
+												<el-button size="mini" v-html="iconShow"></el-button>
+												<el-button size="mini" v-html="iconShow90"></el-button>
+												<el-button size="mini" v-html="iconShow180"></el-button>
+												<el-button size="mini" v-html="iconShow270"></el-button>
+												<el-button size="mini" v-html="iconShowHorizontal"></el-button>
+												<el-button size="mini" v-html="iconShowVertical"></el-button>
+											</el-form-item>
+										</el-row>
+									</fieldset>
+								</el-col>
+							</el-row>
+						</el-form>
+						<el-row>
+							<fieldset class="layui-elem-field layui-field-title">
+								<legend>代码</legend>
+							</fieldset>
+							<pre class="layui-code">{{iconCopyCode}}</pre>
+							<el-button type="warning">
 								<i class="fa fa-clipboard"></i>&nbsp;复制
 							</el-button>
-						</el-col>
-					</el-row>
-				</template>
-			  </div>
-			</fieldset>
+						</el-row>
+					</el-tab-pane>
+					<el-tab-pane label="按钮图标1">
+						<el-row>
+							<!-- 							<el-form-item label="颜色"> -->
+							<!-- 								<el-button size="mini">无色</el-button> -->
+							<!-- 								<el-button size="mini" type="primary">蓝色</el-button> -->
+							<!-- 								<el-button size="mini" type="success">绿色</el-button> -->
+							<!-- 								<el-button size="mini" type="info">灰色</el-button> -->
+							<!-- 								<el-button size="mini" type="warning">橙色</el-button> -->
+							<!-- 								<el-button size="mini" type="danger">红色</el-button> -->
+							<!-- 							</el-form-item> -->
+						</el-row>
+					</el-tab-pane>
+				</el-tabs>
+			</div>
 		</div>
-	</div>
-	<script src="${basePath}/plugins/clipboard/dist/clipboard.min.js"></script>
-	<script src="${basePath}/js/libs/iconLib.js"></script>
-	<script src="${basePath}/js/icon.js"></script>
-</body>
+		<script src="${basePath}/plugins/clipboard/dist/clipboard.min.js"></script>
+		<script src="${basePath}/js/libs/iconLib.js"></script>
+		<script src="${basePath}/js/icon.js?_${.now?long}"></script>
+	</body>
 </html>

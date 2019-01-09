@@ -14,13 +14,13 @@ var menu = {
 		"F_ModuleId" : "3",
 		"F_ParentId" : "1",
 		"F_FullName" : "API",
-		"F_Icon" : "fa fa-user",
+		"F_Icon" : "fa fa-book",
 		"F_UrlAddress" : "/swagger-ui.html",
 	}, {
 		"F_ModuleId" : "4",
 		"F_ParentId" : "1",
 		"F_FullName" : "图标库",
-		"F_Icon" : "fa fa-user",
+		"F_Icon" : "fa fa-info",
 		"F_UrlAddress" : "/sys/icon.html",
 	} ]
 }
