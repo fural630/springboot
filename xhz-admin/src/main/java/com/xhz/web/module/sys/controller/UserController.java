@@ -40,7 +40,7 @@ import io.swagger.annotations.ApiParam;
  
 @RestController
 @RequestMapping("/sys/user")
-@Api(tags = {"用户管理1"})
+@Api(tags = {"用户管理"})
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -89,7 +89,7 @@ public class UserController {
 	 * @return R.ok()
 	 */
 	@ApiOperation(value="修改用户")
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	public R update(@RequestBody @ApiParam(name="用户对象",value="传入json格式",required=true)UserDO userDO) {
 		ValidatorUtils.validateEntity(userDO, UpdateGroup.class);
 		userService.updateById(userDO);

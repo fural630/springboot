@@ -33,7 +33,7 @@ window.confirm = function(msg, callback) {
 		return true;
 	}
 	layer.confirm(msg, {
-		skin : 'layui-layer-molv',
+		skin : 'layui-layer-lan',
 		btn : [ '确定', '取消' ]
 	}, function() {// 确定事件
 		if (typeof (callback) === "function") {

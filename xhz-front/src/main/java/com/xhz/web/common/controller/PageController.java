@@ -16,5 +16,14 @@ public class PageController {
 		logger.debug("jump page to {}", module + "/" + url + ".html");
 		return module + "/" + url;
 	}
-
+	
+	
+	@RequestMapping("/{url}.html")
+	public String toPage(@PathVariable String url) {
+		if ("swagger-ui".equals(url)) {
+			return null;
+		}
+		logger.debug("jump page to {}", "/" + url + ".html");
+		return "/" + url;
+	}
 }

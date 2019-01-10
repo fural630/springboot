@@ -14,7 +14,8 @@ var vm = new Vue({
 			birthDay : '',
 			sex : '',
 			email : '',
-			phone : ''
+			phone : '',
+			status : 1
 		},
 		sexList : constant.sexList,
 		statusList : constant.userStatusList,
@@ -22,17 +23,17 @@ var vm = new Vue({
 			account : [ {
 				required : true,
 				message : '账号不能为空',
-				trigger : 'blur'
+				trigger : 'change'
 			} ],
 			name : [ {
 				required : true,
 				message : '用户名不能为空',
-				trigger : 'blur'
+				trigger : 'change'
 			} ],
 			status : [ {
 				required : true,
 				message : '状态必须设置',
-				trigger : 'blur',
+				trigger : 'change',
 				type : 'number'
 			} ],
 		},
@@ -60,7 +61,8 @@ var vm = new Vue({
 				birthDay : '',
 				sex : '',
 				email : '',
-				phone : ''
+				phone : '',
+				status : 1
 			}
 		},
 		update : function() {
@@ -169,7 +171,7 @@ layui.use('table', function() {
 			sort : true
 		}, {
 			field : 'name',
-			width : 80,
+			width : 130,
 			title : '姓名'
 		}, {
 			field : 'account',
