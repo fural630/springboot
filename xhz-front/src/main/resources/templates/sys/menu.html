@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title></title>
+		<#include "/common/header.html">
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<div class="frame-card-header">
+				<el-form ref="queryForm" :model="q" label-width="80px">
+					<el-row>
+						<el-col :span="4">
+							<el-form-item prop="name" label="菜单名称">
+								<el-input v-model="q.name" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :span="4">
+							<el-form-item prop="url" label="菜单URL">
+								<el-input v-model="q.url" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						&nbsp;&nbsp;
+						<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+						<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+					</el-row>
+				</el-form>
+			</div>
+			<div class="layui-card-body">
+				<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+				<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+				<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+				<div>
+					<table class="layui-hide" id="treeTable" lay-filter="treeTable"></table>
+				</div>
+			</div>
+		</div>
+		<script src="${basePath}/js/module/menu.js?_${.now?long}"></script>
+	</body>
+</html>

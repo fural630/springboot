@@ -11,19 +11,17 @@ public class PageController {
 
 	private static final Logger logger = LoggerFactory.getLogger(PageController.class);
 
-	@RequestMapping("{module}/{url}.html")
+	@RequestMapping("/{module}/{url}.html")
 	public String toPage(@PathVariable String module, @PathVariable String url) {
-		logger.debug("jump page to {}", module + "/" + url + ".html");
+		logger.debug("jump page to {}", "/" + module + "/" + url + ".html");
 		return module + "/" + url;
 	}
 	
 	
 	@RequestMapping("/{url}.html")
 	public String toPage(@PathVariable String url) {
-		if ("swagger-ui".equals(url)) {
-			return null;
-		}
-		logger.debug("jump page to {}", "/" + url + ".html");
-		return "/" + url;
+		logger.debug("jump page to {}", url + ".html");
+		return url;
 	}
 }
+

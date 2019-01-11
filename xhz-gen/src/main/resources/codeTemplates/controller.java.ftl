@@ -63,7 +63,7 @@ import ${package.Entity}.${entity};
 		<#assign columnType = field.columnType?lower_case?cap_first />
 	</#if>
 </#list>
-@RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${classname}</#if>")
+@RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>")
 <#if kotlin>
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
 <#else>
@@ -83,8 +83,8 @@ public class ${table.controllerName} {
 	 * @param ${entityName}
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public R save(@RequestBody ${entityName} ${entityname}) {
+	@RequestMapping(value = "/${classname}", method = RequestMethod.POST)
+	public R insert(@RequestBody ${entityName} ${entityname}) {
 		ValidatorUtils.validateEntity(${entityname}, AddGroup.class);
 		${servicename}.insert(${entityname});
 		return R.ok();
@@ -95,9 +95,9 @@ public class ${table.controllerName} {
 	 * @param ${pkName}
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/${classname}/{id}", method = RequestMethod.DELETE)
 	public R delete(@PathVariable("id") ${columnType} ${pkName}) {
-		${servicename}.deleteById(id);
+		${servicename}.deleteById(${pkName});
 		return R.ok();
 	}
 	
@@ -117,7 +117,7 @@ public class ${table.controllerName} {
 	 * @param ${entityName}
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/${classname}", method = RequestMethod.PATCH)
 	public R update(@RequestBody ${entityName} ${entityname}) {
 		ValidatorUtils.validateEntity(${entityname}, UpdateGroup.class);
 		${servicename}.updateById(${entityname});
@@ -129,10 +129,20 @@ public class ${table.controllerName} {
 	 * @param ${pkName}
 	 * @return R.ok().put("${classname}", ${entityname})
 	 */
-	@RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/${classname}/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") ${columnType} ${pkName}) {
 		${entityName} ${entityname} = ${servicename}.selectById(${pkName});
 		return R.ok().put("${classname}", ${entityname});
+	}
+	
+	/**
+	 * 查询所有
+	 * @return R.ok()
+	 */
+	@RequestMapping(value = "/menu", method = RequestMethod.GET)
+	public R getAll() {
+		List<${entityName}> ${entityname}List = ${servicename}.selectList();
+		return R.ok().put("data", ${entityname}List);
 	}
 	
 	/**

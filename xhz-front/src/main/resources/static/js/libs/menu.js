@@ -33,5 +33,11 @@ var menu = {
 		"F_FullName" : "数据库文档",
 		"F_Icon" : "fa fa-database",
 		"F_UrlAddress" : "/develop/databaseDoc.html",
+	}, {
+		"F_ModuleId" : "7",
+		"F_ParentId" : "1",
+		"F_FullName" : "菜单管理",
+		"F_Icon" : "fa fa-bars",
+		"F_UrlAddress" : "/sys/menu.html",
 	} ]
 }

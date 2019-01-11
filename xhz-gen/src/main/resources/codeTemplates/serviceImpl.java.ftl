@@ -62,6 +62,10 @@ public class ${table.serviceImplName} {
 		return ${daoname}.selectById(${pkName});
 	}
 	
+	public List<${entityName}> selectList() {
+		return ${daoname}.selectList(null);
+	}
+	
 	public List<${entityName}> queryPage(Map<String, Object> query) {
 		return ${daoname}.queryPage(query);
 	}
