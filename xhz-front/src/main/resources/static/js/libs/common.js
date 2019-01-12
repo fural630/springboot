@@ -1,3 +1,7 @@
+layui.use(['layer'], function () {
+	
+});
+
 //iframe自适应
 $(window).on('resize', function() {
 	var $content = $('#mainApp');
@@ -18,8 +22,8 @@ $.ajaxSetup({
 //重写alert
 window.alert = function(msg, callback) {
 	// parent.layer.alert 弹出在iframe外的页面。
-	layer.alert(msg, function(index) {
-		layer.close(index);
+	layui.layer.alert(msg, function(index) {
+		layui.layer.close(index);
 		if (typeof (callback) === "function") {
 			callback("ok");
 		}
@@ -32,7 +36,7 @@ window.confirm = function(msg, callback) {
 	if (!callback) {
 		return true;
 	}
-	layer.confirm(msg, {
+	layui.layer.confirm(msg, {
 		skin : 'layui-layer-lan',
 		btn : [ '确定', '取消' ]
 	}, function() {// 确定事件
@@ -63,9 +67,9 @@ window.openWindow = function (options) {
    };
    globalParams = $.extend(globalParams, options);
    if (globalParams.top) {
-       return parent.layer.open(globalParams);
+       return parent.layui.layer.open(globalParams);
    } else {
-	   return layer.open(globalParams);
+	   return layui.layer.open(globalParams);
    }
 };
 
@@ -74,7 +78,7 @@ window.openWindow = function (options) {
  * @param data
  */
 function eyeImages(data) {
-    layer.photos({
+    layui.layer.photos({
         photos: {
             "title": "预览", //相册标题
             "start": 0, //初始显示的图片序号，默认0
@@ -184,12 +188,12 @@ Ajax = function () {
                    }
 
                    if (opt.resultMsg && result.msg) {
-                       layer.alert(result.msg, {icon: 5});
+                       layui.layer.alert(result.msg, {icon: 5});
                    }
                    return;
                }
                if (opt.resultMsg && data.msg) {
-                   layer.alert(data.msg, {icon: 6}, function () {
+                   layui.layer.alert(data.msg, {icon: 6}, function () {
                        if (typeof(opt.successCallback) != 'undefined') {
                            opt.successCallback(data);
                        }
@@ -205,7 +209,7 @@ Ajax = function () {
                //关闭遮罩
                dialogLoading(false);
 
-               layer.alert("此页面发生未知异常,请联系管理员", {icon: 5});
+               layui.layer.alert("此页面发生未知异常,请联系管理员", {icon: 5});
            }
        });
    }
@@ -221,12 +225,12 @@ Ajax = function () {
 
 function dialogLoading(flag) {
 	if (flag) {
-		layer.load(2, {
+		layui.layer.load(2, {
 			shade : [ 0.2, '#000' ],
 			time : 5000
 		});
 	} else {
-		layer.closeAll('loading');
+		layui.layer.closeAll('loading');
 	}
 }
 

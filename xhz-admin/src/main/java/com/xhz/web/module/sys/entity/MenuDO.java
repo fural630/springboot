@@ -3,6 +3,7 @@ package com.xhz.web.module.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 
 /**
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-11
+ * @since 2019-01-12
  */
 @TableName("sys_menu")
 public class MenuDO implements Serializable {
@@ -55,6 +56,12 @@ public class MenuDO implements Serializable {
      * 排序
      */
     private Integer orderNum;
+
+    /**
+     * 1删除，0未删除
+     */
+    @TableLogic
+    private Integer isDeleted;
 
     public Long getMenuId() {
         return menuId;
@@ -112,6 +119,13 @@ public class MenuDO implements Serializable {
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
     @Override
     public String toString() {
@@ -124,6 +138,7 @@ public class MenuDO implements Serializable {
         ", type=" + type +
         ", icon=" + icon +
         ", orderNum=" + orderNum +
+        ", isDeleted=" + isDeleted +
         "}";
     }
 }

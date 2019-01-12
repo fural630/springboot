@@ -110,9 +110,6 @@ public class MenuController {
 	public R getAll() {
 		List<MenuDTO> menuDTOList = menuService.selectAllMenu();
 		return R.ok().put("data", menuDTOList);
-		
-//		List<MenuDO> menuDOList = menuService.selectList();
-//		return R.ok().put("data", menuDOList);
 	}
 	
 	/**

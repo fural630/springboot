@@ -47,6 +47,11 @@ public class MenuDTO implements Serializable {
 	 * 排序
 	 */
 	private Integer orderNum;
+	
+	/**
+	 * 删除状态
+	 */
+	private Integer isDeleted;
 
 	public Long getMenuId() {
 		return menuId;
@@ -118,5 +123,13 @@ public class MenuDTO implements Serializable {
 
 	public void setOrderNum(Integer orderNum) {
 		this.orderNum = orderNum;
+	}
+
+	public Integer getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Integer isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

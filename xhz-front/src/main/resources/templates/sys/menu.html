@@ -32,8 +32,61 @@
 				<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
 				<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
 				<div>
-					<table class="layui-hide" id="treeTable" lay-filter="treeTable"></table>
+					<table class="layui-hide" id="menuTable" lay-filter="menuTable"></table>
 				</div>
+			</div>
+			<div id="menuDialog" style="display: none;padding:10px;">
+				<el-card class="box-card">
+					<el-form @submit.native.prevent ref="menuForm" :model="menu" label-width="70px">
+						<el-row>
+							<el-form-item prop="type" label="类型">
+								<el-radio-group v-model="menu.type">
+									<el-radio :label="0">目录</el-radio>
+									<el-radio :label="1">菜单</el-radio>
+									<el-radio :label="2">按钮</el-radio>
+								</el-radio-group>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="name" label="菜单名称">
+								<el-input v-model.trim="menu.name" clearable></el-input>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="parentName" label="上级菜单">
+								<el-input v-model.trim="menu.parentName"></el-input>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="url" label="菜单URL">
+								<el-input v-model.trim="menu.url"></el-input>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="perms" label="授权标识">
+								<el-input v-model.trim="menu.perms"></el-input>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="orderNum" label="排序号">
+								<el-input-number v-model="menu.orderNum" controls-position="right" :min="0" :max="20"></el-input-number>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="icon" label="图标">
+								<el-input v-model.trim="menu.icon"></el-input>
+							</el-form-item>
+						</el-row>
+						<el-row>
+							<el-form-item prop="isDeleted" label="状态">
+								<el-radio-group v-model="menu.isDeleted">
+									<el-radio :label="0">启用</el-radio>
+									<el-radio :label="1">禁用</el-radio>
+								</el-radio-group>
+							</el-form-item>
+						</el-row>
+					</el-form>
+				</el-card>
 			</div>
 		</div>
 		<script src="${basePath}/js/module/menu.js?_${.now?long}"></script>

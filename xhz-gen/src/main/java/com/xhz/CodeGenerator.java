@@ -66,6 +66,8 @@ public class CodeGenerator {
 		String exclude = rb.getString("exclude");
 		String tablePrefix = rb.getString("tablePrefix");
 		
+		String logicDeleteFieldName = rb.getString("logicDeleteFieldName");
+		
 		String dir = rb.getString("outputDirectory");
 
 		// 全局配置
@@ -182,7 +184,8 @@ public class CodeGenerator {
 			strategy.setExclude(exclude);
 		}
 		strategy.entityTableFieldAnnotationEnable(entityTableFieldAnnotationEnable);
-		strategy.setEntityBooleanColumnRemoveIsPrefix(true);
+		strategy.setEntityBooleanColumnRemoveIsPrefix(entityBooleanColumnRemoveIsPrefix);
+		strategy.setLogicDeleteFieldName(logicDeleteFieldName);
 		mpg.setStrategy(strategy);
 		mpg.setTemplateEngine(new FreemarkerTemplateEngine());
 		mpg.execute();

@@ -12,17 +12,18 @@
         <result column="type" property="type" />
         <result column="icon" property="icon" />
         <result column="order_num" property="orderNum" />
+        <result column="is_deleted" property="isDeleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        menu_id, parent_id, name, url, perms, type, icon, order_num
+        menu_id, parent_id, name, url, perms, type, icon, order_num, is_deleted
     </sql>
     
-    <select id="selectAllMenu" resultType="com.xhz.web.module.sys.entity.MenuDTO">
-    	select m2.name parent_name,m1.* from sys_menu m1
+     <select id="selectAllMenu" resultType="com.xhz.web.module.sys.entity.MenuDTO">
+		select m2.name parent_name,m1.* from sys_menu m1
 		left join sys_menu m2 on m1.parent_id = m2.menu_id
 		order by m1.order_num
-    </select>
+	</select>
 
 </mapper>
