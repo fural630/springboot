@@ -25,5 +25,11 @@
 		left join sys_menu m2 on m1.parent_id = m2.menu_id
 		order by m1.order_num
 	</select>
+	
+	<select id="selectById" resultType="com.xhz.web.module.sys.entity.MenuDTO">
+		select m2.name parent_name,m1.* from sys_menu m1
+		left join sys_menu m2 on m1.parent_id = m2.menu_id
+		where m1.menu_id = #{menuId}
+	</select>
 
 </mapper>

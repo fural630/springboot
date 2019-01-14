@@ -6,25 +6,89 @@ var vm = new Vue({
 			url: ''
 		},
 		title : '',
+		iconLoading : false,
+		iconShow : '',
 		menu : {
+			menuId : '',
+			type :'',
 			name : '',
 			parentName : '',
+			parentId : '',
+			url : '',
+			perms : '',
 			orderNum : 0,
 			icon : '',
-			isDeleted : '',
-			url : '',
-			perms : ''
+			isDeleted : ''
 		},
+		ruleValidate: {
+            name: [
+                {required: true, message: '菜单名称不能为空', trigger: 'blur'}
+            ],
+            url: [
+                {required: true, message: '菜单url不能为空', trigger: 'blur'}
+            ],
+            parentName: [
+                {required: true, message: '上级菜单不能为空', trigger: 'blur'}
+            ],
+            icon: [
+                {required: true, message: '请选择一个图标', trigger: 'blur'}
+            ]
+        }
 	},
 	methods: {
 		query : function() {
 
 		},
 		add : function () {
+			var selectedData = treeGrid.radioStatus("menuTable");
+			var type = 0;
+			var parentId = '';
+			var parentName = '一级目录';
+			if (selectedData.menuId != undefined) {
+				type = selectedData.type + 1;
+				parentId = selectedData.parentId;
+				parentName = selectedData.name;
+			}
+			if (type == 3) {
+				vm.$message.warning("按钮下不允许添加节点，请选择其他层级！");
+				return;
+			}
 			this.title = '添加菜单';
+			vm.menu = {
+				menuId : '',
+				type : type,
+				name : '',
+				parentName : parentName,
+				parentId : parentId,
+				url : '',
+				perms : '',
+				orderNum : 0,
+				icon : '',
+				isDeleted : 0
+			};
 			this.openDialog();
 		},
 		update : function () {
+			var selectedData = treeGrid.radioStatus("menuTable");
+			if (selectedData.menuId == undefined) {
+				vm.$message.warning("请选择要修改的数据！");
+				return;
+			}
+			this.title = '修改菜单';
+			var menuId = selectedData.menuId;
+			
+			Ajax.request({
+				url : "../sys/menu/" + menuId,
+				async : true,
+				type : 'GET',
+				successCallback : function(r) {
+					vm.menu = r.menu;
+					if (r.menu.parentName == null) {
+						vm.menu.parentName = "一级菜单";
+					}
+					vm.openDialog();
+				}
+			});
 			
 		},
 		del : function () {
@@ -35,6 +99,23 @@ var vm = new Vue({
 			    ,btn: ['保存','取消']
 			});
 		},
+		saveOrUpdate : function (layerIndex) {
+			var url = '../sys/menu';
+			var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
+			Ajax.request({
+				url : url,
+				params : JSON.stringify(vm.menu),
+				contentType : "application/json",
+				type : type,
+				successCallback : function() {
+					layer.close(layerIndex);
+					alert('操作成功', function(index) {
+//						vm.reload();
+					});
+				}
+			});
+			
+		},
 		openDialog : function () {
 			openWindow({
 				title: this.title,
@@ -42,15 +123,29 @@ var vm = new Vue({
 				content: jQuery("#menuDialog"),
 				btn: ['保存','取消'],
 				yes: function(index) {
-					layer.close(index);
+					vm.handleSubmit('menuForm', index);
 				},
-				success: function(layero, index) {
-					// vm.resetConfig();
+				end : function () {
+					vm.handleReset('menuForm');
 				}
+			});
+		},
+		handleSubmit : function(name, layerIndex) {
+			handleSubmitValidate(vm, name, function() {
+				vm.saveOrUpdate(layerIndex);
 			});
 		},
 		handleReset: function(name) {
 			handleResetForm(vm, name);
+		}
+	},
+	watch : {
+		'menu.icon' : function () {
+			vm.iconLoading = true;
+			window.setTimeout(function () {
+				vm.iconLoading = false;
+				vm.iconShow = vm.menu.icon;
+            }, 500);
 		}
 	}
 });

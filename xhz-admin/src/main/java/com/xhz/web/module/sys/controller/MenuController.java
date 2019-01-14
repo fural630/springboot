@@ -11,19 +11,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xhz.util.Query;
 import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
-import com.xhz.web.module.sys.service.MenuService;
 import com.xhz.web.module.sys.entity.MenuDO;
 import com.xhz.web.module.sys.entity.MenuDTO;
+import com.xhz.web.module.sys.service.MenuService;
 
 
 
@@ -98,8 +97,8 @@ public class MenuController {
 	 */
 	@RequestMapping(value = "/menu/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") Long menuId) {
-		MenuDO menuDO = menuService.selectById(menuId);
-		return R.ok().put("menu", menuDO);
+		MenuDTO menuDTO = menuService.selectById(menuId);
+		return R.ok().put("menu", menuDTO);
 	}
 	
 	/**

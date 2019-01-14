@@ -40,7 +40,7 @@ public class MenuService {
 		menuDao.updateById(menuDO);
 	}
 
-	public MenuDO selectById(Long menuId) {
+	public MenuDTO selectById(Long menuId) {
 		return menuDao.selectById(menuId);
 	}
 	
