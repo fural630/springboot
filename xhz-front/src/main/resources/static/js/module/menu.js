@@ -78,12 +78,12 @@ var vm = new Vue({
 			var menuId = selectedData.menuId;
 			
 			Ajax.request({
-				url : "../sys/menu/" + menuId,
+				url : "../sys/menus/" + menuId,
 				async : true,
 				type : 'GET',
 				successCallback : function(r) {
-					vm.menu = r.menu;
-					if (r.menu.parentName == null) {
+					vm.menu = r.data;
+					if (vm.menu.parentName == null) {
 						vm.menu.parentName = "一级菜单";
 					}
 					vm.openDialog();
@@ -100,7 +100,7 @@ var vm = new Vue({
 			});
 		},
 		saveOrUpdate : function (layerIndex) {
-			var url = '../sys/menu';
+			var url = '../sys/menus';
 			var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
 			Ajax.request({
 				url : url,
@@ -164,7 +164,7 @@ layui.config({
 		id: "menuTable",
 		elem: '#menuTable',
 		idField: 'menuId',
-		url: '../sys/menu',
+		url: '../sys/menus',
 		method: 'GET',
 		cellMinWidth: 100,
 		loading: false,
@@ -194,7 +194,14 @@ layui.config({
 			}, {
 				field: 'parentName',
 				width: 100,
-				title: '上级菜单'
+				title: '上级菜单',
+				templet : function(d) {
+					if(d.parentName == null) {
+						return "一级菜单";
+					} else {
+						return d.parentName;
+					}
+				}
 			}, {
 				field: 'type',
 				width: 80,

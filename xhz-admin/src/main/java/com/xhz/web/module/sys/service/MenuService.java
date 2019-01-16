@@ -3,9 +3,11 @@ package com.xhz.web.module.sys.service;
 import java.util.List;
 import java.util.Map;
 
+
 import com.xhz.web.module.sys.entity.MenuDO;
 import com.xhz.web.module.sys.entity.MenuDTO;
 import com.xhz.web.module.sys.dao.MenuDao;
+import com.xhz.util.CopyUtil;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,35 @@ import org.springframework.beans.factory.annotation.Autowired;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-11
+ * @since 2019-01-16
  */
 @Service
 public class MenuService {
 
 	@Autowired
 	private MenuDao menuDao;
+	
+	public void insertMenuDTO(MenuDTO menuDTO) {
+		MenuDO menuDO = CopyUtil.copyProperties(menuDTO, MenuDO.class);
+		menuDao.insert(menuDO);
+	}
+	
+	public void updateMenuDTOById(MenuDTO menuDTO) {
+		MenuDO menuDO = CopyUtil.copyProperties(menuDTO, MenuDO.class);
+		menuDao.updateById(menuDO);
+	}
+	
+	public MenuDTO selectMenuDTOById(Long menuId) {
+		return menuDao.selectMenuDTOById(menuId);
+	}
+	
+	public List<MenuDTO> selectMenuDTOList() {
+		return menuDao.selectMenuDTOList();
+	}
+	
+	public List<MenuDTO> selectMenuDTOPage(Map<String, Object> query) {
+		return menuDao.selectMenuDTOPage(query);
+	}
 	
 	public void insert(MenuDO menuDO) {
 		menuDao.insert(menuDO);
@@ -40,19 +64,11 @@ public class MenuService {
 		menuDao.updateById(menuDO);
 	}
 
-	public MenuDTO selectById(Long menuId) {
+	public MenuDO selectById(Long menuId) {
 		return menuDao.selectById(menuId);
 	}
 	
 	public List<MenuDO> selectList() {
 		return menuDao.selectList(null);
-	}
-	
-	public List<MenuDO> queryPage(Map<String, Object> query) {
-		return menuDao.queryPage(query);
-	}
-	
-	public List<MenuDTO> selectAllMenu() {
-		return menuDao.selectAllMenu();
 	}
 }

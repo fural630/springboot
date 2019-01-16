@@ -132,7 +132,7 @@ public class CodeGenerator {
 			}
 		};
 		List<FileOutConfig> focList = new ArrayList<>();
-		focList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
+		focList.add(new FileOutConfig("/codeTemplates/mapper.xml.ftl") {
 			@Override
 			public String outputFile(TableInfo tableInfo) {
 				// 自定义输入文件名称
@@ -158,9 +158,37 @@ public class CodeGenerator {
 				return path;
 			}
 		});
+		focList.add(new FileOutConfig("/codeTemplates/mapper.java.ftl") {
+			@Override
+			public String outputFile(TableInfo tableInfo) {
+				String parentPath = pc.getParent().replace(".", "/");
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getMapper().replace(".", "/") + "/"
+						+ tableInfo.getMapperName() + StringPool.DOT_JAVA;
+				return path;
+			}
+		});
+		focList.add(new FileOutConfig("/codeTemplates/entity.java.ftl") {
+			@Override
+			public String outputFile(TableInfo tableInfo) {
+				String parentPath = pc.getParent().replace(".", "/");
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getEntity().replace(".", "/") + "/"
+						+ tableInfo.getEntityName() + StringPool.DOT_JAVA;
+				return path;
+			}
+		});
+		focList.add(new FileOutConfig("/codeTemplates/entityDTO.java.ftl") {
+			@Override
+			public String outputFile(TableInfo tableInfo) {
+				String parentPath = pc.getParent().replace(".", "/");
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getEntity().replace(".", "/") + "/"
+						+ tableInfo.getEntityName().replace("DO", "DTO") + StringPool.DOT_JAVA;
+				return path;
+			}
+		});
 		cfg.setFileOutConfigList(focList);
 		mpg.setCfg(cfg);
-		mpg.setTemplate(new TemplateConfig().setXml(null).setController(null).setService(null).setServiceImpl(null));
+		mpg.setTemplate(new TemplateConfig().setXml(null).setController(null)
+				.setService(null).setServiceImpl(null).setMapper(null).setEntity(null));
 
 		// 策略配置
 		StrategyConfig strategy = new StrategyConfig();

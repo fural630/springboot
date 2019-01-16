@@ -16,12 +16,5 @@ public class PageController {
 		logger.debug("jump page to {}", "/" + module + "/" + url + ".html");
 		return module + "/" + url;
 	}
-	
-	
-	@RequestMapping("/{url}.html")
-	public String toPage(@PathVariable String url) {
-		logger.debug("jump page to {}", url + ".html");
-		return url;
-	}
 }
 

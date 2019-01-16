@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-12
+ * @since 2019-01-16
  */
 @TableName("sys_menu")
 public class MenuDO implements Serializable {

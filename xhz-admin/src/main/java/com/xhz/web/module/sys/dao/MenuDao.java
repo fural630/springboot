@@ -1,27 +1,27 @@
 package com.xhz.web.module.sys.dao;
 
-import com.xhz.web.module.sys.entity.MenuDO;
-import com.xhz.web.module.sys.entity.MenuDTO;
 
 import java.util.List;
 import java.util.Map;
 
+import com.xhz.web.module.sys.entity.MenuDO;
+import com.xhz.web.module.sys.entity.MenuDTO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 
 /**
  * <p>
- * 菜单管理 Mapper 接口
+ * 菜单管理 Dao 接口
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-11
+ * @since 2019-01-16
  */
 public interface MenuDao extends BaseMapper<MenuDO> {
-
-	List<MenuDO> queryPage(Map<String, Object> query);
-
-	List<MenuDTO> selectAllMenu();
 	
-	MenuDTO selectById(Long menuId);
-
+	List<MenuDTO> selectMenuDTOPage(Map<String, Object> query);
+	
+	MenuDTO selectMenuDTOById(Long menuId);
+	
+	List<MenuDTO> selectMenuDTOList();
 }
