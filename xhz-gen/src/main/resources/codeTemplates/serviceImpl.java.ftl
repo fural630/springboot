@@ -3,20 +3,10 @@ package ${package.ServiceImpl};
 import java.util.List;
 import java.util.Map;
 
-import ${package.Entity}.${entity};
-import ${package.Mapper}.${table.mapperName};
-
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-
-/**
- * <p>
- * ${table.comment!} 服务实现类
- * </p>
- *
- * @author ${author}
- * @since ${date}
- */
+<#assign className = table.serviceImplName?replace("Service", "") />
+<#assign classname = className?lower_case/>
+<#assign entityDTO = "${className}DTO"/>
+<#assign entitydto = "${classname}DTO"/>
 <#assign daoName = table.mapperName />
 <#assign daoname = table.mapperName?uncap_first />
 <#assign entityName = table.entityName />
@@ -31,6 +21,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 		<#assign columnType = field.columnType?lower_case?cap_first />
 	</#if>
 </#list>
+
+import ${package.Entity}.${entity};
+import ${package.Entity}.${entityDTO};
+import ${package.Mapper}.${table.mapperName};
+import com.xhz.util.CopyUtil;
+
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/**
+ * <p>
+ * ${table.comment!} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
 @Service
 <#if kotlin>
 open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
@@ -41,6 +48,28 @@ public class ${table.serviceImplName} {
 
 	@Autowired
 	private ${daoName} ${daoname};
+	
+	public void insert${entityDTO}(${entityDTO} ${entitydto}) {
+		${entityName} ${entityname} = CopyUtil.copyProperties(${entitydto}, ${entityName}.class);
+		${daoname}.insert(${entityname});
+	}
+	
+	public void update${entityDTO}ById(${entityDTO} ${entitydto}) {
+		${entityName} ${entityname} = CopyUtil.copyProperties(${entitydto}, ${entityName}.class);
+		${daoname}.updateById(${entityname});
+	}
+	
+	public ${entityDTO} select${entityDTO}ById(${columnType} ${pkName}) {
+		return ${daoname}.select${entityDTO}ById(${pkName});
+	}
+	
+	public List<${entityDTO}> select${entityDTO}List() {
+		return ${daoname}.select${entityDTO}List();
+	}
+	
+	public List<${entityDTO}> select${entityDTO}Page(Map<String, Object> query) {
+		return ${daoname}.select${entityDTO}Page(query);
+	}
 	
 	public void insert(${entityName} ${entityname}) {
 		${daoname}.insert(${entityname});
@@ -64,10 +93,6 @@ public class ${table.serviceImplName} {
 	
 	public List<${entityName}> selectList() {
 		return ${daoname}.selectList(null);
-	}
-	
-	public List<${entityName}> queryPage(Map<String, Object> query) {
-		return ${daoname}.queryPage(query);
 	}
 }
 </#if>

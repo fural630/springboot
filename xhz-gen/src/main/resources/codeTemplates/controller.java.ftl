@@ -12,6 +12,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+<#assign className = table.controllerName?replace("Controller", "") />
+<#assign classname = className?lower_case/>
+<#assign requestPath = "${classname}s"/>
+<#assign entityDTO = "${className}DTO"/>
+<#assign entitydto = "${classname}DTO"/>
+<#assign serviceName = table.serviceImplName />
+<#assign servicename = table.serviceImplName?uncap_first />
+<#assign entityName = table.entityName />
+<#assign entityname = table.entityName?uncap_first />
+<#assign pkName = ''/>
+<#assign comment = ''/>
+<#assign columnType = ''/>
+<#list table.fields as field>
+	<#if field.keyIdentityFlag>
+		<#assign pkName = field.propertyName/>
+		<#assign comment = field.comment/>
+		<#assign columnType = field.columnType?lower_case?cap_first />
+	</#if>
+</#list>
+
+
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -29,7 +50,7 @@ import com.github.pagehelper.PageInfo;
 import ${superControllerClassPackage};
 </#if>
 import ${package.ServiceImpl}.${table.serviceImplName};
-import ${package.Entity}.${entity};
+import ${package.Entity}.${entityDTO};
 
 
 
@@ -47,22 +68,6 @@ import ${package.Entity}.${entity};
 <#else>
 @Controller
 </#if>
-<#assign className = table.controllerName?replace("Controller", "") />
-<#assign classname = className?lower_case>
-<#assign serviceName = table.serviceImplName />
-<#assign servicename = table.serviceImplName?uncap_first />
-<#assign entityName = table.entityName />
-<#assign entityname = table.entityName?uncap_first />
-<#assign pkName = ''/>
-<#assign comment = ''/>
-<#assign columnType = ''/>
-<#list table.fields as field>
-	<#if field.keyIdentityFlag>
-		<#assign pkName = field.propertyName/>
-		<#assign comment = field.comment/>
-		<#assign columnType = field.columnType?lower_case?cap_first />
-	</#if>
-</#list>
 @RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>")
 <#if kotlin>
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
@@ -80,13 +85,13 @@ public class ${table.controllerName} {
 	
 	/**
 	 * 新增
-	 * @param ${entityName}
+	 * @param ${entityDTO}
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/${classname}", method = RequestMethod.POST)
-	public R insert(@RequestBody ${entityName} ${entityname}) {
-		ValidatorUtils.validateEntity(${entityname}, AddGroup.class);
-		${servicename}.insert(${entityname});
+	@RequestMapping(value = "/${requestPath}", method = RequestMethod.POST)
+	public R insert(@RequestBody ${entityDTO} ${entitydto}) {
+		ValidatorUtils.validateEntity(${entitydto}, AddGroup.class);
+		${servicename}.insert${entityDTO}(${entitydto});
 		return R.ok();
 	}
 	
@@ -95,7 +100,7 @@ public class ${table.controllerName} {
 	 * @param ${pkName}
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/${classname}/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/${requestPath}/{id}", method = RequestMethod.DELETE)
 	public R delete(@PathVariable("id") ${columnType} ${pkName}) {
 		${servicename}.deleteById(${pkName});
 		return R.ok();
@@ -106,7 +111,7 @@ public class ${table.controllerName} {
 	 * @param ${pkName}s
 	 * @return
 	 */
-	@RequestMapping(value = "/deleteBatchByIds", method = RequestMethod.POST)
+	@RequestMapping(value = "/${requestPath}/deleteBatch", method = RequestMethod.POST)
 	public R deleteBatchByIds(@RequestBody List<${columnType}> ${pkName}s) {
 		${servicename}.deleteBatchIds(${pkName}s);
 		return R.ok();
@@ -114,48 +119,48 @@ public class ${table.controllerName} {
 	
 	/**
 	 * 修改
-	 * @param ${entityName}
+	 * @param ${entityDTO}
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/${classname}", method = RequestMethod.PATCH)
-	public R update(@RequestBody ${entityName} ${entityname}) {
-		ValidatorUtils.validateEntity(${entityname}, UpdateGroup.class);
-		${servicename}.updateById(${entityname});
+	@RequestMapping(value = "/${requestPath}", method = RequestMethod.PATCH)
+	public R update(@RequestBody ${entityDTO} ${entitydto}) {
+		ValidatorUtils.validateEntity(${entitydto}, UpdateGroup.class);
+		${servicename}.update${entityDTO}ById(${entitydto});
 		return R.ok();
 	}
 	
 	/**
 	 * 查询
 	 * @param ${pkName}
-	 * @return R.ok().put("${classname}", ${entityname})
+	 * @return R.ok().put("data", ${entitydto})
 	 */
-	@RequestMapping(value = "/${classname}/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/${requestPath}/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") ${columnType} ${pkName}) {
-		${entityName} ${entityname} = ${servicename}.selectById(${pkName});
-		return R.ok().put("${classname}", ${entityname});
+		${entityDTO} ${entitydto} = ${servicename}.select${entityDTO}ById(${pkName});
+		return R.ok().put("data", ${entitydto});
 	}
 	
 	/**
 	 * 查询所有
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/menu", method = RequestMethod.GET)
+	@RequestMapping(value = "/${requestPath}", method = RequestMethod.GET)
 	public R getAll() {
-		List<${entityName}> ${entityname}List = ${servicename}.selectList();
-		return R.ok().put("data", ${entityname}List);
+		List<${entityDTO}> ${entitydto}List = ${servicename}.select${entityDTO}List();
+		return R.ok().put("data", ${entitydto}List);
 	}
 	
 	/**
 	 * 分页查询
 	 * @param params
-	 * @return R.ok().put("page", pageInfo);
+	 * @return R.ok().put("data", pageInfo);
 	 */
-	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	@RequestMapping(value = "/${requestPath}/page", method = RequestMethod.GET)
 	public R page(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);
 		PageHelper.startPage(query.getPage(), query.getLimit());
-		PageInfo<${entityName}> pageInfo = new PageInfo<${entityName}>(${servicename}.queryPage(query));
-		return R.ok().put("page", pageInfo);
+		PageInfo<${entityDTO}> pageInfo = new PageInfo<${entityDTO}>(${servicename}.select${entityDTO}Page(query));
+		return R.ok().put("data", pageInfo);
 	}
 
 }
