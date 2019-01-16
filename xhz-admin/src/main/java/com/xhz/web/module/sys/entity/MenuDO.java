@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
@@ -15,51 +17,42 @@ import java.io.Serializable;
  * @since 2019-01-16
  */
 @TableName("sys_menu")
+@ApiModel(value="MenuDO对象", description="菜单管理")
 public class MenuDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "菜单ID")
     @TableId(value = "menu_id", type = IdType.AUTO)
     private Long menuId;
 
-    /**
-     * 父菜单ID，一级菜单为0
-     */
+    @ApiModelProperty(value = "父菜单ID，一级菜单为0")
     private Long parentId;
-
+    
     /**
-     * 菜单名称
+     * 父级名称
      */
+    private String parentName;
+
+    @ApiModelProperty(value = "菜单名称")
     private String name;
 
-    /**
-     * 菜单URL
-     */
+    @ApiModelProperty(value = "菜单URL")
     private String url;
 
-    /**
-     * 授权(多个用逗号分隔，如：user:list,user:create)
-     */
+    @ApiModelProperty(value = "授权(多个用逗号分隔，如：user:list,user:create)")
     private String perms;
 
-    /**
-     * 类型   0：目录   1：菜单   2：按钮
-     */
+    @ApiModelProperty(value = "类型   0：目录   1：菜单   2：按钮")
     private Integer type;
 
-    /**
-     * 菜单图标
-     */
+    @ApiModelProperty(value = "菜单图标")
     private String icon;
 
-    /**
-     * 排序
-     */
+    @ApiModelProperty(value = "排序")
     private Integer orderNum;
 
-    /**
-     * 1删除，0未删除
-     */
+    @ApiModelProperty(value = "1删除，0未删除")
     @TableLogic
     private Integer isDeleted;
 
@@ -141,4 +134,12 @@ public class MenuDO implements Serializable {
         ", isDeleted=" + isDeleted +
         "}";
     }
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
 }

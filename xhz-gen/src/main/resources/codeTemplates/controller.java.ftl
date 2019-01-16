@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+<#if swagger2>
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+</#if>
+
 <#assign className = table.controllerName?replace("Controller", "") />
 <#assign classname = className?lower_case/>
 <#assign requestPath = "${classname}s"/>
@@ -69,6 +74,9 @@ import ${package.Entity}.${entityDTO};
 @Controller
 </#if>
 @RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>")
+<#if swagger2>
+@Api(tags = {"${table.comment!}"})
+</#if>
 <#if kotlin>
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
 <#else>
@@ -88,6 +96,9 @@ public class ${table.controllerName} {
 	 * @param ${entityDTO}
 	 * @return R.ok()
 	 */
+ 	<#if swagger2>
+	@ApiOperation(value="新增")
+	</#if>
 	@RequestMapping(value = "/${requestPath}", method = RequestMethod.POST)
 	public R insert(@RequestBody ${entityDTO} ${entitydto}) {
 		ValidatorUtils.validateEntity(${entitydto}, AddGroup.class);
@@ -100,6 +111,9 @@ public class ${table.controllerName} {
 	 * @param ${pkName}
 	 * @return R.ok()
 	 */
+	<#if swagger2>
+	@ApiOperation(value="删除")
+	</#if>
 	@RequestMapping(value = "/${requestPath}/{id}", method = RequestMethod.DELETE)
 	public R delete(@PathVariable("id") ${columnType} ${pkName}) {
 		${servicename}.deleteById(${pkName});
@@ -111,6 +125,9 @@ public class ${table.controllerName} {
 	 * @param ${pkName}s
 	 * @return
 	 */
+	<#if swagger2>
+	@ApiOperation(value="批量删除")
+	</#if>
 	@RequestMapping(value = "/${requestPath}/deleteBatch", method = RequestMethod.POST)
 	public R deleteBatchByIds(@RequestBody List<${columnType}> ${pkName}s) {
 		${servicename}.deleteBatchIds(${pkName}s);
@@ -122,6 +139,9 @@ public class ${table.controllerName} {
 	 * @param ${entityDTO}
 	 * @return R.ok()
 	 */
+	<#if swagger2>
+	@ApiOperation(value="修改")
+	</#if>
 	@RequestMapping(value = "/${requestPath}", method = RequestMethod.PATCH)
 	public R update(@RequestBody ${entityDTO} ${entitydto}) {
 		ValidatorUtils.validateEntity(${entitydto}, UpdateGroup.class);
@@ -134,6 +154,9 @@ public class ${table.controllerName} {
 	 * @param ${pkName}
 	 * @return R.ok().put("data", ${entitydto})
 	 */
+	<#if swagger2>
+	@ApiOperation(value="查询")
+	</#if>
 	@RequestMapping(value = "/${requestPath}/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") ${columnType} ${pkName}) {
 		${entityDTO} ${entitydto} = ${servicename}.select${entityDTO}ById(${pkName});
@@ -144,6 +167,9 @@ public class ${table.controllerName} {
 	 * 查询所有
 	 * @return R.ok()
 	 */
+	<#if swagger2>
+	@ApiOperation(value="查询所有")
+	</#if>
 	@RequestMapping(value = "/${requestPath}", method = RequestMethod.GET)
 	public R getAll() {
 		List<${entityDTO}> ${entitydto}List = ${servicename}.select${entityDTO}List();
@@ -155,6 +181,9 @@ public class ${table.controllerName} {
 	 * @param params
 	 * @return R.ok().put("data", pageInfo);
 	 */
+	<#if swagger2>
+	@ApiOperation(value="分页查询")
+	</#if>
 	@RequestMapping(value = "/${requestPath}/page", method = RequestMethod.GET)
 	public R page(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);

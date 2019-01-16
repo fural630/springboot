@@ -40,6 +40,14 @@
     <select id="selectMenuDTOList" resultType="com.xhz.web.module.sys.entity.MenuDTO">
 		select m2.name parent_name,m1.* from sys_menu m1
 		left join sys_menu m2 on m1.parent_id = m2.menu_id
+		<where>
+			<if test="name != null and !name.equals('')">
+				m1.name like concat('%',#{name},'%')
+			</if>
+			<if test="url != null and !url.equals('')">
+				m1.url like concat('%',#{url},'%')
+			</if>
+		</where>
 		order by m1.order_num
 	</select>
 	

@@ -136,7 +136,7 @@
                 }
             });
             if (flag) {
-                var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
+                var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-remove"></i></a>';
                 $('.menuTab').removeClass('active');
                 var str1 = '<iframe class="LRADMS_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
                 $('.mainContent').find('iframe.LRADMS_iframe').hide();

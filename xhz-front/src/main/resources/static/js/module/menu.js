@@ -37,7 +37,12 @@ var vm = new Vue({
 	},
 	methods: {
 		query : function() {
-
+			treeGrid.reload('menuTable',{
+				where : {
+					name : vm.q.name,
+					url : vm.q.url
+				}
+	        });
 		},
 		add : function () {
 			var selectedData = treeGrid.radioStatus("menuTable");
@@ -110,7 +115,7 @@ var vm = new Vue({
 				successCallback : function() {
 					layer.close(layerIndex);
 					alert('操作成功', function(index) {
-//						vm.reload();
+						vm.reload();
 					});
 				}
 			});
@@ -137,6 +142,9 @@ var vm = new Vue({
 		},
 		handleReset: function(name) {
 			handleResetForm(vm, name);
+		},
+		reload : function () {
+			vm.query();
 		}
 	},
 	watch : {

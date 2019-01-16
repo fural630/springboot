@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 
 
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +42,7 @@ import com.xhz.web.module.sys.entity.MenuDTO;
  
 @RestController
 @RequestMapping("/sys")
+@Api(tags = {"菜单管理"})
 public class MenuController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MenuController.class);
@@ -51,6 +55,7 @@ public class MenuController {
 	 * @param MenuDTO
 	 * @return R.ok()
 	 */
+	@ApiOperation(value="新增")
 	@RequestMapping(value = "/menus", method = RequestMethod.POST)
 	public R insert(@RequestBody MenuDTO menuDTO) {
 		ValidatorUtils.validateEntity(menuDTO, AddGroup.class);
@@ -63,6 +68,7 @@ public class MenuController {
 	 * @param menuId
 	 * @return R.ok()
 	 */
+	@ApiOperation(value="删除")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.DELETE)
 	public R delete(@PathVariable("id") Long menuId) {
 		menuService.deleteById(menuId);
@@ -74,6 +80,7 @@ public class MenuController {
 	 * @param menuIds
 	 * @return
 	 */
+	@ApiOperation(value="批量删除")
 	@RequestMapping(value = "/menus/deleteBatch", method = RequestMethod.POST)
 	public R deleteBatchByIds(@RequestBody List<Long> menuIds) {
 		menuService.deleteBatchIds(menuIds);
@@ -85,6 +92,7 @@ public class MenuController {
 	 * @param MenuDTO
 	 * @return R.ok()
 	 */
+	@ApiOperation(value="修改")
 	@RequestMapping(value = "/menus", method = RequestMethod.PATCH)
 	public R update(@RequestBody MenuDTO menuDTO) {
 		ValidatorUtils.validateEntity(menuDTO, UpdateGroup.class);
@@ -97,6 +105,7 @@ public class MenuController {
 	 * @param menuId
 	 * @return R.ok().put("data", menuDTO)
 	 */
+	@ApiOperation(value="查询")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") Long menuId) {
 		MenuDTO menuDTO = menuService.selectMenuDTOById(menuId);
@@ -107,9 +116,10 @@ public class MenuController {
 	 * 查询所有
 	 * @return R.ok()
 	 */
+	@ApiOperation(value="查询所有")
 	@RequestMapping(value = "/menus", method = RequestMethod.GET)
-	public R getAll() {
-		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList();
+	public R getAll(@RequestParam(required = false) Map<String, Object> params) {
+		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList(params);
 		return R.ok().put("data", menuDTOList);
 	}
 	
@@ -118,6 +128,7 @@ public class MenuController {
 	 * @param params
 	 * @return R.ok().put("data", pageInfo);
 	 */
+	@ApiOperation(value="分页查询")
 	@RequestMapping(value = "/menus/page", method = RequestMethod.GET)
 	public R page(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);

@@ -69,6 +69,8 @@ public class CodeGenerator {
 		String logicDeleteFieldName = rb.getString("logicDeleteFieldName");
 		
 		String dir = rb.getString("outputDirectory");
+		
+		boolean swagger2 = Boolean.parseBoolean(rb.getString("swagger2"));
 
 		// 全局配置
 		GlobalConfig gc = new GlobalConfig();
@@ -81,6 +83,7 @@ public class CodeGenerator {
 		gc.setDateType(DateType.ONLY_DATE);
 		gc.setBaseColumnList(baseColumnList);
 		gc.setBaseResultMap(baseResultMap);
+		gc.setSwagger2(swagger2);
 		if (StringUtils.isNoneBlank(entityName)) {
 			gc.setEntityName(entityName);
 		}
