@@ -56,5 +56,10 @@
 		left join sys_menu m2 on m1.parent_id = m2.menu_id
 		where m1.menu_id = #{menuId}
 	</select>
+	
+	<select id="selectByParentId" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from sys_menu where parent_id = #{parentId}
+	</select>
 
 </mapper>

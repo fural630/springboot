@@ -31,7 +31,7 @@ window.alert = function(msg, callback) {
 };
 
 // 重写confirm式样框
-window.confirm = function(msg, callback) {
+window.confirm = function(msg, callback, callback2) {
 	// 如果没有定义回调函数，直接返回true
 	if (!callback) {
 		return true;
@@ -42,6 +42,10 @@ window.confirm = function(msg, callback) {
 	}, function() {// 确定事件
 		if (typeof (callback) === "function") {
 			callback("ok");
+		}
+	}, function () {
+		if (typeof (callback2) === "function") {
+			callback2("ok");
 		}
 	});
 };

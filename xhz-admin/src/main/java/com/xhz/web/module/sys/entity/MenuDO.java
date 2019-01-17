@@ -1,10 +1,11 @@
 package com.xhz.web.module.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,11 +29,6 @@ public class MenuDO implements Serializable {
 
     @ApiModelProperty(value = "父菜单ID，一级菜单为0")
     private Long parentId;
-    
-    /**
-     * 父级名称
-     */
-    private String parentName;
 
     @ApiModelProperty(value = "菜单名称")
     private String name;
@@ -53,7 +49,6 @@ public class MenuDO implements Serializable {
     private Integer orderNum;
 
     @ApiModelProperty(value = "1删除，0未删除")
-    @TableLogic
     private Integer isDeleted;
 
     public Long getMenuId() {
@@ -134,12 +129,4 @@ public class MenuDO implements Serializable {
         ", isDeleted=" + isDeleted +
         "}";
     }
-
-	public String getParentName() {
-		return parentName;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
 }

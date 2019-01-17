@@ -11,23 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-
-
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xhz.util.Query;
 import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
-import com.xhz.web.module.sys.service.MenuService;
 import com.xhz.web.module.sys.entity.MenuDTO;
+import com.xhz.web.module.sys.service.MenuService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 
@@ -71,7 +68,7 @@ public class MenuController {
 	@ApiOperation(value="删除")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.DELETE)
 	public R delete(@PathVariable("id") Long menuId) {
-		menuService.deleteById(menuId);
+		menuService.deleteMenuById(menuId);
 		return R.ok();
 	}
 	
@@ -135,6 +132,30 @@ public class MenuController {
 		PageHelper.startPage(query.getPage(), query.getLimit());
 		PageInfo<MenuDTO> pageInfo = new PageInfo<MenuDTO>(menuService.selectMenuDTOPage(query));
 		return R.ok().put("data", pageInfo);
+	}
+	
+	/**
+	 * 禁用菜单
+	 * @param menuId
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="禁用菜单", notes = "禁用菜单，子菜单都将被禁用")
+	@RequestMapping(value = "/menus/disable/{id}", method = RequestMethod.GET)
+	public R disable(@PathVariable("id") Long menuId) {
+		menuService.disableMenuById(menuId);
+		return R.ok();
+	}
+	
+	/**
+	 * 禁用菜单
+	 * @param menuId
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="启用菜单", notes = "启用菜单,子菜单都将被启用")
+	@RequestMapping(value = "/menus/enable/{id}", method = RequestMethod.GET)
+	public R enable(@PathVariable("id") Long menuId) {
+		menuService.enableMenuById(menuId);
+		return R.ok();
 	}
 
 }

@@ -5,53 +5,61 @@ var vm = new Vue({
 			name: '',
 			url: ''
 		},
-		title : '',
-		iconLoading : false,
-		iconShow : '',
-		menu : {
-			menuId : '',
-			type :'',
-			name : '',
-			parentName : '',
-			parentId : '',
-			url : '',
-			perms : '',
-			orderNum : 0,
-			icon : '',
-			isDeleted : ''
+		title: '',
+		iconLoading: false,
+		iconShow: '',
+		menu: {
+			menuId: '',
+			type: '',
+			name: '',
+			parentName: '',
+			parentId: '',
+			url: '',
+			perms: '',
+			orderNum: 0,
+			icon: '',
+			isDeleted: 0
 		},
 		ruleValidate: {
-            name: [
-                {required: true, message: '菜单名称不能为空', trigger: 'blur'}
-            ],
-            url: [
-                {required: true, message: '菜单url不能为空', trigger: 'blur'}
-            ],
-            parentName: [
-                {required: true, message: '上级菜单不能为空', trigger: 'blur'}
-            ],
-            icon: [
-                {required: true, message: '请选择一个图标', trigger: 'blur'}
-            ]
-        }
+			name: [{
+				required: true,
+				message: '菜单名称不能为空',
+				trigger: 'blur'
+			}],
+			url: [{
+				required: true,
+				message: '菜单url不能为空',
+				trigger: 'blur'
+			}],
+			parentName: [{
+				required: true,
+				message: '上级菜单不能为空',
+				trigger: 'blur'
+			}],
+			icon: [{
+				required: true,
+				message: '请选择一个图标',
+				trigger: 'blur'
+			}]
+		}
 	},
 	methods: {
-		query : function() {
-			treeGrid.reload('menuTable',{
-				where : {
-					name : vm.q.name,
-					url : vm.q.url
+		query: function() {
+			treeGrid.reload('menuTable', {
+				where: {
+					name: vm.q.name,
+					url: vm.q.url
 				}
-	        });
+			});
 		},
-		add : function () {
+		add: function() {
 			var selectedData = treeGrid.radioStatus("menuTable");
 			var type = 0;
 			var parentId = '';
 			var parentName = '一级目录';
 			if (selectedData.menuId != undefined) {
 				type = selectedData.type + 1;
-				parentId = selectedData.parentId;
+				parentId = selectedData.menuId;
 				parentName = selectedData.name;
 			}
 			if (type == 3) {
@@ -60,20 +68,20 @@ var vm = new Vue({
 			}
 			this.title = '添加菜单';
 			vm.menu = {
-				menuId : '',
-				type : type,
-				name : '',
-				parentName : parentName,
-				parentId : parentId,
-				url : '',
-				perms : '',
-				orderNum : 0,
-				icon : '',
-				isDeleted : 0
+				menuId: '',
+				type: type,
+				name: '',
+				parentName: parentName,
+				parentId: parentId,
+				url: '',
+				perms: '',
+				orderNum: 0,
+				icon: '',
+				isDeleted: 0
 			};
 			this.openDialog();
 		},
-		update : function () {
+		update: function() {
 			var selectedData = treeGrid.radioStatus("menuTable");
 			if (selectedData.menuId == undefined) {
 				vm.$message.warning("请选择要修改的数据！");
@@ -81,12 +89,12 @@ var vm = new Vue({
 			}
 			this.title = '修改菜单';
 			var menuId = selectedData.menuId;
-			
+
 			Ajax.request({
-				url : "../sys/menus/" + menuId,
-				async : true,
-				type : 'GET',
-				successCallback : function(r) {
+				url: "../sys/menus/" + menuId,
+				async: true,
+				type: 'GET',
+				successCallback: function(r) {
 					vm.menu = r.data;
 					if (vm.menu.parentName == null) {
 						vm.menu.parentName = "一级菜单";
@@ -94,48 +102,59 @@ var vm = new Vue({
 					vm.openDialog();
 				}
 			});
-			
+
 		},
-		del : function () {
-			layer.alert('偶吧深蓝style', {
-			    skin: 'layui-layer-lan'
-			    ,closeBtn: 0
-			    ,anim: 4 //动画类型
-			    ,btn: ['保存','取消']
+		del: function() {
+			var selectedData = treeGrid.radioStatus("menuTable");
+			if (selectedData.menuId == undefined) {
+				vm.$message.warning("请选择要删除的数据！");
+				return;
+			}
+			confirm("确认要删除吗，删除后子节点都将被删除？", function() {
+				var menuId = selectedData.menuId;
+				Ajax.request({
+					url: "../sys/menus/" + menuId,
+					type: 'DELETE',
+					successCallback: function() {
+						alert('操作成功', function(index) {
+							vm.reload();
+						});
+					}
+				});
 			});
 		},
-		saveOrUpdate : function (layerIndex) {
+		saveOrUpdate: function(layerIndex) {
 			var url = '../sys/menus';
 			var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
 			Ajax.request({
-				url : url,
-				params : JSON.stringify(vm.menu),
-				contentType : "application/json",
-				type : type,
-				successCallback : function() {
+				url: url,
+				params: JSON.stringify(vm.menu),
+				contentType: "application/json",
+				type: type,
+				successCallback: function() {
 					layer.close(layerIndex);
 					alert('操作成功', function(index) {
 						vm.reload();
 					});
 				}
 			});
-			
+
 		},
-		openDialog : function () {
+		openDialog: function() {
 			openWindow({
 				title: this.title,
 				area: ['600px', '570px'],
 				content: jQuery("#menuDialog"),
-				btn: ['保存','取消'],
+				btn: ['保存', '取消'],
 				yes: function(index) {
 					vm.handleSubmit('menuForm', index);
 				},
-				end : function () {
+				end: function() {
 					vm.handleReset('menuForm');
 				}
 			});
 		},
-		handleSubmit : function(name, layerIndex) {
+		handleSubmit: function(name, layerIndex) {
 			handleSubmitValidate(vm, name, function() {
 				vm.saveOrUpdate(layerIndex);
 			});
@@ -143,22 +162,35 @@ var vm = new Vue({
 		handleReset: function(name) {
 			handleResetForm(vm, name);
 		},
-		reload : function () {
+		reload: function() {
 			vm.query();
+		},
+		isDeletedMenuById: function(menuId, isDeleted) {
+			var url = isDeleted ? "../sys/menus/enable/" + menuId : "../sys/menus/disable/" + menuId;
+			Ajax.request({
+				url: url,
+				async: true,
+				type: 'GET',
+				successCallback: function(r) {
+					alert('操作成功', function(index) {
+						vm.reload();
+					});
+				}
+			});
 		}
 	},
-	watch : {
-		'menu.icon' : function () {
+	watch: {
+		'menu.icon': function() {
 			vm.iconLoading = true;
-			window.setTimeout(function () {
+			window.setTimeout(function() {
 				vm.iconLoading = false;
 				vm.iconShow = vm.menu.icon;
-            }, 500);
+			}, 500);
 		}
 	}
 });
 
-var	treeGrid = null;
+var treeGrid = null;
 
 layui.config({
 	base: '/plugins/layui/extend/'
@@ -168,6 +200,7 @@ layui.config({
 	var $ = layui.jquery;
 	treeGrid = layui.treeGrid; //很重要
 	var layer = layui.layer;
+	var form = layui.form;
 	var ptable = treeGrid.render({
 		id: "menuTable",
 		elem: '#menuTable',
@@ -203,8 +236,8 @@ layui.config({
 				field: 'parentName',
 				width: 100,
 				title: '上级菜单',
-				templet : function(d) {
-					if(d.parentName == null) {
+				templet: function(d) {
+					if (d.parentName == null) {
 						return "一级菜单";
 					} else {
 						return d.parentName;
@@ -237,55 +270,35 @@ layui.config({
 			}, {
 				field: 'perms',
 				title: '授权标识'
-			},{
+			}, {
 				field: 'isDeleted',
-				title: '状态',
-				width: 60,
+				title: '操作',
+				width: 90,
 				templet: function(d) {
-					if (d.isDeleted === 0) {
-						return '<span class="layui-badge layui-bg-blue">启用</span>';
-					}
-					if (d.isDeleted === 1) {
-						return '<span class="layui-badge">禁用</span>';
-					}
+					var checked = d.isDeleted === 0 ? 'checked' : '';
+					return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.menuId +
+						'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
 				}
 			}]
 		]
 	});
-});
 
-//function del(obj) {
-//	layer.confirm("你确定删除数据吗？如果存在下级节点则一并删除，此操作不能撤销！", {
-//			icon: 3,
-//			title: '提示'
-//		},
-//		function(index) { //确定回调
-//			obj.del();
-//			layer.close(index);
-//		},
-//		function(index) { //取消回调
-//			layer.close(index);
-//		}
-//	);
-//}
-//
-//
-//var i = 1000;
-////添加
-//function add(pObj) {
-//	var param = {};
-//	param.name = '水果' + Math.random();
-//	param.id = ++i;
-//	param.pId = pObj ? pObj.id : 0;
-//	treeGrid.addRow(tableId, pObj ? pObj.LAY_TABLE_INDEX + 1 : 0, param);
-//}
-//
-//function print() {
-//	console.log(treeGrid.cache[tableId]);
-//	var loadIndex = layer.msg("对象已打印，按F12，在控制台查看！", {
-//		time: 3000,
-//		offset: 'auto' //顶部
-//			,
-//		shade: 0
-//	});
-//}
+	form.on('switch(isDeleted)', function(obj) {
+		var menuId = this.value;
+		if (obj.elem.checked) {
+			confirm("确认要开启吗，开启后子节点都将被开启？", function() {
+				vm.isDeletedMenuById(menuId, true);
+			}, function() {
+				$("input[type='checkbox'][value='" + menuId + "']").prop("checked", false);
+				form.render('checkbox');
+			});
+		} else {
+			confirm("确认要禁用吗，禁用后子节点都将被禁用？", function() {
+				vm.isDeletedMenuById(menuId, false);
+			}, function() {
+				$("input[type='checkbox'][value='" + menuId + "']").prop("checked", true);
+				form.render('checkbox');
+			});
+		}
+	});
+});

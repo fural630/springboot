@@ -21,6 +21,11 @@ public class MenuDTO {
 
     @ApiModelProperty(value = "父菜单ID，一级菜单为0")
     private Long parentId;
+    
+    /**
+     * 父级名称
+     */
+    private String parentName;
 
     @ApiModelProperty(value = "菜单名称")
     private String name;
@@ -106,5 +111,13 @@ public class MenuDTO {
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
 
 }
