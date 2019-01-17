@@ -420,3 +420,6 @@ INSERT INTO `sys_user` VALUES ('14', 'stringAAAAAdfdddd', '2018-12-03', 'string'
 INSERT INTO `sys_user` VALUES ('15', 'stringAAAAAdfdddd', '2018-12-02', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '0', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('16', 'stringAAAAAdfdddd', '2018-12-01', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '0', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('18', '123222', null, null, '1', '', '', '11', null, null, '1222', '1', null, null, null, null);
+
+
+
