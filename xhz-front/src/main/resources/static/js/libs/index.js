@@ -371,7 +371,27 @@
     };
     $.learunMenu = {
 		 loadMenu: function () {
-			 return menu.menuList;
+			 var menu = [];
+			 $.ajax({
+				url: "/sys/menus/enable/",
+				async: false,
+				type: 'GET',
+				success: function(r) {
+					if (r.data.length > 0) {
+						for (var i = 0; i < r.data.length; i++) {
+							var fmenu = {
+								F_ModuleId : r.data[i].menuId,
+								F_ParentId : r.data[i].parentId,
+								F_FullName : r.data[i].name,
+								F_UrlAddress : r.data[i].url,
+								F_Icon : r.data[i].icon
+							}
+							menu.push(fmenu);
+						}
+					}
+				}
+			});
+			return menu;
 		 }
     };
     $(function () {

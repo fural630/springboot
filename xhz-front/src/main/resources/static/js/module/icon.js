@@ -90,12 +90,8 @@ var vm = new Vue({
 			this.changeIconDate();
 			this.windowIndex = openWindow({
 				title: "高级复制图标配置",
-				area: ['760px', '620px'],
+				area: ['760px', '540px'],
 				content: jQuery("#configCopyDialog"),
-				btn: ['关闭'],
-				yes: function(index) {
-					layer.close(index);
-				},
 				success: function(layero, index) {
 					vm.resetConfig();
 				}

@@ -26,4 +26,6 @@ public interface MenuDao extends BaseMapper<MenuDO> {
 	List<MenuDTO> selectMenuDTOList(Map<String, Object> params);
 
 	List<MenuDO> selectByParentId(Long parentId);
+
+	List<MenuDO> selectEnableMemu();
 }

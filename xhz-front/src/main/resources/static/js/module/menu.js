@@ -55,7 +55,7 @@ var vm = new Vue({
 		add: function() {
 			var selectedData = treeGrid.radioStatus("menuTable");
 			var type = 0;
-			var parentId = '';
+			var parentId = 0;
 			var parentName = '一级目录';
 			if (selectedData.menuId != undefined) {
 				type = selectedData.type + 1;
@@ -143,7 +143,7 @@ var vm = new Vue({
 		openDialog: function() {
 			openWindow({
 				title: this.title,
-				area: ['600px', '570px'],
+				area: ['600px', '530px'],
 				content: jQuery("#menuDialog"),
 				btn: ['保存', '取消'],
 				yes: function(index) {

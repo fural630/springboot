@@ -20,6 +20,7 @@ import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
+import com.xhz.web.module.sys.entity.MenuDO;
 import com.xhz.web.module.sys.entity.MenuDTO;
 import com.xhz.web.module.sys.service.MenuService;
 
@@ -156,6 +157,18 @@ public class MenuController {
 	public R enable(@PathVariable("id") Long menuId) {
 		menuService.enableMenuById(menuId);
 		return R.ok();
+	}
+	
+	/**
+	 * 查询所有启用菜单
+	 * @param menuId
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="查询所有启用菜单", notes = "查询所有启用菜单")
+	@RequestMapping(value = "/menus/enable", method = RequestMethod.GET)
+	public R enableMemu() {
+		List<MenuDO> menuDOList = menuService.selectEnableMemu();
+		return R.ok().put("data", menuDOList);
 	}
 
 }

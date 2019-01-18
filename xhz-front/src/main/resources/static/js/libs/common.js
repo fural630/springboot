@@ -1,6 +1,4 @@
-layui.use(['layer'], function () {
-	
-});
+layui.use(['layer'], function () {});
 
 //iframe自适应
 $(window).on('resize', function() {

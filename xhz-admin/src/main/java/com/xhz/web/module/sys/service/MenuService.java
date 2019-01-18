@@ -142,4 +142,8 @@ public class MenuService {
 			}
 		}
 	}
+
+	public List<MenuDO> selectEnableMemu() {
+		return menuDao.selectEnableMemu();
+	}
 }
