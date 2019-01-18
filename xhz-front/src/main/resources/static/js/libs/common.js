@@ -207,11 +207,14 @@ Ajax = function () {
                    opt.successCallback(data);
                }
            },
-           error: function () {
-               //关闭遮罩
-               dialogLoading(false);
-
-               layui.layer.alert("此页面发生未知异常,请联系管理员", {icon: 5});
+           error: function (xhr) {
+        	   //关闭遮罩
+        	   dialogLoading(false);
+        	   var result = eval('(' + xhr.responseText + ')');
+        	   if (result.msg.indexOf("exception") > 0) {
+        		   result.msg = "此页面发生未知异常,请联系管理员";
+        	   }
+    		   layui.layer.alert(result.msg, {icon: 5});
            }
        });
    }

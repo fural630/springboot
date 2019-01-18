@@ -1,5 +1,10 @@
 package com.xhz.web.module.sys.entity;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.xhz.validator.group.AddGroup;
+import com.xhz.validator.group.UpdateGroup;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,6 +33,7 @@ public class MenuDTO {
     private String parentName;
 
     @ApiModelProperty(value = "菜单名称")
+    @Length(max = 3, groups = {AddGroup.class, UpdateGroup.class}, message = "菜单名称最长度不允许超过3")
     private String name;
 
     @ApiModelProperty(value = "菜单URL")
