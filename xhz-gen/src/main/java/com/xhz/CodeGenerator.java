@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -110,7 +111,11 @@ public class CodeGenerator {
 		dsc.setDriverName(driverName);
 		dsc.setUsername(username);
 		dsc.setPassword(password);
-
+		dsc.getDbType();
+		DbType dbType = dsc.getDbType();
+		if (dbType == DbType.MYSQL) {
+			dsc.setDbQuery(new CustomDbMysqlQuery());
+		}
 		mpg.setDataSource(dsc);
 
 		// 包配置
