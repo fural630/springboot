@@ -1,21 +1,27 @@
 package com.xhz.web.module.sys.dao;
 
+
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xhz.web.module.sys.entity.UserDO;
+import com.xhz.web.module.sys.entity.UserDTO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
 
 /**
  * <p>
- * InnoDB free: 8192 kB Mapper 接口
+ * 用户 Dao 接口
  * </p>
  *
  * @author zhangzm
- * @since 2018-12-08
+ * @since 2019-01-21
  */
 public interface UserDao extends BaseMapper<UserDO> {
-
-	List<UserDO> queryPage(Map<String, Object> query);
-
+	
+	List<UserDTO> selectUserDTOPage(Map<String, Object> query);
+	
+	UserDTO selectUserDTOById(Long id);
+	
+	List<UserDTO> selectUserDTOList();
 }

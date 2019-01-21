@@ -21,11 +21,6 @@ var vm = new Vue({
 			isDeleted: 0
 		},
 		ruleValidate: {
-			name: [{
-				required: true,
-				message: '菜单名称不能为空',
-				trigger: 'blur'
-			}],
 			url: [{
 				required: true,
 				message: '菜单url不能为空',

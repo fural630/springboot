@@ -23,9 +23,9 @@
 							</el-form-item>
 						</el-col>
 						<el-col :span="4">
-							<el-form-item prop="status" label="状态">
-								<el-select v-model="q.status" clearable>
-									<el-option v-for="item in statusList" :value="item.value" :key="item.value" :label="item.label"></el-option>
+							<el-form-item prop="isDeleted" label="状态">
+								<el-select v-model="q.isDeleted" clearable>
+									<el-option v-for="item in isDeletedList" :value="item.value" :key="item.value" :label="item.label"></el-option>
 								</el-select>
 							</el-form-item>
 						</el-col>
@@ -47,9 +47,12 @@
 				<p slot="title">{{title}}</p>
 				<el-row>
 			        <el-col :span="12">
-						<el-form ref="formValidate" :model="user" :rules="ruleValidate" label-width="80px">
+						<el-form @submit.native.prevent ref="userForm" :model="user" :rules="ruleValidate" label-width="80px">
 				            <el-form-item label="账号" prop="account">
 				                <el-input v-model="user.account" placeholder="账号"/>
+				            </el-form-item>
+				            <el-form-item label="密码" prop="passWord">
+				                <el-input type="password" v-model="user.passWord" placeholder="账号"/>
 				            </el-form-item>
 				            <el-form-item label="用户名" prop="name">
 				                <el-input v-model="user.name" placeholder="用户名"/>
@@ -75,15 +78,15 @@
 				            <el-form-item label="手机号" prop="phone">
 				                <el-input v-model="user.phone" placeholder="手机号"/>
 				            </el-form-item>
-				            <el-form-item label="状态" prop="status">
-				                <el-radio-group v-model="user.status">
-				                	<el-radio v-for="item in statusList" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+				            <el-form-item label="状态" prop="isDeleted">
+				                <el-radio-group v-model="user.isDeleted">
+				                	<el-radio v-for="item in isDeletedList" :label="item.value" :key="item.value">{{item.label}}</el-radio>
 				                </el-radio-group>
 				            </el-form-item>
 				            <el-form-item>
-				                <el-button type="primary" @click="handleSubmit('formValidate')">提交</el-button>
+				                <el-button type="primary" @click="handleSubmit('userForm')">提交</el-button>
 				                <el-button type="warning" @click="reload" style="margin-left: 8px">返回</el-button>
-				                <el-button @click="handleReset('formValidate')" style="margin-left: 8px">重置</el-button>
+				                <el-button @click="handleReset('userForm')" style="margin-left: 8px">重置</el-button>
 				            </el-form-item>
 				        </el-form>
 			        </el-col>

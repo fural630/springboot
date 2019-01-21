@@ -8,7 +8,7 @@ package ${package.Mapper};
 <#assign comment = ''/>
 <#assign columnType = ''/>
 <#list table.fields as field>
-	<#if field.keyIdentityFlag>
+	<#if field.keyFlag>
 		<#assign pkName = field.propertyName/>
 		<#assign comment = field.comment/>
 		<#assign columnType = field.columnType?lower_case?cap_first />

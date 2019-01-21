@@ -114,7 +114,11 @@ public class CodeGenerator {
 		dsc.getDbType();
 		DbType dbType = dsc.getDbType();
 		if (dbType == DbType.MYSQL) {
-			dsc.setDbQuery(new CustomDbMysqlQuery());
+			String schema = getSchemaByUrl(dsc.getUrl());
+			dsc.setDbQuery(new CustomDbMysqlQuery(schema));
+		} 
+		if (dbType == DbType.ORACLE) {
+			dsc.setDbQuery(new CustomDbOracleQuery());
 		}
 		mpg.setDataSource(dsc);
 
@@ -221,9 +225,25 @@ public class CodeGenerator {
 		}
 		strategy.entityTableFieldAnnotationEnable(entityTableFieldAnnotationEnable);
 		strategy.setEntityBooleanColumnRemoveIsPrefix(entityBooleanColumnRemoveIsPrefix);
-		strategy.setLogicDeleteFieldName(logicDeleteFieldName);
+		if (StringUtils.isNotBlank(logicDeleteFieldName)) {
+			strategy.setLogicDeleteFieldName(logicDeleteFieldName);
+		}
 		mpg.setStrategy(strategy);
 		mpg.setTemplateEngine(new FreemarkerTemplateEngine());
 		mpg.execute();
+	}
+	
+	/**
+	 * mysql时截取出数据库名称
+	 * @param url
+	 * @return 数据库名称
+	 */
+	private static String getSchemaByUrl(String url) {
+		if (StringUtils.isEmpty(url)) {
+			return null;
+		}
+		String schema = url.contains("?") ? url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"))
+				: url.substring(url.lastIndexOf("/") + 1, url.length());
+		return schema;
 	}
 }

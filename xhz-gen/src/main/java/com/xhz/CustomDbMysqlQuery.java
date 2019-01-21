@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.config.IDbQuery;
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
@@ -14,6 +16,12 @@ import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
  *
  */
 public class CustomDbMysqlQuery extends MySqlQuery implements IDbQuery {
+	
+	private String schema;
+
+	public CustomDbMysqlQuery(String schema) {
+		this.schema = schema;
+	}
 
 	@Override
 	public DbType dbType() {
@@ -27,7 +35,22 @@ public class CustomDbMysqlQuery extends MySqlQuery implements IDbQuery {
 
 	@Override
 	public String tableFieldsSql() {
-		return super.tableFieldsSql();
+		if (StringUtils.isNoneEmpty(schema)) {
+			return "select COLUMN_NAME \"Field\"," + 
+					"COLUMN_TYPE \"Type\"," + 
+					"COLLATION_NAME \"Collation\"," + 
+					"IS_NULLABLE \"Null\"," + 
+					"COLUMN_KEY \"Key\"," + 
+					"COLUMN_DEFAULT \"Default\"," + 
+					"EXTRA \"Extra\"," + 
+					"PRIVILEGES \"Privileges\"," + 
+					"COLUMN_COMMENT \"Comment\"," + 
+					"CHARACTER_MAXIMUM_LENGTH \"DataLength\"" + 
+					" from information_schema.columns " + 
+					"where table_name='%s' and TABLE_SCHEMA = '"+schema+"'";
+		} else {
+			return "show full fields from `%s`";
+		}
 	}
 
 	@Override
@@ -67,7 +90,7 @@ public class CustomDbMysqlQuery extends MySqlQuery implements IDbQuery {
 
 	@Override
 	public String[] fieldCustom() {
-		return new String[]{"Null"} ;
+		return new String[]{"Null", "DataLength"} ;
 	}
 
 	

@@ -4,10 +4,12 @@ var vm = new Vue({
 		q : {
 			name : '',
 			departmentCid : '',
-			status : ''
+			isDeleted : ''
 		},
 		user : {
+			id : '',
 			account : '',
+			passWord : '',
 			name : '',
 			deptName : '',
 			idCard : '',
@@ -15,22 +17,27 @@ var vm = new Vue({
 			sex : '',
 			email : '',
 			phone : '',
-			status : 1
+			isDeleted : 1
 		},
 		sexList : constant.sexList,
-		statusList : constant.userStatusList,
+		isDeletedList : constant.isDeletedList,
 		ruleValidate : {
 			account : [ {
 				required : true,
 				message : '账号不能为空',
-				trigger : 'change'
+				trigger : 'blur'
 			} ],
+			passWord : [{
+				required : true,
+				message : '密码不能为空',
+				trigger : 'blur'
+			}],
 			name : [ {
 				required : true,
 				message : '用户名不能为空',
-				trigger : 'change'
+				trigger : 'blur'
 			} ],
-			status : [ {
+			isDeleted : [ {
 				required : true,
 				message : '状态必须设置',
 				trigger : 'change',
@@ -44,16 +51,19 @@ var vm = new Vue({
 		query : function() {
 			layui.table.reload('userTable', {
 				where : {
-					status : this.q.status === undefined ? '' : this.q.status,
+					isDeleted : this.q.isDeleted === undefined ? '' : this.q.isDeleted,
 					name : this.q.name,
 					departmentCid : this.q.departmentCid
 				}
 			});
 		},
 		add : function() {
+			vm.handleReset('userForm');
 			this.title = '添加';
 			this.showList = false;
 			this.user = {
+				id : '',
+				passWord : '',
 				account : '',
 				name : '',
 				deptName : '',
@@ -62,10 +72,11 @@ var vm = new Vue({
 				sex : '',
 				email : '',
 				phone : '',
-				status : 1
+				isDeleted : 1
 			}
 		},
 		update : function() {
+			vm.handleReset('userForm');
 			var checkStatus = layui.table.checkStatus('userTable');
 			var length = checkStatus.data.length;
 			if (length == 0) {
@@ -82,10 +93,11 @@ var vm = new Vue({
 			var userId = checkStatus.data[0].id;
 
 			Ajax.request({
-				url : "../sys/user/info/" + userId,
+				url : "../sys/users/" + userId,
 				async : true,
+				type : 'GET',
 				successCallback : function(r) {
-					vm.user = r.user;
+					vm.user = r.data;
 				}
 			});
 
@@ -103,7 +115,7 @@ var vm = new Vue({
 			}
 			confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-                    url: "../sys/user/deleteBatchByIds",
+                    url: "../sys/users/deleteBatch",
                     params: JSON.stringify(ids),
                     contentType: "application/json",
                     type: 'POST',
@@ -116,10 +128,8 @@ var vm = new Vue({
             });
 		},
 		saveOrUpdate : function() {
-			var url = this.user.id == undefined ? "../sys/user/save"
-					: "../sys/user/update";
-			var type = this.user.id == undefined ? "POST"
-					: "PUT";
+			var url = '../sys/users';
+			var type = vm.user.id == '' ? 'POST' : 'PATCH';
 			Ajax.request({
 				url : url,
 				params : JSON.stringify(vm.user),
@@ -153,13 +163,13 @@ layui.use('table', function() {
 
 	table.render({
 		elem : '#userTable',
-		url : '/sys/user/page',
+		url : '/sys/users/page',
 		autoSort : false,
 		parseData : function(res) {
 			return {
 				"code" : res.code,
-				"count" : res.page.total,
-				"data" : res.page.list
+				"count" : res.data.total,
+				"data" : res.data.list
 			};
 		},
 		cols : [ [ {
@@ -205,12 +215,12 @@ layui.use('table', function() {
 			minWidth : 100,
 			title : '所属部门'
 		}, {
-			field : 'status',
+			field : 'isDeleted',
 			width : 80,
 			title : '状态',
 			sort : true,
 			templet : function(d) {
-				return constant.transUserStatus(d.status)
+				return constant.transIsDeleted(d.isDeleted)
 			}
 		} ] ],
 		page : true

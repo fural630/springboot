@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xhz.web.module.sys.dao.UserDao">
 
+
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xhz.web.module.sys.entity.UserDO">
         <id column="id" property="id" />
@@ -15,7 +16,7 @@
         <result column="avatar_id" property="avatarId" />
         <result column="department_cid" property="departmentCid" />
         <result column="account" property="account" />
-        <result column="status" property="status" />
+        <result column="is_deleted" property="isDeleted" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <result column="create_user_id" property="createUserId" />
@@ -24,18 +25,18 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, birth_day, pass_word, sex, email, phone, id_card, avatar_id, department_cid, account, status, create_time, update_time, create_user_id, update_user_id
+        id, name, birth_day, pass_word, sex, email, phone, id_card, avatar_id, department_cid, account, is_deleted, create_time, update_time, create_user_id, update_user_id
     </sql>
-    
-    <select id="queryPage" resultMap="BaseResultMap">
-    	select <include refid="Base_Column_List"/>
-    	from sys_user
+
+
+	<select id="selectUserDTOPage" resultType="com.xhz.web.module.sys.entity.UserDTO">
+    	select * from sys_user
     	<where>
     		<if test="name != null and name.trim() != ''">
     			and name like concat('%',#{name},'%')
     		</if>
-    		<if test="status != null and status.trim() != ''">
-    			and status = #{status}
+    		<if test="isDeleted != null and isDeleted.trim() != ''">
+    			and is_deleted = #{isDeleted}
     		</if>
     	</where>
     	<choose>
@@ -47,5 +48,13 @@
             </otherwise>
         </choose>
     </select>
+    
+    <select id="selectUserDTOList" resultType="com.xhz.web.module.sys.entity.UserDTO">
+		select * from sys_user
+	</select>
+	
+	<select id="selectUserDTOById" resultType="com.xhz.web.module.sys.entity.UserDTO">
+		select * from sys_user where id = #{id}
+	</select>
 
 </mapper>

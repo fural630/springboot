@@ -10,7 +10,7 @@
 <#assign comment = ''/>
 <#assign columnType = ''/>
 <#list table.fields as field>
-	<#if field.keyIdentityFlag>
+	<#if field.keyFlag>
 		<#assign pkName = field.propertyName/>
 		<#assign comment = field.comment/>
 		<#assign columnType = field.columnType?lower_case?cap_first />
@@ -72,7 +72,7 @@
 	</select>
 	
 	<select id="select${entityDTO}ById" resultType="${package.Entity}.${entityDTO}">
-		select * from ${table.name} where ${pkName} = ${r"${"}${pkName}${r"}"}
+		select * from ${table.name} where ${pkName} = ${r"#{"}${pkName}${r"}"}
 	</select>
 
 </mapper>

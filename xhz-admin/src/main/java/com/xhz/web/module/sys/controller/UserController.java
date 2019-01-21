@@ -11,36 +11,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+
+
+import org.springframework.web.bind.annotation.RestController;
 import com.xhz.util.Query;
 import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import com.xhz.web.module.sys.entity.UserDO;
-import com.xhz.web.module.sys.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import com.xhz.web.module.sys.service.UserService;
+import com.xhz.web.module.sys.entity.UserDTO;
 
 
 
 /**
  * <p>
- * InnoDB free: 8192 kB 前端控制器
+ * 用户 前端控制器
  * </p>
  *
  * @author zhangzm
- * @since 2018-12-16
+ * @since 2019-01-21
  */
  
 @RestController
-@RequestMapping("/sys/user")
-@Api(tags = {"用户管理"})
+@RequestMapping("/sys")
+@Api(tags = {"用户"})
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -50,14 +52,14 @@ public class UserController {
 	
 	/**
 	 * 新增
-	 * @param UserDO
+	 * @param UserDTO
 	 * @return R.ok()
 	 */
-    @ApiOperation(value="添加用户")
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public R save(@RequestBody UserDO userDO) {
-		ValidatorUtils.validateEntity(userDO, AddGroup.class);
-		userService.insert(userDO);
+	@ApiOperation(value="新增")
+	@RequestMapping(value = "/users", method = RequestMethod.POST)
+	public R insert(@RequestBody UserDTO userDTO) {
+		ValidatorUtils.validateEntity(userDTO, AddGroup.class);
+		userService.insertUserDTO(userDTO);
 		return R.ok();
 	}
 	
@@ -66,7 +68,8 @@ public class UserController {
 	 * @param id
 	 * @return R.ok()
 	 */
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	@ApiOperation(value="删除")
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	public R delete(@PathVariable("id") Long id) {
 		userService.deleteById(id);
 		return R.ok();
@@ -77,7 +80,8 @@ public class UserController {
 	 * @param ids
 	 * @return
 	 */
-	@RequestMapping(value = "/deleteBatchByIds", method = RequestMethod.POST)
+	@ApiOperation(value="批量删除")
+	@RequestMapping(value = "/users/deleteBatch", method = RequestMethod.POST)
 	public R deleteBatchByIds(@RequestBody List<Long> ids) {
 		userService.deleteBatchIds(ids);
 		return R.ok();
@@ -85,39 +89,52 @@ public class UserController {
 	
 	/**
 	 * 修改
-	 * @param UserDO
+	 * @param UserDTO
 	 * @return R.ok()
 	 */
-	@ApiOperation(value="修改用户")
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public R update(@RequestBody @ApiParam(name="用户对象",value="传入json格式",required=true)UserDO userDO) {
-		ValidatorUtils.validateEntity(userDO, UpdateGroup.class);
-		userService.updateById(userDO);
+	@ApiOperation(value="修改")
+	@RequestMapping(value = "/users", method = RequestMethod.PATCH)
+	public R update(@RequestBody UserDTO userDTO) {
+		ValidatorUtils.validateEntity(userDTO, UpdateGroup.class);
+		userService.updateUserDTOById(userDTO);
 		return R.ok();
 	}
 	
 	/**
 	 * 查询
 	 * @param id
-	 * @return R.ok().put("user", userDO)
+	 * @return R.ok().put("data", userDTO)
 	 */
-	@RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
+	@ApiOperation(value="查询")
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") Long id) {
-		UserDO userDO = userService.selectById(id);
-		return R.ok().put("user", userDO);
+		UserDTO userDTO = userService.selectUserDTOById(id);
+		return R.ok().put("data", userDTO);
+	}
+	
+	/**
+	 * 查询所有
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="查询所有")
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public R getAll() {
+		List<UserDTO> userDTOList = userService.selectUserDTOList();
+		return R.ok().put("data", userDTOList);
 	}
 	
 	/**
 	 * 分页查询
 	 * @param params
-	 * @return R.ok().put("page", pageInfo);
+	 * @return R.ok().put("data", pageInfo);
 	 */
-	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	@ApiOperation(value="分页查询")
+	@RequestMapping(value = "/users/page", method = RequestMethod.GET)
 	public R page(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);
 		PageHelper.startPage(query.getPage(), query.getLimit());
-		PageInfo<UserDO> pageInfo = new PageInfo<UserDO>(userService.queryPage(query));
-		return R.ok().put("page", pageInfo);
+		PageInfo<UserDTO> pageInfo = new PageInfo<UserDTO>(userService.selectUserDTOPage(query));
+		return R.ok().put("data", pageInfo);
 	}
 
 }

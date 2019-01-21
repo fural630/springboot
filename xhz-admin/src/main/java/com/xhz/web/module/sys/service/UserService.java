@@ -3,25 +3,50 @@ package com.xhz.web.module.sys.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import com.xhz.web.module.sys.dao.UserDao;
 import com.xhz.web.module.sys.entity.UserDO;
+import com.xhz.web.module.sys.entity.UserDTO;
+import com.xhz.web.module.sys.dao.UserDao;
+import com.xhz.util.CopyUtil;
+
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>
- * InnoDB free: 8192 kB 服务实现类
+ * 用户 服务实现类
  * </p>
  *
  * @author zhangzm
- * @since 2018-12-16
+ * @since 2019-01-21
  */
 @Service
 public class UserService {
 
 	@Autowired
 	private UserDao userDao;
+	
+	public void insertUserDTO(UserDTO userDTO) {
+		UserDO userDO = CopyUtil.copyProperties(userDTO, UserDO.class);
+		userDao.insert(userDO);
+	}
+	
+	public void updateUserDTOById(UserDTO userDTO) {
+		UserDO userDO = CopyUtil.copyProperties(userDTO, UserDO.class);
+		userDao.updateById(userDO);
+	}
+	
+	public UserDTO selectUserDTOById(Long id) {
+		return userDao.selectUserDTOById(id);
+	}
+	
+	public List<UserDTO> selectUserDTOList() {
+		return userDao.selectUserDTOList();
+	}
+	
+	public List<UserDTO> selectUserDTOPage(Map<String, Object> query) {
+		return userDao.selectUserDTOPage(query);
+	}
 	
 	public void insert(UserDO userDO) {
 		userDao.insert(userDO);
@@ -43,7 +68,7 @@ public class UserService {
 		return userDao.selectById(id);
 	}
 	
-	public List<UserDO> queryPage(Map<String, Object> query) {
-		return userDao.queryPage(query);
+	public List<UserDO> selectList() {
+		return userDao.selectList(null);
 	}
 }

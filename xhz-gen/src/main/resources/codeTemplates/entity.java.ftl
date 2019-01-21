@@ -1,5 +1,10 @@
 package ${package.Entity};
 
+import javax.validation.constraints.NotNull;
+import com.xhz.validator.group.AddGroup;
+import com.xhz.validator.group.UpdateGroup;
+import org.hibernate.validator.constraints.Length;
+
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
@@ -47,6 +52,7 @@ public class ${entity} implements Serializable {
     private static final long serialVersionUID = 1L;
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
+	<#assign isNull = field.customMap.Null />
     <#if field.keyFlag>
         <#assign keyPropertyName="${field.propertyName}"/>
     </#if>
@@ -61,6 +67,7 @@ public class ${entity} implements Serializable {
     </#if>
     </#if>
     <#if field.keyFlag>
+    @NotNull(groups = { UpdateGroup.class }, message = "修改时${field.comment!''}不能为空")
     <#-- 主键 -->
         <#if field.keyIdentityFlag>
     @TableId(value = "${field.name}", type = IdType.AUTO)
@@ -87,6 +94,14 @@ public class ${entity} implements Serializable {
 <#-- 逻辑删除注解 -->
     <#if (logicDeleteFieldName!"") == field.name>
     @TableLogic
+    </#if>
+    <#if !field.keyFlag>
+	    <#if isNull == "NO">
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}不能为空")
+	    </#if>
+	    <#if field.customMap.DataLength??>
+    @Length(max = ${field.customMap.DataLength}, groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}最长度不允许超过${field.customMap.DataLength}")
+	    </#if>
     </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>

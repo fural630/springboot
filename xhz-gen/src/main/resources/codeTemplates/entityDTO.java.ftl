@@ -1,5 +1,13 @@
 package ${package.Entity};
 
+import javax.validation.constraints.NotNull;
+import com.xhz.validator.group.AddGroup;
+import com.xhz.validator.group.UpdateGroup;
+import org.hibernate.validator.constraints.Length;
+
+<#list table.importPackages as pkg>
+import ${pkg};
+</#list>
 <#if swagger2>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -42,9 +50,9 @@ public class ${entityDTO} extends Model<${entityDTO}> {
 <#else>
 public class ${entityDTO} {
 </#if>
-
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
+	<#assign isNull = field.customMap.Null />
     <#if field.keyFlag>
         <#assign keyPropertyName="${field.propertyName}"/>
     </#if>
@@ -57,6 +65,16 @@ public class ${entityDTO} {
      * ${field.comment}
      */
     </#if>
+    </#if>
+    <#if !field.keyFlag>
+    	<#if isNull == "NO">
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}不能为空")
+    	</#if>
+   		<#if field.customMap.DataLength??>
+    @Length(max = ${field.customMap.DataLength}, groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}最长度不允许超过${field.customMap.DataLength}")
+    	</#if>
+    <#else>
+    @NotNull(groups = { UpdateGroup.class }, message = "修改时${field.comment!''}不能为空")
     </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>

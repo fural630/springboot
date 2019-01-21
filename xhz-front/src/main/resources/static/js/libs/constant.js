@@ -6,7 +6,7 @@ var constant = {
 		label : '女',
 		value : 0
 	} ],
-	userStatusList : [ {
+	isDeletedList : [ {
 		label : '正常',
 		value : 1
 	}, {
@@ -1027,6 +1027,16 @@ var constant = {
 			return '<button class="layui-btn layui-btn-xs layui-btn-normal">正常</button>';
 		}
 		if (status == 0) {
+			return '<button class="layui-btn layui-btn-xs layui-btn-danger">禁用</button>';
+		}
+		return '';
+	},
+	
+	transIsDeleted : function (isDeleted) {
+		if (isDeleted == 1) {
+			return '<button class="layui-btn layui-btn-xs layui-btn-normal">正常</button>';
+		}
+		if (isDeleted == 0) {
 			return '<button class="layui-btn layui-btn-xs layui-btn-danger">禁用</button>';
 		}
 		return '';

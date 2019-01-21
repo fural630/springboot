@@ -13,6 +13,7 @@ import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+
 /**
  * <p>
  * 用户
@@ -21,15 +22,11 @@ import io.swagger.annotations.ApiModelProperty;
  * @author zhangzm
  * @since 2019-01-21
  */
-@TableName("sys_user")
-@ApiModel(value="UserDO对象", description="用户")
-public class UserDO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@ApiModel(value="UserDTO对象", description="用户")
+public class UserDTO {
 
     @ApiModelProperty(value = "用户ID")
     @NotNull(groups = { UpdateGroup.class }, message = "修改时用户ID不能为空")
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty(value = "用户名")
@@ -199,25 +196,4 @@ public class UserDO implements Serializable {
         this.updateUserId = updateUserId;
     }
 
-    @Override
-    public String toString() {
-        return "UserDO{" +
-        "id=" + id +
-        ", name=" + name +
-        ", birthDay=" + birthDay +
-        ", passWord=" + passWord +
-        ", sex=" + sex +
-        ", email=" + email +
-        ", phone=" + phone +
-        ", idCard=" + idCard +
-        ", avatarId=" + avatarId +
-        ", departmentCid=" + departmentCid +
-        ", account=" + account +
-        ", isDeleted=" + isDeleted +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        ", createUserId=" + createUserId +
-        ", updateUserId=" + updateUserId +
-        "}";
-    }
 }
