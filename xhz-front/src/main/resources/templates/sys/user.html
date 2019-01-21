@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div id="app" v-cloak>
-		<div v-show="showList">
+		<div v-show="showList" class="frame-card">
 			<div class="frame-card-header">
 				<el-form ref="queryForm" :model="q" label-width="80px">
 					<el-row>
@@ -29,22 +29,24 @@
 								</el-select>
 							</el-form-item>
 						</el-col>
-						&nbsp;&nbsp;
-						<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-           	 			<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+						<el-col :span="6">
+							&nbsp;&nbsp;
+							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+	          	 			<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+						</el-col>
 					</el-row>
 				</el-form>
 			</div>
-			<div class="layui-card-body">
-				<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
-				<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
-				<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
-				<table class="layui-hide" id="userTable" lay-filter="userTable"></table>
-			</div>
+			<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+			<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+			<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+			<table class="layui-hide" id="userTable" lay-filter="userTable"></table>
 		</div>
-		<div class="frame-card-padding">
-			<el-card v-show="!showList">
-				<p slot="title">{{title}}</p>
+		<div v-show="!showList">
+			<el-card>
+				<div slot="header">
+				    <span>{{title}}</span>
+			  	</div>
 				<el-row>
 			        <el-col :span="12">
 						<el-form @submit.native.prevent ref="userForm" :model="user" :rules="ruleValidate" label-width="80px">
