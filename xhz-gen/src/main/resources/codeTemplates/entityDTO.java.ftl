@@ -59,7 +59,7 @@ public class ${entityDTO} {
 
     <#if field.comment!?length gt 0>
     <#if swagger2>
-    @ApiModelProperty(value = "${field.comment}")
+    @ApiModelProperty(value = "${field.comment}"<#if isNull == "NO">, required = true</#if>)
     <#else>
     /**
      * ${field.comment}

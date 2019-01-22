@@ -8,16 +8,21 @@ body {
 
 .frame-card {
 	background: #fff;
-	padding : 10px;
+	padding: 10px;
 	border-radius: 2px;
 	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
 }
 
 .frame-card-header {
 	border-bottom: 1px solid #e8eaec;
-	margin-bottom : 10px;
+	margin-bottom: 10px;
 }
 
 [v-cloak] {
 	display: none;
+}
+
+.frame-dialog {
+	display: none;
+	padding: 10px;
 }
