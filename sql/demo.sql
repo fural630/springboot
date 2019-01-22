@@ -10,10 +10,30 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2019-01-22 08:45:31
+Date: 2019-01-22 18:16:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for sys_database
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_database`;
+CREATE TABLE `sys_database` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据源ID',
+  `name` varchar(20) NOT NULL COMMENT '数据源名称',
+  `url` varchar(255) NOT NULL COMMENT '链接地址',
+  `user_name` varchar(100) NOT NULL COMMENT '用户名',
+  `pass_word` varchar(100) NOT NULL COMMENT '密码',
+  `db_type` int(11) NOT NULL COMMENT '数据库类型',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='数据源管理';
+
+-- ----------------------------
+-- Records of sys_database
+-- ----------------------------
+INSERT INTO `sys_database` VALUES ('1', '敏捷开发框架数据库2', 'jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=UTF-8', 'root', 'root', '0');
+INSERT INTO `sys_database` VALUES ('3', '123', '23', '3', '41', '1');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -40,8 +60,8 @@ INSERT INTO `sys_menu` VALUES ('384', '0', '开发工具', '', '', '0', 'fa fa-c
 INSERT INTO `sys_menu` VALUES ('385', '383', '用户管理', '/sys/user.html', '', '1', 'fa fa-user', '0', '0');
 INSERT INTO `sys_menu` VALUES ('386', '383', '菜单管理', '/sys/menu.html', '', '1', 'fa fa-bars', '1', '0');
 INSERT INTO `sys_menu` VALUES ('387', '384', '图标库', '/develop/icon.html', '', '1', 'fa fa-info', '0', '0');
-INSERT INTO `sys_menu` VALUES ('388', '384', '数据库文档', '/develop/databaseDoc.html', '', '1', 'fa fa-database', '1', '0');
-INSERT INTO `sys_menu` VALUES ('389', '0', '测试工具', '', '', '0', 'fa fa-bug', '2', '0');
+INSERT INTO `sys_menu` VALUES ('388', '384', '数据库文档', '/develop/database.html', '', '1', 'fa fa-database', '1', '0');
+INSERT INTO `sys_menu` VALUES ('389', '0', '功能测试', '', '', '0', 'fa fa-bug', '2', '0');
 INSERT INTO `sys_menu` VALUES ('390', '389', 'swagger接口测试', '/swagger-ui.html', '', '1', 'fa fa-book', '0', '0');
 
 -- ----------------------------
@@ -66,13 +86,12 @@ CREATE TABLE `sys_user` (
   `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建人ID',
   `update_user_id` bigint(20) DEFAULT NULL COMMENT '修改人ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('2', '阿甘', '2018-12-08', 'string', '1', 'string', 'string', 'string', '0', '0', 'string', '1', '2018-12-08 21:37:36', '2018-12-08 21:37:36', '0', '0');
-INSERT INTO `sys_user` VALUES ('4', 'string1', '2018-12-08', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '1', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
+INSERT INTO `sys_user` VALUES ('4', 'string11111', '2018-12-08', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '0', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('5', 'string2', '2018-12-08', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '1', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('6', 'string3', '2018-12-08', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '1', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('8', 'string5', '2018-12-08', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '0', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
@@ -82,3 +101,4 @@ INSERT INTO `sys_user` VALUES ('12', 'string9', '2018-12-05', 'string', '0', 'st
 INSERT INTO `sys_user` VALUES ('13', 'stringAAAAA', '2018-12-04', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '0', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('15', 'stringAAAAAdfdddd', '2018-12-02', 'string', '0', 'string', 'string', 'string', '0', '0', 'string', '0', '2018-12-08 22:25:58', '2018-12-08 22:25:58', '0', '0');
 INSERT INTO `sys_user` VALUES ('16', '123', '2019-01-10', '123', '0', '', '', '', null, null, '33331111', '0', null, null, null, null);
+INSERT INTO `sys_user` VALUES ('17', '11', null, '222', null, '', '', '', null, null, '1223333', '1', null, null, null, null);

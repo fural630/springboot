@@ -13,6 +13,13 @@ var constant = {
 		label : '禁用',
 		value : 0
 	} ],
+	dbTypeItem : [{
+		label : 'Oracle',
+		value : 1
+	}, {
+		label : 'Mysql',
+		value : 0
+	}],
 	
 	/**
 	 * 翻译性别

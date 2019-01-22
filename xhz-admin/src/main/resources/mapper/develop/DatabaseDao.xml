@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhz.web.module.develop.dao.DatabaseDao">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xhz.web.module.develop.entity.DatabaseDO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="user_name" property="userName" />
+        <result column="pass_word" property="passWord" />
+        <result column="db_type" property="dbType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, url, user_name, pass_word, db_type
+    </sql>
+
+
+	<select id="selectDatabaseDTOPage" resultType="com.xhz.web.module.develop.entity.DatabaseDTO">
+    	select * from sys_database
+    	<where>
+    		<if test="url != null and url.trim() != ''">
+    			and url like concat('%',#{url},'%')
+    		</if>
+    		<if test="name != null and name.trim() != ''">
+    			and name like concat('%',#{name},'%')
+    		</if>
+    		<if test="dbType != null and dbType.trim() != ''">
+    			and db_type = #{dbType}
+    		</if>
+    	</where>
+    	<choose>
+            <when test="field != null and field.trim() != ''">
+                order by ${field} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="selectDatabaseDTOList" resultType="com.xhz.web.module.develop.entity.DatabaseDTO">
+		select * from sys_database
+	</select>
+	
+	<select id="selectDatabaseDTOById" resultType="com.xhz.web.module.develop.entity.DatabaseDTO">
+		select * from sys_database where id = #{id}
+	</select>
+
+</mapper>

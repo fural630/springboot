@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>数据源管理</title>
+		<#include "/common/header.html">
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<div class="frame-card">
+				<div class="frame-card-header">
+					<el-form ref="queryForm" :model="q" label-width="90px">
+						<el-row>
+							<el-col :span="4">
+								<el-form-item prop="name" label="数据源名称">
+									<el-input v-model="q.name" clearable></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="4">
+								<el-form-item prop="url" label="链接地址">
+									<el-input v-model="q.url" clearable></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="4">
+								<el-form-item prop="dbType" label="数据库类型">
+									<el-select v-model="q.dbType" clearable>
+										<el-option v-for="item in dbTypeItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
+									</el-select>
+								</el-form-item>
+							</el-col>
+							&nbsp;&nbsp;
+							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+							<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+						</el-row>
+					</el-form>
+				</div>
+				<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+				<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+				<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+				<div>
+					<table class="layui-hide" id="databaseTable" lay-filter="databaseTable"></table>
+				</div>
+			</div>
+			
+			<div id="databaseDialog" class="frame-dialog">
+				<el-card class="box-card">
+					<el-form @submit.native.prevent ref="databaseForm" :rules="ruleValidate" :model="database" label-width="100px">
+						<el-form-item label="数据库类型" prop="dbType">
+			            	<el-radio-group v-model="database.dbType">
+			                	<el-radio v-for="item in dbTypeItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+			                </el-radio-group>
+			            </el-form-item>
+						<el-form-item label="名称" prop="name">
+			                <el-input v-model="database.name" placeholder="数据源名称"/>
+			            </el-form-item>
+			            <el-form-item label="链接地址" prop="url">
+			                <el-input v-model="database.url" placeholder="链接地址"/>
+			            </el-form-item>
+			            <el-form-item label="用户名" prop="userName">
+			                <el-input v-model="database.userName" placeholder="用户名"/>
+			            </el-form-item>
+			            <el-form-item label="密码" prop="passWord">
+			                <el-input v-model="database.passWord" type="password" placeholder="密码"/>
+			            </el-form-item>
+					</el-form>
+				</el-card>
+			</div>
+		</div>
+		<script src="${basePath}/js/module/database.js?_${.now?long}"></script>
+	</body>
+</html>
