@@ -24,9 +24,9 @@
             var currentId = $('.page-tabs-content').find('.active').attr('data-id');
             var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
             var url = target.attr('src');
-            //$.loading(true);
+//            $.loading(true);
             target.attr('src', url).load(function () {
-                //$.loading(false);
+//                $.loading(false);
             });
         },
         activeTab: function () {
@@ -94,8 +94,7 @@
                         }
                     });
                 }
-            }
-            else {
+            } else {
                 $(this).parents('.menuTab').remove();
                 $('.mainContent .LRADMS_iframe').each(function () {
                     if ($(this).data('id') == closeTabId) {
@@ -136,7 +135,7 @@
                 }
             });
             if (flag) {
-                var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-remove"></i></a>';
+                var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + '&nbsp;&nbsp;<i class="fa fa-times-circle"></a>';
                 $('.menuTab').removeClass('active');
                 var str1 = '<iframe class="LRADMS_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
                 $('.mainContent').find('iframe.LRADMS_iframe').hide();
@@ -265,6 +264,13 @@
                     $.learuntab.exitFullscreen();
                 }
             });
+        },
+        openTab : function (title, url) {
+        	if ($("a.menuItem[data-id='" + url + "']").length == 0) {
+				$("#hiddenMenu").append('<a class="menuItem" data-id="' + url + '" href="' + url + '">' + title + '</a>');
+				$.learuntab.init();
+			}
+        	$("a.menuItem[data-id='" + url + "']").click();
         }
     };
     $.learunindex = {
@@ -394,9 +400,4 @@
 			return menu;
 		 }
     };
-    $(function () {
-        $.learunindex.load();
-        $.learunindex.loadMenu($.learunMenu.loadMenu());
-        $.learuntab.init();
-    });
 })(jQuery);

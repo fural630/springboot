@@ -1,17 +1,10 @@
 package com.xhz.web.module.sys.entity;
 
-import javax.validation.constraints.NotNull;
-import com.xhz.validator.group.AddGroup;
-import com.xhz.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.Length;
-
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
@@ -19,71 +12,92 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-21
+ * @since 2019-01-22
  */
 @TableName("sys_user")
-@ApiModel(value="UserDO对象", description="用户")
 public class UserDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户ID")
-    @NotNull(groups = { UpdateGroup.class }, message = "修改时用户ID不能为空")
+    /**
+     * 用户ID
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "用户名")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "用户名不能为空")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "用户名最长度不允许超过20")
+    /**
+     * 用户名
+     */
     private String name;
 
-    @ApiModelProperty(value = "出生日期")
+    /**
+     * 出生日期
+     */
     private Date birthDay;
 
-    @ApiModelProperty(value = "密码")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "密码不能为空")
-    @Length(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过50")
+    /**
+     * 密码
+     */
     private String passWord;
 
-    @ApiModelProperty(value = "性别 1-男、0-女、其他-未知")
+    /**
+     * 性别 1-男、0-女、其他-未知
+     */
     private Integer sex;
 
-    @ApiModelProperty(value = "邮箱")
-    @Length(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "邮箱最长度不允许超过50")
+    /**
+     * 邮箱
+     */
     private String email;
 
-    @ApiModelProperty(value = "手机号")
-    @Length(max = 30, groups = { AddGroup.class, UpdateGroup.class }, message = "手机号最长度不允许超过30")
+    /**
+     * 手机号
+     */
     private String phone;
 
-    @ApiModelProperty(value = "身份证号")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "身份证号最长度不允许超过20")
+    /**
+     * 身份证号
+     */
     private String idCard;
 
-    @ApiModelProperty(value = "头像ID")
+    /**
+     * 头像ID
+     */
     private Long avatarId;
 
-    @ApiModelProperty(value = "部门ID")
+    /**
+     * 部门ID
+     */
     private Long departmentCid;
 
-    @ApiModelProperty(value = "用户账号")
-    @Length(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "用户账号最长度不允许超过40")
+    /**
+     * 用户账号
+     */
     private String account;
 
-    @ApiModelProperty(value = "状态：1-正常，0-删除")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "状态：1-正常，0-删除不能为空")
+    /**
+     * 状态：1-正常，0-删除
+     */
     private Integer isDeleted;
 
-    @ApiModelProperty(value = "创建时间")
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
-    @ApiModelProperty(value = "修改时间")
+    /**
+     * 修改时间
+     */
     private Date updateTime;
 
-    @ApiModelProperty(value = "创建人ID")
+    /**
+     * 创建人ID
+     */
     private Long createUserId;
 
-    @ApiModelProperty(value = "修改人ID")
+    /**
+     * 修改人ID
+     */
     private Long updateUserId;
 
     public Long getId() {

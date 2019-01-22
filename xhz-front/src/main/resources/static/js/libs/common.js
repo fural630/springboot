@@ -119,6 +119,10 @@ function toUrl(href) {
     window.location.href = href;
 }
 
+function newTab(title, url) {
+	top.$.learuntab.openTab(title, url);
+}
+
 /**
  * 
  * Ajax.request({ url: '', //访问路径 dataType: 'json', //访问类型 'json','html'等

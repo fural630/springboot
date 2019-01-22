@@ -19,8 +19,8 @@ var vm = new Vue({
 			phone : '',
 			isDeleted : 1
 		},
-		sexList : constant.sexList,
-		isDeletedList : constant.isDeletedList,
+		sexItem : constant.sexItem,
+		isDeletedItem : constant.isDeletedItem,
 		ruleValidate : {
 			account : [ {
 				required : true,
@@ -146,6 +146,19 @@ var vm = new Vue({
 			this.showList = true;
 			this.query();
 		},
+		isDeletedById : function (id, isDeleted) {
+			var url = isDeleted ? "../sys/users/enable/" + id : "../sys/users/disable/" + id;
+			Ajax.request({
+				url: url,
+				async: true,
+				type: 'GET',
+				successCallback: function(r) {
+					alert('操作成功', function(index) {
+						vm.reload();
+					});
+				}
+			});
+		},
 		handleSubmit : function(name) {
 			handleSubmitValidate(vm, name, function() {
 				vm.saveOrUpdate();
@@ -160,6 +173,7 @@ var vm = new Vue({
 layui.use('table', function() {
 	var table = layui.table;
 	var $ = layui.$;
+	var form = layui.form;
 
 	table.render({
 		elem : '#userTable',
@@ -216,11 +230,13 @@ layui.use('table', function() {
 			title : '所属部门'
 		}, {
 			field : 'isDeleted',
-			width : 80,
-			title : '状态',
-			sort : true,
-			templet : function(d) {
-				return constant.transIsDeleted(d.isDeleted)
+			width : 100,
+			title : '操作',
+			align : 'center',
+			templet: function(d) {
+				var checked = d.isDeleted === 0 ? 'checked' : '';
+				return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.id +
+					'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
 			}
 		} ] ],
 		page : true
@@ -238,5 +254,24 @@ layui.use('table', function() {
 				order : obj.type
 			}
 		});
+	});
+	
+	form.on('switch(isDeleted)', function(obj) {
+		var id = this.value;
+		if (obj.elem.checked) {
+			confirm("确认要开启吗？", function() {
+				vm.isDeletedById(id, true);
+			}, function() {
+				$("input[type='checkbox'][value='" + id + "']").prop("checked", false);
+				form.render('checkbox');
+			});
+		} else {
+			confirm("确认要禁用吗？", function() {
+				vm.isDeletedById(id, false);
+			}, function() {
+				$("input[type='checkbox'][value='" + id + "']").prop("checked", true);
+				form.render('checkbox');
+			});
+		}
 	});
 });

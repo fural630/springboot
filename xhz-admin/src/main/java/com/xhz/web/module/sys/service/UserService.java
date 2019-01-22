@@ -7,6 +7,7 @@ import java.util.Map;
 import com.xhz.web.module.sys.entity.UserDO;
 import com.xhz.web.module.sys.entity.UserDTO;
 import com.xhz.web.module.sys.dao.UserDao;
+import com.xhz.constant.Constant.IsDeleted;
 import com.xhz.util.CopyUtil;
 
 import org.springframework.stereotype.Service;
@@ -70,5 +71,19 @@ public class UserService {
 	
 	public List<UserDO> selectList() {
 		return userDao.selectList(null);
+	}
+
+	public void enableById(Long id) {
+		UserDO userDO = new UserDO();
+		userDO.setId(id);
+		userDO.setIsDeleted(IsDeleted.NO.getValue());
+		userDao.updateById(userDO);
+	}
+
+	public void disableById(Long id) {
+		UserDO userDO = new UserDO();
+		userDO.setId(id);
+		userDO.setIsDeleted(IsDeleted.YES.getValue());
+		userDao.updateById(userDO);
 	}
 }

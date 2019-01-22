@@ -25,7 +25,7 @@
 						<el-col :span="4">
 							<el-form-item prop="isDeleted" label="状态">
 								<el-select v-model="q.isDeleted" clearable>
-									<el-option v-for="item in isDeletedList" :value="item.value" :key="item.value" :label="item.label"></el-option>
+									<el-option v-for="item in isDeletedItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
 								</el-select>
 							</el-form-item>
 						</el-col>
@@ -69,7 +69,7 @@
 				            </el-form-item>
 				            <el-form-item label="性别" prop="sex">
 				            	<el-radio-group v-model="user.sex">
-				                	<el-radio v-for="item in sexList" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+				                	<el-radio v-for="item in sexItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
 				                </el-radio-group>
 				            </el-form-item>
 				            <el-form-item label="邮箱" prop="email">
@@ -80,7 +80,7 @@
 				            </el-form-item>
 				            <el-form-item label="状态" prop="isDeleted">
 				                <el-radio-group v-model="user.isDeleted">
-				                	<el-radio v-for="item in isDeletedList" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+				                	<el-radio v-for="item in isDeletedItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
 				                </el-radio-group>
 				            </el-form-item>
 				            <el-form-item>

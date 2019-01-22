@@ -11,23 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-
-
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xhz.util.Query;
 import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
-import com.xhz.web.module.sys.service.UserService;
 import com.xhz.web.module.sys.entity.UserDTO;
+import com.xhz.web.module.sys.service.UserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 
@@ -42,7 +39,7 @@ import com.xhz.web.module.sys.entity.UserDTO;
  
 @RestController
 @RequestMapping("/sys")
-@Api(tags = {"用户"})
+@Api(tags = {"用户管理"})
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -135,6 +132,30 @@ public class UserController {
 		PageHelper.startPage(query.getPage(), query.getLimit());
 		PageInfo<UserDTO> pageInfo = new PageInfo<UserDTO>(userService.selectUserDTOPage(query));
 		return R.ok().put("data", pageInfo);
+	}
+	
+	/**
+	 * 禁用用户
+	 * @param id
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="启用用户")
+	@RequestMapping(value = "/users/enable/{id}", method = RequestMethod.GET)
+	public R enable(@PathVariable("id") Long id) {
+		userService.enableById(id);
+		return R.ok();
+	}
+	
+	/**
+	 * 禁用用户
+	 * @param id
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="禁用用户")
+	@RequestMapping(value = "/users/disable/{id}", method = RequestMethod.GET)
+	public R disable(@PathVariable("id") Long id) {
+		userService.disableById(id);
+		return R.ok();
 	}
 
 }

@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-21
+ * @since 2019-01-22
  */
 @ApiModel(value="UserDTO对象", description="用户")
 public class UserDTO {
@@ -29,7 +29,7 @@ public class UserDTO {
     @NotNull(groups = { UpdateGroup.class }, message = "修改时用户ID不能为空")
     private Long id;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "用户名不能为空")
     @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "用户名最长度不允许超过20")
     private String name;
@@ -37,7 +37,7 @@ public class UserDTO {
     @ApiModelProperty(value = "出生日期")
     private Date birthDay;
 
-    @ApiModelProperty(value = "密码")
+    @ApiModelProperty(value = "密码", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "密码不能为空")
     @Length(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过50")
     private String passWord;
@@ -67,21 +67,9 @@ public class UserDTO {
     @Length(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "用户账号最长度不允许超过40")
     private String account;
 
-    @ApiModelProperty(value = "状态：1-正常，0-删除")
+    @ApiModelProperty(value = "状态：1-正常，0-删除", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "状态：1-正常，0-删除不能为空")
     private Integer isDeleted;
-
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-    @ApiModelProperty(value = "修改时间")
-    private Date updateTime;
-
-    @ApiModelProperty(value = "创建人ID")
-    private Long createUserId;
-
-    @ApiModelProperty(value = "修改人ID")
-    private Long updateUserId;
 
     public Long getId() {
         return id;
@@ -167,33 +155,4 @@ public class UserDTO {
     public void setIsDeleted(Integer isDeleted) {
         this.isDeleted = isDeleted;
     }
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-    public Long getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(Long createUserId) {
-        this.createUserId = createUserId;
-    }
-    public Long getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(Long updateUserId) {
-        this.updateUserId = updateUserId;
-    }
-
 }
