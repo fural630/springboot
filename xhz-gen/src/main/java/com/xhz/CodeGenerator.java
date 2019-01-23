@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
@@ -103,7 +104,6 @@ public class CodeGenerator {
 		if (StringUtils.isNoneBlank(controllerName)) {
 			gc.setControllerName(controllerName);
 		}
-		mpg.setGlobalConfig(gc);
 
 		// 数据源配置
 		DataSourceConfig dsc = new DataSourceConfig();
@@ -119,8 +119,10 @@ public class CodeGenerator {
 		} 
 		if (dbType == DbType.ORACLE) {
 			dsc.setDbQuery(new CustomDbOracleQuery());
+			gc.setIdType(IdType.UUID);
 		}
 		mpg.setDataSource(dsc);
+		mpg.setGlobalConfig(gc);
 
 		// 包配置
 		PackageConfig pc = new PackageConfig();

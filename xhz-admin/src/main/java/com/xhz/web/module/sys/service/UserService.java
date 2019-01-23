@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>
- * 用户 服务实现类
+ * 用户信息 服务实现类
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-21
+ * @since 2019-01-23
  */
 @Service
 public class UserService {
@@ -37,7 +37,7 @@ public class UserService {
 		userDao.updateById(userDO);
 	}
 	
-	public UserDTO selectUserDTOById(Long id) {
+	public UserDTO selectUserDTOById(String id) {
 		return userDao.selectUserDTOById(id);
 	}
 	
@@ -53,11 +53,11 @@ public class UserService {
 		userDao.insert(userDO);
 	}
 
-	public void deleteById(Long id) {
+	public void deleteById(String id) {
 		userDao.deleteById(id);
 	}
 
-	public void deleteBatchIds(List<Long> ids) {
+	public void deleteBatchIds(List<String> ids) {
 		userDao.deleteBatchIds(ids);
 	}
 
@@ -65,7 +65,7 @@ public class UserService {
 		userDao.updateById(userDO);
 	}
 
-	public UserDO selectById(Long id) {
+	public UserDO selectById(String id) {
 		return userDao.selectById(id);
 	}
 	
@@ -73,14 +73,14 @@ public class UserService {
 		return userDao.selectList(null);
 	}
 
-	public void enableById(Long id) {
+	public void enableById(String id) {
 		UserDO userDO = new UserDO();
 		userDO.setId(id);
 		userDO.setIsDeleted(IsDeleted.NO.getValue());
 		userDao.updateById(userDO);
 	}
 
-	public void disableById(Long id) {
+	public void disableById(String id) {
 		UserDO userDO = new UserDO();
 		userDO.setId(id);
 		userDO.setIsDeleted(IsDeleted.YES.getValue());

@@ -11,17 +11,17 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- * 用户 Dao 接口
+ * 用户信息 Dao 接口
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-21
+ * @since 2019-01-23
  */
 public interface UserDao extends BaseMapper<UserDO> {
 	
 	List<UserDTO> selectUserDTOPage(Map<String, Object> query);
 	
-	UserDTO selectUserDTOById(Long id);
+	UserDTO selectUserDTOById(String id);
 	
 	List<UserDTO> selectUserDTOList();
 }

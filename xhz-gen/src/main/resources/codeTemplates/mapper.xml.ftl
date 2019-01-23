@@ -7,11 +7,13 @@
 <#assign entityDTO = "${className}DTO"/>
 <#assign entitydto = "${classname}DTO"/>
 <#assign pkName = ''/>
+<#assign pkname = ''/>
 <#assign comment = ''/>
 <#assign columnType = ''/>
 <#list table.fields as field>
 	<#if field.keyFlag>
-		<#assign pkName = field.propertyName/>
+		<#assign pkName = field.name/>
+		<#assign pkname = field.propertyName/>
 		<#assign comment = field.comment/>
 		<#assign columnType = field.columnType?lower_case?cap_first />
 	</#if>
@@ -72,7 +74,7 @@
 	</select>
 	
 	<select id="select${entityDTO}ById" resultType="${package.Entity}.${entityDTO}">
-		select * from ${table.name} where ${pkName} = ${r"#{"}${pkName}${r"}"}
+		select * from ${table.name} where ${pkName} = ${r"#{"}${pkname}${r"}"}
 	</select>
 
 </mapper>

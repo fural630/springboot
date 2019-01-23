@@ -8,10 +8,10 @@ var constant = {
 	} ],
 	isDeletedItem : [ {
 		label : '正常',
-		value : '1'
+		value : '0'
 	}, {
 		label : '禁用',
-		value : '0'
+		value : '1'
 	} ],
 	dbTypeItem : [{
 		label : 'Oracle',

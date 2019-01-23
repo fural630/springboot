@@ -13,8 +13,8 @@
 				<el-form ref="queryForm" :model="q" label-width="80px">
 					<el-row>
 						<el-col :span="4">
-							<el-form-item prop="departmentCid" label="所属部门">
-								<el-input v-model="q.departmentCid" clearable></el-input>
+							<el-form-item prop="deptId" label="所属部门">
+								<el-input v-model="q.deptId" clearable></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :span="4">
@@ -80,7 +80,9 @@
 				            </el-form-item>
 				            <el-form-item label="状态" prop="isDeleted">
 				                <el-radio-group v-model="user.isDeleted">
-				                	<el-radio v-for="item in isDeletedItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+				                	<el-radio v-for="item in isDeletedItem" :label="item.value" :key="item.value">
+				                		{{item.label}}
+				                	</el-radio>
 				                </el-radio-group>
 				            </el-form-item>
 				            <el-form-item>

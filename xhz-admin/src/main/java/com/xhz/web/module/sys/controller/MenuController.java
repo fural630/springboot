@@ -45,7 +45,7 @@ import com.xhz.web.module.sys.entity.MenuDTO;
  
 @RestController
 @RequestMapping("/sys")
-@Api(tags = {""})
+@Api(tags = {"菜单管理"})
 public class MenuController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MenuController.class);

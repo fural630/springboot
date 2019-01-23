@@ -1,9 +1,11 @@
 var vm = new Vue({
 	el : '#app',
 	data : {
+		moduleName : 'user',
+		baseUrl : '/sys/users',
 		q : {
 			name : '',
-			departmentCid : '',
+			deptId : '',
 			isDeleted : ''
 		},
 		user : {
@@ -17,7 +19,7 @@ var vm = new Vue({
 			sex : '',
 			email : '',
 			phone : '',
-			isDeleted : 1
+			isDeleted : ''
 		},
 		sexItem : constant.sexItem,
 		isDeletedItem : constant.isDeletedItem,
@@ -41,7 +43,7 @@ var vm = new Vue({
 				required : true,
 				message : '状态必须设置',
 				trigger : 'change',
-				type : 'number'
+				type : 'string'
 			} ],
 		},
 		showList : true,
@@ -49,19 +51,19 @@ var vm = new Vue({
 	},
 	methods : {
 		query : function() {
-			layui.table.reload('userTable', {
+			layui.table.reload(vm.moduleName + 'Table', {
 				where : {
-					isDeleted : this.q.isDeleted === undefined ? '' : this.q.isDeleted,
-					name : this.q.name,
-					departmentCid : this.q.departmentCid
+					isDeleted : vm.q.isDeleted === undefined ? '' : vm.q.isDeleted,
+					name : vm.q.name,
+					deptId : vm.q.deptId
 				}
 			});
 		},
 		add : function() {
-			vm.handleReset('userForm');
-			this.title = '添加';
-			this.showList = false;
-			this.user = {
+			vm.handleReset(vm.moduleName + 'Form');
+			vm.title = '添加';
+			vm.showList = false;
+			vm.user = {
 				id : '',
 				passWord : '',
 				account : '',
@@ -72,12 +74,12 @@ var vm = new Vue({
 				sex : '',
 				email : '',
 				phone : '',
-				isDeleted : 1
+				isDeleted : '0'
 			}
 		},
 		update : function() {
-			vm.handleReset('userForm');
-			var checkStatus = layui.table.checkStatus('userTable');
+			vm.handleReset(vm.moduleName + 'Form');
+			var checkStatus = layui.table.checkStatus(vm.moduleName + 'Table');
 			var length = checkStatus.data.length;
 			if (length == 0) {
 				this.$message.warning('请勾选要修改的数据!');
@@ -87,13 +89,13 @@ var vm = new Vue({
 				this.$message.warning('请只勾选一条要修改的数据!');
 				return;
 			}
-			this.title = '修改';
-			this.showList = false;
+			vm.title = '修改';
+			vm.showList = false;
 
 			var userId = checkStatus.data[0].id;
 
 			Ajax.request({
-				url : "../sys/users/" + userId,
+				url : vm.baseUrl + "/" + userId,
 				async : true,
 				type : 'GET',
 				successCallback : function(r) {
@@ -103,7 +105,7 @@ var vm = new Vue({
 
 		},
 		del : function () {
-			var checkStatus = layui.table.checkStatus('userTable');
+			var checkStatus = layui.table.checkStatus(vm.moduleName + 'Table');
 			var length = checkStatus.data.length;
 			if (length == 0) {
 				this.$message.warning('请勾选要删除的数据!');
@@ -115,7 +117,7 @@ var vm = new Vue({
 			}
 			confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-                    url: "../sys/users/deleteBatch",
+                    url: vm.baseUrl + "/deleteBatch",
                     params: JSON.stringify(ids),
                     contentType: "application/json",
                     type: 'POST',
@@ -128,10 +130,9 @@ var vm = new Vue({
             });
 		},
 		saveOrUpdate : function() {
-			var url = '../sys/users';
 			var type = vm.user.id == '' ? 'POST' : 'PATCH';
 			Ajax.request({
-				url : url,
+				url : vm.baseUrl,
 				params : JSON.stringify(vm.user),
 				contentType : "application/json",
 				type : type,
@@ -143,11 +144,11 @@ var vm = new Vue({
 			});
 		},
 		reload : function() {
-			this.showList = true;
-			this.query();
+			vm.showList = true;
+			vm.query();
 		},
 		isDeletedById : function (id, isDeleted) {
-			var url = isDeleted ? "../sys/users/enable/" + id : "../sys/users/disable/" + id;
+			var url = isDeleted ? vm.baseUrl + "/enable/" + id : vm.baseUrl + "/disable/" + id;
 			Ajax.request({
 				url: url,
 				async: true,
@@ -176,8 +177,8 @@ layui.use('table', function() {
 	var form = layui.form;
 
 	table.render({
-		elem : '#userTable',
-		url : '/sys/users/page',
+		elem : '#' + vm.moduleName + 'Table',
+		url : vm.baseUrl + '/page',
 		autoSort : false,
 		parseData : function(res) {
 			return {
@@ -188,11 +189,6 @@ layui.use('table', function() {
 		},
 		cols : [ [ {
 			type : 'checkbox'
-		}, {
-			field : 'id',
-			width : 60,
-			title : 'ID',
-			sort : true
 		}, {
 			field : 'name',
 			width : 130,
@@ -225,7 +221,7 @@ layui.use('table', function() {
 				return constant.transDate(d.birthDay, 'yyyy年MM月dd日')
 			}
 		}, {
-			field : 'departmentCid',
+			field : 'deptId',
 			minWidth : 100,
 			title : '所属部门'
 		}, {
@@ -234,7 +230,7 @@ layui.use('table', function() {
 			title : '操作',
 			align : 'center',
 			templet: function(d) {
-				var checked = d.isDeleted === 0 ? 'checked' : '';
+				var checked = d.isDeleted === '0' ? 'checked' : '';
 				return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.id +
 					'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
 			}
@@ -247,7 +243,7 @@ layui.use('table', function() {
 		if (obj.field == "birthDay") {
 			column = "birth_day";
 		}
-		table.reload('userTable', {
+		table.reload(vm.moduleName + 'Table', {
 			initSort : obj,
 			where : {
 				field : column,

@@ -11,35 +11,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.xhz.util.Query;
-import com.xhz.util.R;
-import com.xhz.validator.ValidatorUtils;
-import com.xhz.validator.group.AddGroup;
-import com.xhz.validator.group.UpdateGroup;
-import com.xhz.web.module.sys.entity.UserDTO;
-import com.xhz.web.module.sys.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 
 
+import org.springframework.web.bind.annotation.RestController;
+import com.xhz.util.Query;
+import com.xhz.util.R;
+import com.xhz.validator.ValidatorUtils;
+import com.xhz.validator.group.AddGroup;
+import com.xhz.validator.group.UpdateGroup;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import com.xhz.web.module.sys.service.UserService;
+import com.xhz.web.module.sys.entity.UserDTO;
+
+
+
 /**
  * <p>
- * 用户 前端控制器
+ * 用户信息 前端控制器
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-21
+ * @since 2019-01-23
  */
  
 @RestController
 @RequestMapping("/sys")
-@Api(tags = {"用户管理"})
+@Api(tags = {"用户信息"})
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -67,7 +70,7 @@ public class UserController {
 	 */
 	@ApiOperation(value="删除")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public R delete(@PathVariable("id") Long id) {
+	public R delete(@PathVariable("id") String id) {
 		userService.deleteById(id);
 		return R.ok();
 	}
@@ -79,7 +82,7 @@ public class UserController {
 	 */
 	@ApiOperation(value="批量删除")
 	@RequestMapping(value = "/users/deleteBatch", method = RequestMethod.POST)
-	public R deleteBatchByIds(@RequestBody List<Long> ids) {
+	public R deleteBatchByIds(@RequestBody List<String> ids) {
 		userService.deleteBatchIds(ids);
 		return R.ok();
 	}
@@ -104,7 +107,7 @@ public class UserController {
 	 */
 	@ApiOperation(value="查询")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public R info(@PathVariable("id") Long id) {
+	public R info(@PathVariable("id") String id) {
 		UserDTO userDTO = userService.selectUserDTOById(id);
 		return R.ok().put("data", userDTO);
 	}
@@ -141,7 +144,7 @@ public class UserController {
 	 */
 	@ApiOperation(value="启用用户")
 	@RequestMapping(value = "/users/enable/{id}", method = RequestMethod.GET)
-	public R enable(@PathVariable("id") Long id) {
+	public R enable(@PathVariable("id") String id) {
 		userService.enableById(id);
 		return R.ok();
 	}
@@ -153,7 +156,7 @@ public class UserController {
 	 */
 	@ApiOperation(value="禁用用户")
 	@RequestMapping(value = "/users/disable/{id}", method = RequestMethod.GET)
-	public R disable(@PathVariable("id") Long id) {
+	public R disable(@PathVariable("id") String id) {
 		userService.disableById(id);
 		return R.ok();
 	}

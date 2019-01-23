@@ -5,38 +5,38 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xhz.web.module.sys.entity.UserDO">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="birth_day" property="birthDay" />
-        <result column="pass_word" property="passWord" />
-        <result column="sex" property="sex" />
-        <result column="email" property="email" />
-        <result column="phone" property="phone" />
-        <result column="id_card" property="idCard" />
-        <result column="avatar_id" property="avatarId" />
-        <result column="department_cid" property="departmentCid" />
-        <result column="account" property="account" />
-        <result column="is_deleted" property="isDeleted" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="create_user_id" property="createUserId" />
-        <result column="update_user_id" property="updateUserId" />
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="ACCOUNT" property="account" />
+        <result column="DEPT_ID" property="deptId" />
+        <result column="BIRTH_DAY" property="birthDay" />
+        <result column="PASS_WORD" property="passWord" />
+        <result column="SEX" property="sex" />
+        <result column="EMAIL" property="email" />
+        <result column="PHONE" property="phone" />
+        <result column="ID_CARD" property="idCard" />
+        <result column="AVATAR_ID" property="avatarId" />
+        <result column="IS_DELETED" property="isDeleted" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="CREATE_USER_ID" property="createUserId" />
+        <result column="UPDATE_USER_ID" property="updateUserId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, birth_day, pass_word, sex, email, phone, id_card, avatar_id, department_cid, account, is_deleted, create_time, update_time, create_user_id, update_user_id
+        ID, NAME, ACCOUNT, DEPT_ID, BIRTH_DAY, PASS_WORD, SEX, EMAIL, PHONE, ID_CARD, AVATAR_ID, IS_DELETED, CREATE_TIME, UPDATE_TIME, CREATE_USER_ID, UPDATE_USER_ID
     </sql>
 
 
 	<select id="selectUserDTOPage" resultType="com.xhz.web.module.sys.entity.UserDTO">
-    	select * from sys_user
+    	select * from SYS_USER
     	<where>
     		<if test="name != null and name.trim() != ''">
-    			and name like concat('%',#{name},'%')
+    			and NAME like '%'||#{name}||'%'
     		</if>
     		<if test="isDeleted != null and isDeleted.trim() != ''">
-    			and is_deleted = #{isDeleted}
+    			and IS_DELETED = #{isDeleted}
     		</if>
     	</where>
     	<choose>
@@ -44,17 +44,17 @@
                 order by ${field} ${order}
             </when>
             <otherwise>
-                order by id desc
+                order by ID desc
             </otherwise>
         </choose>
     </select>
     
     <select id="selectUserDTOList" resultType="com.xhz.web.module.sys.entity.UserDTO">
-		select * from sys_user
+		select * from SYS_USER
 	</select>
 	
 	<select id="selectUserDTOById" resultType="com.xhz.web.module.sys.entity.UserDTO">
-		select * from sys_user where id = #{id}
+		select * from SYS_USER where ID = #{id}
 	</select>
 
 </mapper>

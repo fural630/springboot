@@ -2,7 +2,7 @@ var vm = new Vue({
 	el : '#app',
 	data : {
 		moduleName : 'database',
-		baseUrl : '/develop/databases/',
+		baseUrl : '/develop/databases',
 		q : {
 			name : '',
 			url : '',
@@ -42,7 +42,7 @@ var vm = new Vue({
 				required : true,
 				message : '数据库类型必须设置',
 				trigger : 'change',
-				type : 'number'
+				type : 'string'
 			} ],
 		},
 		title : ''
@@ -85,7 +85,7 @@ var vm = new Vue({
 			var id = checkStatus.data[0].id;
 
 			Ajax.request({
-				url : vm.baseUrl + id,
+				url : vm.baseUrl + "/" +id,
 				async : true,
 				type : 'GET',
 				successCallback : function(r) {
@@ -108,7 +108,7 @@ var vm = new Vue({
 			}
 			confirm('确定要删除选中的记录？', function () {
                 Ajax.request({
-                    url: vm.baseUrl + "deleteBatch",
+                    url: vm.baseUrl + "/deleteBatch",
                     params: JSON.stringify(ids),
                     contentType: "application/json",
                     type: 'POST',
@@ -171,7 +171,7 @@ layui.use('table', function() {
 
 	table.render({
 		elem : '#' + vm.moduleName + 'Table',
-		url : vm.baseUrl + 'page',
+		url : vm.baseUrl + '/page',
 		autoSort : false,
 		parseData : function(res) {
 			return {
@@ -182,11 +182,6 @@ layui.use('table', function() {
 		},
 		cols : [ [ {
 			type : 'checkbox'
-		}, {
-			field : 'id',
-			width : 60,
-			title : 'ID',
-			sort : true
 		}, {
 			field : 'name',
 			width : 200,

@@ -4,17 +4,18 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
 /**
  * <p>
- * 用户
+ * 用户信息
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-22
+ * @since 2019-01-23
  */
-@TableName("sys_user")
+@TableName("SYS_USER")
 public class UserDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,89 +23,104 @@ public class UserDO implements Serializable {
     /**
      * 用户ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "ID", type = IdType.UUID)
+    private String id;
 
     /**
      * 用户名
      */
+    @TableField("NAME")
     private String name;
+
+    /**
+     * 用户账号
+     */
+    @TableField("ACCOUNT")
+    private String account;
+
+    /**
+     * 部门ID
+     */
+    @TableField("DEPT_ID")
+    private String deptId;
 
     /**
      * 出生日期
      */
+    @TableField("BIRTH_DAY")
     private Date birthDay;
 
     /**
      * 密码
      */
+    @TableField("PASS_WORD")
     private String passWord;
 
     /**
-     * 性别 1-男、0-女、其他-未知
+     * 性别
      */
-    private Integer sex;
+    @TableField("SEX")
+    private String sex;
 
     /**
      * 邮箱
      */
+    @TableField("EMAIL")
     private String email;
 
     /**
      * 手机号
      */
+    @TableField("PHONE")
     private String phone;
 
     /**
      * 身份证号
      */
+    @TableField("ID_CARD")
     private String idCard;
 
     /**
      * 头像ID
      */
-    private Long avatarId;
+    @TableField("AVATAR_ID")
+    private String avatarId;
 
     /**
-     * 部门ID
+     * 删除标识
      */
-    private Long departmentCid;
-
-    /**
-     * 用户账号
-     */
-    private String account;
-
-    /**
-     * 状态：1-正常，0-删除
-     */
-    private Integer isDeleted;
+    @TableField("IS_DELETED")
+    private String isDeleted;
 
     /**
      * 创建时间
      */
+    @TableField("CREATE_TIME")
     private Date createTime;
 
     /**
      * 修改时间
      */
+    @TableField("UPDATE_TIME")
     private Date updateTime;
 
     /**
      * 创建人ID
      */
-    private Long createUserId;
+    @TableField("CREATE_USER_ID")
+    private String createUserId;
 
     /**
      * 修改人ID
      */
-    private Long updateUserId;
+    @TableField("UPDATE_USER_ID")
+    private String updateUserId;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getName() {
@@ -113,6 +129,20 @@ public class UserDO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
     public Date getBirthDay() {
         return birthDay;
@@ -128,11 +158,11 @@ public class UserDO implements Serializable {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
     public String getEmail() {
@@ -156,32 +186,18 @@ public class UserDO implements Serializable {
     public void setIdCard(String idCard) {
         this.idCard = idCard;
     }
-    public Long getAvatarId() {
+    public String getAvatarId() {
         return avatarId;
     }
 
-    public void setAvatarId(Long avatarId) {
+    public void setAvatarId(String avatarId) {
         this.avatarId = avatarId;
     }
-    public Long getDepartmentCid() {
-        return departmentCid;
-    }
-
-    public void setDepartmentCid(Long departmentCid) {
-        this.departmentCid = departmentCid;
-    }
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-    public Integer getIsDeleted() {
+    public String getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
+    public void setIsDeleted(String isDeleted) {
         this.isDeleted = isDeleted;
     }
     public Date getCreateTime() {
@@ -198,18 +214,18 @@ public class UserDO implements Serializable {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-    public Long getCreateUserId() {
+    public String getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(Long createUserId) {
+    public void setCreateUserId(String createUserId) {
         this.createUserId = createUserId;
     }
-    public Long getUpdateUserId() {
+    public String getUpdateUserId() {
         return updateUserId;
     }
 
-    public void setUpdateUserId(Long updateUserId) {
+    public void setUpdateUserId(String updateUserId) {
         this.updateUserId = updateUserId;
     }
 
@@ -218,6 +234,8 @@ public class UserDO implements Serializable {
         return "UserDO{" +
         "id=" + id +
         ", name=" + name +
+        ", account=" + account +
+        ", deptId=" + deptId +
         ", birthDay=" + birthDay +
         ", passWord=" + passWord +
         ", sex=" + sex +
@@ -225,8 +243,6 @@ public class UserDO implements Serializable {
         ", phone=" + phone +
         ", idCard=" + idCard +
         ", avatarId=" + avatarId +
-        ", departmentCid=" + departmentCid +
-        ", account=" + account +
         ", isDeleted=" + isDeleted +
         ", createTime=" + createTime +
         ", updateTime=" + updateTime +
