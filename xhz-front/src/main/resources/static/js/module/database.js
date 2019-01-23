@@ -204,10 +204,10 @@ layui.use('table', function() {
 			title : '数据库类型',
 			align : 'center',
 			templet: function(d) {
-				if (d.dbType === 0) {
+				if (d.dbType === '0') {
 					return '<span class="layui-badge layui-bg-orange">Mysql</span>';
 				}
-				if (d.dbType === 1) {
+				if (d.dbType === '1') {
 					return '<span class="layui-badge layui-bg-blue">Oracle</span>';
 				}
 			}

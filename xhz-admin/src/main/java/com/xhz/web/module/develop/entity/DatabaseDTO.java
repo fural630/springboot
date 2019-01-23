@@ -50,9 +50,8 @@ public class DatabaseDTO {
     @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过20")
     private String passWord;
 
-    @ApiModelProperty(value = "数据库类型", required = true)
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "数据库类型不能为空")
-    private Double dbType;
+    @ApiModelProperty(value = "数据库类型")
+    private String dbType;
 
     @ApiModelProperty(value = "最近测试链接时间")
     private Date lastTestTime;
@@ -92,11 +91,11 @@ public class DatabaseDTO {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-    public Double getDbType() {
+    public String getDbType() {
         return dbType;
     }
 
-    public void setDbType(Double dbType) {
+    public void setDbType(String dbType) {
         this.dbType = dbType;
     }
     public Date getLastTestTime() {

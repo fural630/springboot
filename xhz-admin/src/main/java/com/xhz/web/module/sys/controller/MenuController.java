@@ -61,7 +61,6 @@ public class MenuController {
 	@ApiOperation(value="新增")
 	@RequestMapping(value = "/menus", method = RequestMethod.POST)
 	public R insert(@RequestBody MenuDTO menuDTO) {
-		Dumper.dump(menuDTO);
 		ValidatorUtils.validateEntity(menuDTO, AddGroup.class);
 		menuService.insertMenuDTO(menuDTO);
 		return R.ok();

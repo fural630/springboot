@@ -54,7 +54,7 @@ public class DatabaseDO implements Serializable {
      * 数据库类型
      */
     @TableField("DB_TYPE")
-    private Double dbType;
+    private String dbType;
 
     /**
      * 最近测试链接时间
@@ -97,11 +97,11 @@ public class DatabaseDO implements Serializable {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-    public Double getDbType() {
+    public String getDbType() {
         return dbType;
     }
 
-    public void setDbType(Double dbType) {
+    public void setDbType(String dbType) {
         this.dbType = dbType;
     }
     public Date getLastTestTime() {
