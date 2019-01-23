@@ -150,8 +150,11 @@ var vm = new Vue({
 				}
 			});
 		},
+		connectTest : function (row) {
+			alert(row.name);
+		},
 		reload : function() {
-			this.query();
+			vm.query();
 		},
 		handleSubmit : function(name, layerIndex) {
 			handleSubmitValidate(vm, name, function() {
@@ -216,9 +219,17 @@ layui.use('table', function() {
 			title : '操作',
 			align : 'center',
 			templet: function(d) {
-				return '<a class="layui-btn layui-btn-xs" lay-event="detail">链接测试</a>';
+				return '<a class="layui-btn layui-btn-xs" lay-event="connect">链接测试</a>';
 			}
 		}] ],
 		page : true
+	});
+	
+	table.on('tool(' + vm.moduleName + 'Table)', function(obj){
+		var data = obj.data;
+		var layEvent = obj.event;
+		if (layEvent === 'connect'){
+			vm.connectTest(data);
+		}
 	});
 });

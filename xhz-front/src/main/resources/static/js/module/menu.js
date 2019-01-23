@@ -1,6 +1,8 @@
 var vm = new Vue({
 	el: '#app',
 	data: {
+		moduleName : 'menu',
+		baseUrl : '/sys/menus',
 		q: {
 			name: '',
 			url: ''
@@ -40,7 +42,7 @@ var vm = new Vue({
 	},
 	methods: {
 		query: function() {
-			treeGrid.reload('menuTable', {
+			treeGrid.reload(vm.moduleName + 'Table', {
 				where: {
 					name: vm.q.name,
 					url: vm.q.url
@@ -48,9 +50,9 @@ var vm = new Vue({
 			});
 		},
 		add: function() {
-			var selectedData = treeGrid.radioStatus("menuTable");
-			var type = 0;
-			var parentId = 0;
+			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
+			var type = '0';
+			var parentId = '0';
 			var parentName = '一级目录';
 			if (selectedData.menuId != undefined) {
 				type = parseInt(selectedData.type) + 1;
@@ -77,7 +79,7 @@ var vm = new Vue({
 			this.openDialog();
 		},
 		update: function() {
-			var selectedData = treeGrid.radioStatus("menuTable");
+			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
 			if (selectedData.menuId == undefined) {
 				vm.$message.warning("请选择要修改的数据！");
 				return;
@@ -86,7 +88,7 @@ var vm = new Vue({
 			var menuId = selectedData.menuId;
 
 			Ajax.request({
-				url: "../sys/menus/" + menuId,
+				url: vm.baseUrl + "/" + menuId,
 				async: true,
 				type: 'GET',
 				successCallback: function(r) {
@@ -100,7 +102,7 @@ var vm = new Vue({
 
 		},
 		del: function() {
-			var selectedData = treeGrid.radioStatus("menuTable");
+			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
 			if (selectedData.menuId == undefined) {
 				vm.$message.warning("请选择要删除的数据！");
 				return;
@@ -108,7 +110,7 @@ var vm = new Vue({
 			confirm("确认要删除吗，删除后子节点都将被删除？", function() {
 				var menuId = selectedData.menuId;
 				Ajax.request({
-					url: "../sys/menus/" + menuId,
+					url: vm.baseUrl + "/" + menuId,
 					type: 'DELETE',
 					successCallback: function() {
 						alert('操作成功', function(index) {
@@ -119,7 +121,7 @@ var vm = new Vue({
 			});
 		},
 		saveOrUpdate: function(layerIndex) {
-			var url = '../sys/menus';
+			var url = vm.baseUrl;
 			var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
 			Ajax.request({
 				url: url,
@@ -139,13 +141,13 @@ var vm = new Vue({
 			openWindow({
 				title: this.title,
 				area: ['600px', '530px'],
-				content: jQuery("#menuDialog"),
+				content: jQuery("#" + vm.moduleName + "Dialog"),
 				btn: ['保存', '取消'],
 				yes: function(index) {
-					vm.handleSubmit('menuForm', index);
+					vm.handleSubmit(vm.moduleName + 'Form', index);
 				},
 				end: function() {
-					vm.handleReset('menuForm');
+					vm.handleReset(vm.moduleName + 'Form');
 				}
 			});
 		},
@@ -161,7 +163,7 @@ var vm = new Vue({
 			vm.query();
 		},
 		isDeletedMenuById: function(menuId, isDeleted) {
-			var url = isDeleted ? "../sys/menus/enable/" + menuId : "../sys/menus/disable/" + menuId;
+			var url = isDeleted ? vm.baseUrl + "/enable/" + menuId : vm.baseUrl + "/disable/" + menuId;
 			Ajax.request({
 				url: url,
 				async: true,
@@ -197,10 +199,10 @@ layui.config({
 	var layer = layui.layer;
 	var form = layui.form;
 	var ptable = treeGrid.render({
-		id: "menuTable",
-		elem: '#menuTable',
+		id: vm.moduleName + "Table",
+		elem: '#' + vm.moduleName + 'Table',
 		idField: 'menuId',
-		url: '../sys/menus',
+		url: vm.baseUrl,
 		method: 'GET',
 		cellMinWidth: 100,
 		loading: false,
@@ -266,7 +268,7 @@ layui.config({
 				title: '操作',
 				width: 90,
 				templet: function(d) {
-					var checked = d.isDeleted === "0" ? 'checked' : '';
+					var checked = d.isDeleted === '0' ? 'checked' : '';
 					return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.menuId +
 						'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
 				}
