@@ -11,36 +11,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.xhz.util.Query;
-import com.xhz.util.R;
-import com.xhz.validator.ValidatorUtils;
-import com.xhz.validator.group.AddGroup;
-import com.xhz.validator.group.UpdateGroup;
-import com.xhz.web.module.sys.entity.MenuDO;
-import com.xhz.web.module.sys.entity.MenuDTO;
-import com.xhz.web.module.sys.service.MenuService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 
 
+import org.springframework.web.bind.annotation.RestController;
+
+import com.xhz.util.Dumper;
+import com.xhz.util.Query;
+import com.xhz.util.R;
+import com.xhz.validator.ValidatorUtils;
+import com.xhz.validator.group.AddGroup;
+import com.xhz.validator.group.UpdateGroup;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import com.xhz.web.module.sys.service.MenuService;
+import com.xhz.web.module.sys.entity.MenuDO;
+import com.xhz.web.module.sys.entity.MenuDTO;
+
+
+
 /**
  * <p>
- * 菜单管理 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-16
+ * @since 2019-01-23
  */
  
 @RestController
 @RequestMapping("/sys")
-@Api(tags = {"菜单管理"})
+@Api(tags = {""})
 public class MenuController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MenuController.class);
@@ -56,6 +61,7 @@ public class MenuController {
 	@ApiOperation(value="新增")
 	@RequestMapping(value = "/menus", method = RequestMethod.POST)
 	public R insert(@RequestBody MenuDTO menuDTO) {
+		Dumper.dump(menuDTO);
 		ValidatorUtils.validateEntity(menuDTO, AddGroup.class);
 		menuService.insertMenuDTO(menuDTO);
 		return R.ok();
@@ -68,8 +74,8 @@ public class MenuController {
 	 */
 	@ApiOperation(value="删除")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.DELETE)
-	public R delete(@PathVariable("id") Long menuId) {
-		menuService.deleteMenuById(menuId);
+	public R delete(@PathVariable("id") String menuId) {
+		menuService.deleteById(menuId);
 		return R.ok();
 	}
 	
@@ -80,7 +86,7 @@ public class MenuController {
 	 */
 	@ApiOperation(value="批量删除")
 	@RequestMapping(value = "/menus/deleteBatch", method = RequestMethod.POST)
-	public R deleteBatchByIds(@RequestBody List<Long> menuIds) {
+	public R deleteBatchByIds(@RequestBody List<String> menuIds) {
 		menuService.deleteBatchIds(menuIds);
 		return R.ok();
 	}
@@ -105,7 +111,7 @@ public class MenuController {
 	 */
 	@ApiOperation(value="查询")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.GET)
-	public R info(@PathVariable("id") Long menuId) {
+	public R info(@PathVariable("id") String menuId) {
 		MenuDTO menuDTO = menuService.selectMenuDTOById(menuId);
 		return R.ok().put("data", menuDTO);
 	}
@@ -116,8 +122,8 @@ public class MenuController {
 	 */
 	@ApiOperation(value="查询所有")
 	@RequestMapping(value = "/menus", method = RequestMethod.GET)
-	public R getAll(@RequestParam(required = false) Map<String, Object> params) {
-		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList(params);
+	public R getAll() {
+		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList();
 		return R.ok().put("data", menuDTOList);
 	}
 	
@@ -142,7 +148,7 @@ public class MenuController {
 	 */
 	@ApiOperation(value="禁用菜单", notes = "禁用菜单，子菜单都将被禁用")
 	@RequestMapping(value = "/menus/disable/{id}", method = RequestMethod.GET)
-	public R disable(@PathVariable("id") Long menuId) {
+	public R disable(@PathVariable("id") String menuId) {
 		menuService.disableMenuById(menuId);
 		return R.ok();
 	}
@@ -154,7 +160,7 @@ public class MenuController {
 	 */
 	@ApiOperation(value="启用菜单", notes = "启用菜单,子菜单都将被启用")
 	@RequestMapping(value = "/menus/enable/{id}", method = RequestMethod.GET)
-	public R enable(@PathVariable("id") Long menuId) {
+	public R enable(@PathVariable("id") String menuId) {
 		menuService.enableMenuById(menuId);
 		return R.ok();
 	}

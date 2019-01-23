@@ -16,11 +16,11 @@ import com.xhz.web.module.sys.entity.MenuDTO;
 
 /**
  * <p>
- * 菜单管理 服务实现类
+ *  服务实现类
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-16
+ * @since 2019-01-23
  */
 @Service
 public class MenuService {
@@ -38,12 +38,12 @@ public class MenuService {
 		menuDao.updateById(menuDO);
 	}
 	
-	public MenuDTO selectMenuDTOById(Long menuId) {
+	public MenuDTO selectMenuDTOById(String menuId) {
 		return menuDao.selectMenuDTOById(menuId);
 	}
 	
-	public List<MenuDTO> selectMenuDTOList(Map<String, Object> params) {
-		return menuDao.selectMenuDTOList(params);
+	public List<MenuDTO> selectMenuDTOList() {
+		return menuDao.selectMenuDTOList();
 	}
 	
 	public List<MenuDTO> selectMenuDTOPage(Map<String, Object> query) {
@@ -54,11 +54,11 @@ public class MenuService {
 		menuDao.insert(menuDO);
 	}
 
-	public void deleteById(Long menuId) {
+	public void deleteById(String menuId) {
 		menuDao.deleteById(menuId);
 	}
 
-	public void deleteBatchIds(List<Long> menuIds) {
+	public void deleteBatchIds(List<String> menuIds) {
 		menuDao.deleteBatchIds(menuIds);
 	}
 
@@ -66,7 +66,7 @@ public class MenuService {
 		menuDao.updateById(menuDO);
 	}
 
-	public MenuDO selectById(Long menuId) {
+	public MenuDO selectById(String menuId) {
 		return menuDao.selectById(menuId);
 	}
 	
@@ -78,7 +78,7 @@ public class MenuService {
 	 * 禁用包括menuId 目录内的子目录
 	 * @param menuId
 	 */
-	public void disableMenuById(Long menuId) {
+	public void disableMenuById(String menuId) {
 		List<MenuDO> allMenuList = new ArrayList<MenuDO>();
 		recursiveMenu(menuId, allMenuList);
 		if (CollectionUtils.isNotEmpty(allMenuList)) {
@@ -93,7 +93,7 @@ public class MenuService {
 	 * 启用包括menuId 目录内的子目录
 	 * @param menuId
 	 */
-	public void enableMenuById(Long menuId) {
+	public void enableMenuById(String menuId) {
 		List<MenuDO> allMenuList = new ArrayList<MenuDO>();
 		recursiveMenu(menuId, allMenuList);
 		if (CollectionUtils.isNotEmpty(allMenuList)) {
@@ -109,7 +109,7 @@ public class MenuService {
 	 * @param parentId
 	 * @return
 	 */
-	public List<MenuDO> selectByParentId(Long parentId) {
+	public List<MenuDO> selectByParentId(String parentId) {
 		return menuDao.selectByParentId(parentId);
 	}
 	
@@ -117,7 +117,7 @@ public class MenuService {
 	 * 删除菜单包括子级菜单
 	 * @param menuId
 	 */
-	public void deleteMenuById(Long menuId) {
+	public void deleteMenuById(String menuId) {
 		List<MenuDO> allMenuList = new ArrayList<MenuDO>();
 		recursiveMenu(menuId, allMenuList);
 		if (CollectionUtils.isNotEmpty(allMenuList)) {
@@ -132,7 +132,7 @@ public class MenuService {
 	 * @param menuId
 	 * @param allMenuList
 	 */
-	private void recursiveMenu(Long menuId, List<MenuDO> allMenuList) {
+	private void recursiveMenu(String menuId, List<MenuDO> allMenuList) {
 		MenuDO menuDO = menuDao.selectById(menuId);
 		allMenuList.add(menuDO);
 		List<MenuDO> childMenuList = this.selectByParentId(menuId);

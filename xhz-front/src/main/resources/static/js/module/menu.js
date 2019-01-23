@@ -53,7 +53,7 @@ var vm = new Vue({
 			var parentId = 0;
 			var parentName = '一级目录';
 			if (selectedData.menuId != undefined) {
-				type = selectedData.type + 1;
+				type = parseInt(selectedData.type) + 1;
 				parentId = selectedData.menuId;
 				parentName = selectedData.name;
 			}
@@ -213,11 +213,7 @@ layui.config({
 		cols: [
 			[{
 				type: 'radio'
-			}, {
-				field: 'menuId',
-				width: 100,
-				title: '编号'
-			}, {
+			},{
 				field: 'name',
 				width: 200,
 				title: '名称',
@@ -244,13 +240,13 @@ layui.config({
 				title: '类型',
 				align: 'center',
 				templet: function(d) {
-					if (d.type === 0) {
+					if (d.type === "0") {
 						return '<span class="layui-badge layui-bg-green">目录</span>';
 					}
-					if (d.type === 1) {
+					if (d.type === "1") {
 						return '<span class="layui-badge layui-bg-blue">菜单</span>';
 					}
-					if (d.type === 2) {
+					if (d.type === "2") {
 						return '<span class="layui-badge layui-bg-orange">按钮</span>';
 					}
 				}
@@ -270,7 +266,7 @@ layui.config({
 				title: '操作',
 				width: 90,
 				templet: function(d) {
-					var checked = d.isDeleted === 0 ? 'checked' : '';
+					var checked = d.isDeleted === "0" ? 'checked' : '';
 					return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.menuId +
 						'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
 				}

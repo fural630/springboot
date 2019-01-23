@@ -5,25 +5,25 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xhz.web.module.sys.entity.MenuDO">
-        <id column="menu_id" property="menuId" />
-        <result column="parent_id" property="parentId" />
-        <result column="name" property="name" />
-        <result column="url" property="url" />
-        <result column="perms" property="perms" />
-        <result column="type" property="type" />
-        <result column="icon" property="icon" />
-        <result column="order_num" property="orderNum" />
-        <result column="is_deleted" property="isDeleted" />
+        <id column="MENU_ID" property="menuId" />
+        <result column="PARENT_ID" property="parentId" />
+        <result column="NAME" property="name" />
+        <result column="URL" property="url" />
+        <result column="PERMS" property="perms" />
+        <result column="TYPE" property="type" />
+        <result column="ICON" property="icon" />
+        <result column="ORDER_NUM" property="orderNum" />
+        <result column="IS_DELETED" property="isDeleted" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        menu_id, parent_id, name, url, perms, type, icon, order_num, is_deleted
+        MENU_ID, PARENT_ID, NAME, URL, PERMS, TYPE, ICON, ORDER_NUM, IS_DELETED
     </sql>
 
 
 	<select id="selectMenuDTOPage" resultType="com.xhz.web.module.sys.entity.MenuDTO">
-    	select * from sys_menu
+    	select * from SYS_MENU
     	<where>
     		1=1
     	</where>
@@ -32,39 +32,37 @@
                 order by ${field} ${order}
             </when>
             <otherwise>
-                order by menuId desc
+                order by MENU_ID desc
             </otherwise>
         </choose>
     </select>
     
     <select id="selectMenuDTOList" resultType="com.xhz.web.module.sys.entity.MenuDTO">
-		select m2.name parent_name,m1.* from sys_menu m1
-		left join sys_menu m2 on m1.parent_id = m2.menu_id
+		select m2.NAME PARENT_NAME,m1.* from SYS_MENU m1
+		left join SYS_MENU m2 on m1.PARENT_ID = m2.MENU_ID
 		<where>
 			<if test="name != null and !name.equals('')">
-				m1.name like concat('%',#{name},'%')
+				m1.NAME like '%'||#{name}||'%'
 			</if>
 			<if test="url != null and !url.equals('')">
-				m1.url like concat('%',#{url},'%')
+				m1.URL like '%'||#{url}||'%'
 			</if>
 		</where>
-		order by m1.order_num
+		order by m1.ORDER_NUM
 	</select>
 	
 	<select id="selectMenuDTOById" resultType="com.xhz.web.module.sys.entity.MenuDTO">
-		select m2.name parent_name,m1.* from sys_menu m1
-		left join sys_menu m2 on m1.parent_id = m2.menu_id
-		where m1.menu_id = #{menuId}
+		select * from SYS_MENU where MENU_ID = #{menuId}
 	</select>
 	
 	<select id="selectByParentId" resultMap="BaseResultMap">
 		select <include refid="Base_Column_List"/>
-		from sys_menu where parent_id = #{parentId}
+		from SYS_MENU where PARENT_ID = #{parentId}
 	</select>
 	
 	<select id="selectEnableMemu" resultMap="BaseResultMap">
-		select <include refid="Base_Column_List"/> from sys_menu 
-		where is_deleted = 0 order by order_num
+		select <include refid="Base_Column_List"/> from SYS_MENU 
+		where IS_DELETED = 0 order by ORDER_NUM
 	</select>
 
 </mapper>

@@ -1,9 +1,11 @@
 package com.xhz.web.module.sys.entity;
 
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.Length;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,70 +13,67 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- * 菜单管理
+ * 
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-21
+ * @since 2019-01-23
  */
-@ApiModel(value="MenuDTO对象", description="菜单管理")
+@ApiModel(value="MenuDTO对象", description="")
 public class MenuDTO {
-
 
     @ApiModelProperty(value = "菜单ID")
     @NotNull(groups = { UpdateGroup.class }, message = "修改时菜单ID不能为空")
-    private Long menuId;
+    private String menuId;
 
-    @ApiModelProperty(value = "父菜单ID，一级菜单为0")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "父菜单ID，一级菜单为0不能为空")
-    private Long parentId;
+    @ApiModelProperty(value = "父菜单ID", required = true)
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "父菜单ID不能为空")
+    @Length(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "父菜单ID最长度不允许超过40")
+    private String parentId;
 
-    @ApiModelProperty(value = "菜单名称")
+    @ApiModelProperty(value = "菜单名称", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "菜单名称不能为空")
-    @Length(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单名称最长度不允许超过50")
+    @Length(max = 10, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单名称最长度不允许超过10")
     private String name;
 
     @ApiModelProperty(value = "菜单URL")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "菜单URL不能为空")
-    @Length(max = 200, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单URL最长度不允许超过200")
+    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单URL最长度不允许超过127")
     private String url;
 
-    @ApiModelProperty(value = "授权(多个用逗号分隔，如：user:list,user:create)")
-    @Length(max = 500, groups = { AddGroup.class, UpdateGroup.class }, message = "授权(多个用逗号分隔，如：user:list,user:create)最长度不允许超过500")
+    @ApiModelProperty(value = "授权标识")
+    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "授权标识最长度不允许超过127")
     private String perms;
 
-    @ApiModelProperty(value = "类型   0：目录   1：菜单   2：按钮")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "类型   0：目录   1：菜单   2：按钮不能为空")
-    private Integer type;
+    @ApiModelProperty(value = "菜单类型", required = true)
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "菜单类型不能为空")
+    private String type;
 
     @ApiModelProperty(value = "菜单图标")
-    @Length(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单图标最长度不允许超过50")
+    @Length(max = 15, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单图标最长度不允许超过15")
     private String icon;
 
-    @ApiModelProperty(value = "排序")
-    private Integer orderNum;
+    @ApiModelProperty(value = "排序号", required = true)
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "排序号不能为空")
+    private String orderNum;
 
-    @ApiModelProperty(value = "1删除，0未删除")
-    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "1删除，0未删除不能为空")
-    private Integer isDeleted;
+    @ApiModelProperty(value = "删除标识", required = true)
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "删除标识不能为空")
+    private String isDeleted;
     
-    /**
-     * 父级名称
-     */
     private String parentName;
 
-    public Long getMenuId() {
+    public String getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(Long menuId) {
+    public void setMenuId(String menuId) {
         this.menuId = menuId;
     }
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
     public String getName() {
@@ -98,11 +97,11 @@ public class MenuDTO {
     public void setPerms(String perms) {
         this.perms = perms;
     }
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
     public String getIcon() {
@@ -112,18 +111,18 @@ public class MenuDTO {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-    public Integer getOrderNum() {
+    public String getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(Integer orderNum) {
+    public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
     }
-    public Integer getIsDeleted() {
+    public String getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(Integer isDeleted) {
+    public void setIsDeleted(String isDeleted) {
         this.isDeleted = isDeleted;
     }
 
