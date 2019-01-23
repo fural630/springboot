@@ -48,7 +48,9 @@
 					<el-form @submit.native.prevent ref="databaseForm" :rules="ruleValidate" :model="database" label-width="100px">
 						<el-form-item label="数据库类型" prop="dbType">
 			            	<el-radio-group v-model="database.dbType" clearable>
-			                	<el-radio v-for="item in dbTypeItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+			                	<el-radio v-for="item in dbTypeItem" :label="item.value" :key="item.value">
+			                		{{item.label}}
+			                	</el-radio>
 			                </el-radio-group>
 			            </el-form-item>
 						<el-form-item label="名称" prop="name">
