@@ -2,18 +2,20 @@ package com.xhz.web.module.develop.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
 /**
  * <p>
- * 数据源管理
+ * 数据源配置
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-22
+ * @since 2019-01-23
  */
-@TableName("sys_database")
+@TableName("SYS_DATABASE")
 public class DatabaseDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,39 +23,50 @@ public class DatabaseDO implements Serializable {
     /**
      * 数据源ID
      */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "ID", type = IdType.UUID)
+    private String id;
 
     /**
      * 数据源名称
      */
+    @TableField("NAME")
     private String name;
 
     /**
      * 链接地址
      */
+    @TableField("URL")
     private String url;
 
     /**
      * 用户名
      */
+    @TableField("USER_NAME")
     private String userName;
 
     /**
      * 密码
      */
+    @TableField("PASS_WORD")
     private String passWord;
 
     /**
      * 数据库类型
      */
-    private Integer dbType;
+    @TableField("DB_TYPE")
+    private Double dbType;
 
-    public Integer getId() {
+    /**
+     * 最近测试链接时间
+     */
+    @TableField("LAST_TEST_TIME")
+    private Date lastTestTime;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getName() {
@@ -84,12 +97,19 @@ public class DatabaseDO implements Serializable {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
-    public Integer getDbType() {
+    public Double getDbType() {
         return dbType;
     }
 
-    public void setDbType(Integer dbType) {
+    public void setDbType(Double dbType) {
         this.dbType = dbType;
+    }
+    public Date getLastTestTime() {
+        return lastTestTime;
+    }
+
+    public void setLastTestTime(Date lastTestTime) {
+        this.lastTestTime = lastTestTime;
     }
 
     @Override
@@ -101,6 +121,7 @@ public class DatabaseDO implements Serializable {
         ", userName=" + userName +
         ", passWord=" + passWord +
         ", dbType=" + dbType +
+        ", lastTestTime=" + lastTestTime +
         "}";
     }
 }

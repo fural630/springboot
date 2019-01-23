@@ -5,31 +5,32 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.xhz.web.module.develop.entity.DatabaseDO">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="url" property="url" />
-        <result column="user_name" property="userName" />
-        <result column="pass_word" property="passWord" />
-        <result column="db_type" property="dbType" />
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="URL" property="url" />
+        <result column="USER_NAME" property="userName" />
+        <result column="PASS_WORD" property="passWord" />
+        <result column="DB_TYPE" property="dbType" />
+        <result column="LAST_TEST_TIME" property="lastTestTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, url, user_name, pass_word, db_type
+        ID, NAME, URL, USER_NAME, PASS_WORD, DB_TYPE, LAST_TEST_TIME
     </sql>
 
 
 	<select id="selectDatabaseDTOPage" resultType="com.xhz.web.module.develop.entity.DatabaseDTO">
-    	select * from sys_database
+    	select * from SYS_DATABASE
     	<where>
     		<if test="url != null and url.trim() != ''">
-    			and url like concat('%',#{url},'%')
+    			and URL like '%'||#{url}||'%'
     		</if>
     		<if test="name != null and name.trim() != ''">
-    			and name like concat('%',#{name},'%')
+    			and NAME like '%'||#{name}||'%'
     		</if>
     		<if test="dbType != null and dbType.trim() != ''">
-    			and db_type = #{dbType}
+    			and DB_TYPE = #{dbType}
     		</if>
     	</where>
     	<choose>
@@ -37,17 +38,17 @@
                 order by ${field} ${order}
             </when>
             <otherwise>
-                order by id desc
+                order by ID desc
             </otherwise>
         </choose>
     </select>
     
     <select id="selectDatabaseDTOList" resultType="com.xhz.web.module.develop.entity.DatabaseDTO">
-		select * from sys_database
+		select * from SYS_DATABASE
 	</select>
 	
 	<select id="selectDatabaseDTOById" resultType="com.xhz.web.module.develop.entity.DatabaseDTO">
-		select * from sys_database where id = #{id}
+		select * from SYS_DATABASE where ID = #{id}
 	</select>
 
 </mapper>

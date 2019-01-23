@@ -25,23 +25,23 @@ public class Constant {
         /**
          * 目录
          */
-        CATALOG(0),
+        CATALOG("0"),
         /**
          * 菜单
          */
-        MENU(1),
+        MENU("1"),
         /**
          * 按钮
          */
-        BUTTON(2);
+        BUTTON("2");
 
-        private int value;
+        private String value;
 
-        private MenuType(int value) {
+        private MenuType(String value) {
             this.value = value;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
         }
     }
@@ -55,20 +55,20 @@ public class Constant {
     	/**
     	 * 已删除
     	 */
-    	YES(1),
+    	YES("1"),
     	
     	/*
     	 * 未删除
     	 */
-    	NO(0);
+    	NO("0");
     	
-    	private int value;
+    	private String value;
     	
-    	private IsDeleted(int value) {
+    	private IsDeleted(String value) {
     		this.value = value;
     	}
     	
-    	public int getValue() {
+    	public String getValue() {
     		return value;
     	}
     }

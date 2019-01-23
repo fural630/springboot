@@ -14,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>
- * 数据源管理 服务实现类
+ * 数据源配置 服务实现类
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-22
+ * @since 2019-01-23
  */
 @Service
 public class DatabaseService {
@@ -36,7 +36,7 @@ public class DatabaseService {
 		databaseDao.updateById(databaseDO);
 	}
 	
-	public DatabaseDTO selectDatabaseDTOById(Integer id) {
+	public DatabaseDTO selectDatabaseDTOById(String id) {
 		return databaseDao.selectDatabaseDTOById(id);
 	}
 	
@@ -52,11 +52,11 @@ public class DatabaseService {
 		databaseDao.insert(databaseDO);
 	}
 
-	public void deleteById(Integer id) {
+	public void deleteById(String id) {
 		databaseDao.deleteById(id);
 	}
 
-	public void deleteBatchIds(List<Integer> ids) {
+	public void deleteBatchIds(List<String> ids) {
 		databaseDao.deleteBatchIds(ids);
 	}
 
@@ -64,7 +64,7 @@ public class DatabaseService {
 		databaseDao.updateById(databaseDO);
 	}
 
-	public DatabaseDO selectById(Integer id) {
+	public DatabaseDO selectById(String id) {
 		return databaseDao.selectById(id);
 	}
 	

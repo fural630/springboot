@@ -200,9 +200,14 @@ layui.use('table', function() {
 			width : 140,
 			title : '用户名'
 		}, {
+			field : 'lastTestTime',
+			width : 150,
+			title : '最近测试连接时间'
+		}, {
 			field : 'dbType',
 			width : 110,
 			title : '数据库类型',
+			align : 'center',
 			templet: function(d) {
 				if (d.dbType === 0) {
 					return '<span class="layui-badge layui-bg-orange">Mysql</span>';
@@ -212,8 +217,9 @@ layui.use('table', function() {
 				}
 			}
 		}, {
-			width : 110,
+			width : 90,
 			title : '操作',
+			align : 'center',
 			templet: function(d) {
 				return '<a class="layui-btn layui-btn-xs" lay-event="detail">链接测试</a>';
 			}

@@ -33,16 +33,16 @@ import com.xhz.web.module.develop.entity.DatabaseDTO;
 
 /**
  * <p>
- * 数据源管理 前端控制器
+ * 数据源配置 前端控制器
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-22
+ * @since 2019-01-23
  */
  
 @RestController
 @RequestMapping("/develop")
-@Api(tags = {"数据源管理"})
+@Api(tags = {"数据源配置"})
 public class DatabaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseController.class);
@@ -70,7 +70,7 @@ public class DatabaseController {
 	 */
 	@ApiOperation(value="删除")
 	@RequestMapping(value = "/databases/{id}", method = RequestMethod.DELETE)
-	public R delete(@PathVariable("id") Integer id) {
+	public R delete(@PathVariable("id") String id) {
 		databaseService.deleteById(id);
 		return R.ok();
 	}
@@ -82,7 +82,7 @@ public class DatabaseController {
 	 */
 	@ApiOperation(value="批量删除")
 	@RequestMapping(value = "/databases/deleteBatch", method = RequestMethod.POST)
-	public R deleteBatchByIds(@RequestBody List<Integer> ids) {
+	public R deleteBatchByIds(@RequestBody List<String> ids) {
 		databaseService.deleteBatchIds(ids);
 		return R.ok();
 	}
@@ -107,7 +107,7 @@ public class DatabaseController {
 	 */
 	@ApiOperation(value="查询")
 	@RequestMapping(value = "/databases/{id}", method = RequestMethod.GET)
-	public R info(@PathVariable("id") Integer id) {
+	public R info(@PathVariable("id") String id) {
 		DatabaseDTO databaseDTO = databaseService.selectDatabaseDTOById(id);
 		return R.ok().put("data", databaseDTO);
 	}
