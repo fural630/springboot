@@ -1,5 +1,8 @@
 package com.xhz.web.module.develop.service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +10,7 @@ import java.util.Map;
 import com.xhz.web.module.develop.entity.DatabaseDO;
 import com.xhz.web.module.develop.entity.DatabaseDTO;
 import com.xhz.web.module.develop.dao.DatabaseDao;
+import com.xhz.constant.Constant.DbType;
 import com.xhz.util.CopyUtil;
 
 import org.springframework.stereotype.Service;
@@ -70,5 +74,32 @@ public class DatabaseService {
 	
 	public List<DatabaseDO> selectList() {
 		return databaseDao.selectList(null);
+	}
+
+	public void connectTest(DatabaseDTO databaseDTO) {
+		String driverName = null;
+		if (databaseDTO.getDbType().equals(DbType.Mysql.getValue())) {
+			driverName = "com.mysql.jdbc.Driver";
+		} else if (databaseDTO.getDbType().equals(DbType.Oracle.getValue())) {
+			driverName = "oracle.jdbc.driver.OracleDriver";
+		}
+		String username = databaseDTO.getName();
+		String password = databaseDTO.getPassWord();
+		String url = databaseDTO.getUrl();
+		Connection conn = null;
+        try {
+            Class.forName(driverName);
+            conn = DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                	conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 }

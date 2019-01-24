@@ -138,7 +138,7 @@ var vm = new Vue({
 		},
 		openDialog: function() {
 			openWindow({
-				title: this.title,
+				title: vm.title,
 				area: ['720px'],
 				content: jQuery("#" + vm.moduleName + "Dialog"),
 				btn: ['保存', '取消'],

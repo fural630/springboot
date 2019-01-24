@@ -72,5 +72,27 @@ public class Constant {
     		return value;
     	}
     }
+    
+    /**
+     * 数据库类型
+     * @author zhangzm
+     *
+     */
+    public enum DbType {
+    	
+    	Mysql("0"),
+    	
+    	Oracle("1");
+    	
+    	private String value;
+    	
+    	private DbType(String value) {
+    		this.value = value;
+    	}
+    	
+    	public String getValue() {
+    		return value;
+    	}
+    }
 
 }

@@ -136,5 +136,17 @@ public class DatabaseController {
 		PageInfo<DatabaseDTO> pageInfo = new PageInfo<DatabaseDTO>(databaseService.selectDatabaseDTOPage(query));
 		return R.ok().put("data", pageInfo);
 	}
+	
+	/**
+	 * 链接测试
+	 * @param DatabaseDTO
+	 * @return R.ok()
+	 */
+	@ApiOperation(value="链接测试")
+	@RequestMapping(value = "/databases/connectTest", method = RequestMethod.POST)
+	public R connectTest(@RequestBody DatabaseDTO databaseDTO) {
+		databaseService.connectTest(databaseDTO);
+		return R.ok();
+	}
 
 }
