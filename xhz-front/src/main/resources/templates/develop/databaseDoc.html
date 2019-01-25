@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>数据库文档</title>
+		<#include "/common/header.html">
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<div class="frame-card">
+					<div class="frame-card-header">
+						<el-form ref="queryForm" :model="q" label-width="70px">
+							<el-row>
+								<el-col :span="4">
+									<el-form-item prop="id" label="数据源">
+										<el-select v-model="q.id" clearable>
+<!-- 											<el-option v-for="item in datasourceItem" :value="item.value" :key="item.value" :label="item.label"></el-option> -->
+										</el-select>
+									</el-form-item>
+								</el-col>
+								&nbsp;&nbsp;
+								<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+								<el-button type="danger"><i class="fa fa-download"></i>&nbsp;拉取数据</el-button>
+							</el-row>
+						</el-form>
+					</div>
+					<div>
+<!-- 						<table class="layui-hide" id="databaseTable" lay-filter="databaseTable"></table> -->
+					</div>
+				</div>
+		</div>
+		<script src="${basePath}/js/module/databaseDoc.js?_${.now?long}"></script>
+	</body>
+</html>

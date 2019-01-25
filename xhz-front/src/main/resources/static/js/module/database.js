@@ -174,6 +174,16 @@ var vm = new Vue({
 		handleReset : function(name) {
 			handleResetForm(vm, name);
 		}
+	},
+	created : function () {
+		Ajax.request({
+			url: '/develop/databases',
+			async: true,
+			type: 'GET',
+			successCallback: function(r) {
+				console.log(r.data);
+			}
+		});
 	}
 });
 
