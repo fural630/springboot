@@ -2,8 +2,7 @@ package com.xhz.web.module.sys.entity;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
+import com.xhz.validator.CharLength;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
 
@@ -13,13 +12,13 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
- * 
+ * 菜单管理
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-23
+ * @since 2019-01-25
  */
-@ApiModel(value="MenuDTO对象", description="")
+@ApiModel(value="MenuDTO对象", description="菜单管理")
 public class MenuDTO {
 
     @ApiModelProperty(value = "菜单ID")
@@ -28,20 +27,20 @@ public class MenuDTO {
 
     @ApiModelProperty(value = "父菜单ID", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "父菜单ID不能为空")
-    @Length(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "父菜单ID最长度不允许超过40")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "父菜单ID最长度不允许超过40")
     private String parentId;
 
     @ApiModelProperty(value = "菜单名称", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "菜单名称不能为空")
-    @Length(max = 10, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单名称最长度不允许超过10")
+    @CharLength(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单名称最长度不允许超过20")
     private String name;
 
     @ApiModelProperty(value = "菜单URL")
-    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单URL最长度不允许超过127")
+    @CharLength(max = 255, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单URL最长度不允许超过255")
     private String url;
 
     @ApiModelProperty(value = "授权标识")
-    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "授权标识最长度不允许超过127")
+    @CharLength(max = 255, groups = { AddGroup.class, UpdateGroup.class }, message = "授权标识最长度不允许超过255")
     private String perms;
 
     @ApiModelProperty(value = "菜单类型", required = true)
@@ -49,7 +48,7 @@ public class MenuDTO {
     private String type;
 
     @ApiModelProperty(value = "菜单图标")
-    @Length(max = 15, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单图标最长度不允许超过15")
+    @CharLength(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "菜单图标最长度不允许超过30")
     private String icon;
 
     @ApiModelProperty(value = "排序号", required = true)
@@ -59,8 +58,6 @@ public class MenuDTO {
     @ApiModelProperty(value = "删除标识", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "删除标识不能为空")
     private String isDeleted;
-    
-    private String parentName;
 
     public String getMenuId() {
         return menuId;
@@ -125,13 +122,5 @@ public class MenuDTO {
     public void setIsDeleted(String isDeleted) {
         this.isDeleted = isDeleted;
     }
-
-	public String getParentName() {
-		return parentName;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
-	}
 
 }

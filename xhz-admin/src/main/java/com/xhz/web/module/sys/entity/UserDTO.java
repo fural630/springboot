@@ -4,8 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
+import com.xhz.validator.CharLength;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
 
@@ -19,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-23
+ * @since 2019-01-25
  */
 @ApiModel(value="UserDTO对象", description="用户信息")
 public class UserDTO {
@@ -29,41 +28,41 @@ public class UserDTO {
     private String id;
 
     @ApiModelProperty(value = "用户名")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "用户名最长度不允许超过20")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "用户名最长度不允许超过40")
     private String name;
 
     @ApiModelProperty(value = "用户账号")
-    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "用户账号最长度不允许超过127")
+    @CharLength(max = 255, groups = { AddGroup.class, UpdateGroup.class }, message = "用户账号最长度不允许超过255")
     private String account;
 
     @ApiModelProperty(value = "部门ID")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "部门ID最长度不允许超过20")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "部门ID最长度不允许超过40")
     private String deptId;
 
     @ApiModelProperty(value = "出生日期")
     private Date birthDay;
 
     @ApiModelProperty(value = "密码")
-    @Length(max = 25, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过25")
+    @CharLength(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过50")
     private String passWord;
 
     @ApiModelProperty(value = "性别")
     private String sex;
 
     @ApiModelProperty(value = "邮箱")
-    @Length(max = 30, groups = { AddGroup.class, UpdateGroup.class }, message = "邮箱最长度不允许超过30")
+    @CharLength(max = 60, groups = { AddGroup.class, UpdateGroup.class }, message = "邮箱最长度不允许超过60")
     private String email;
 
     @ApiModelProperty(value = "手机号")
-    @Length(max = 15, groups = { AddGroup.class, UpdateGroup.class }, message = "手机号最长度不允许超过15")
+    @CharLength(max = 30, groups = { AddGroup.class, UpdateGroup.class }, message = "手机号最长度不允许超过30")
     private String phone;
 
     @ApiModelProperty(value = "身份证号")
-    @Length(max = 10, groups = { AddGroup.class, UpdateGroup.class }, message = "身份证号最长度不允许超过10")
+    @CharLength(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "身份证号最长度不允许超过20")
     private String idCard;
 
     @ApiModelProperty(value = "头像ID")
-    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "头像ID最长度不允许超过127")
+    @CharLength(max = 255, groups = { AddGroup.class, UpdateGroup.class }, message = "头像ID最长度不允许超过255")
     private String avatarId;
 
     @ApiModelProperty(value = "删除标识")
@@ -76,11 +75,11 @@ public class UserDTO {
     private Date updateTime;
 
     @ApiModelProperty(value = "创建人ID")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "创建人ID最长度不允许超过20")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "创建人ID最长度不允许超过40")
     private String createUserId;
 
     @ApiModelProperty(value = "修改人ID")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "修改人ID最长度不允许超过20")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "修改人ID最长度不允许超过40")
     private String updateUserId;
 
     public String getId() {

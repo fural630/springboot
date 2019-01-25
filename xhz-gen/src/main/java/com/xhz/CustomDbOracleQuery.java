@@ -16,7 +16,7 @@ public class CustomDbOracleQuery extends OracleQuery implements IDbQuery {
 
 	@Override
 	public DbType dbType() {
-		return super.dbType();
+		return DbType.ORACLE;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class CustomDbOracleQuery extends OracleQuery implements IDbQuery {
 
 	@Override
 	public String tableFieldsSql() {
-		return "SELECT CASE WHEN A.DATA_TYPE = 'VARCHAR2' THEN TRUNC(A.DATA_LENGTH/2) ELSE NULL END \"DataLength\", "
+		return "SELECT CASE WHEN A.DATA_TYPE = 'VARCHAR2' THEN A.DATA_LENGTH ELSE NULL END \"DataLength\", "
 				+ "CASE WHEN A.NULLABLE = 'N' THEN 'NO' WHEN A.NULLABLE = 'Y' THEN 'YES' ELSE A.NULLABLE END \"Null\", "
 				+ "A.COLUMN_NAME, CASE WHEN A.DATA_TYPE='NUMBER' THEN "
 	            + "(CASE WHEN A.DATA_PRECISION IS NULL THEN A.DATA_TYPE "

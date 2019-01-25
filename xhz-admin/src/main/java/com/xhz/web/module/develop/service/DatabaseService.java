@@ -3,18 +3,18 @@ package com.xhz.web.module.develop.service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.xhz.web.module.develop.entity.DatabaseDO;
-import com.xhz.web.module.develop.entity.DatabaseDTO;
-import com.xhz.web.module.develop.dao.DatabaseDao;
 import com.xhz.constant.Constant.DbType;
 import com.xhz.util.CopyUtil;
-
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.xhz.web.module.develop.dao.DatabaseDao;
+import com.xhz.web.module.develop.entity.DatabaseDO;
+import com.xhz.web.module.develop.entity.DatabaseDTO;
 
 /**
  * <p>
@@ -76,20 +76,22 @@ public class DatabaseService {
 		return databaseDao.selectList(null);
 	}
 
-	public void connectTest(DatabaseDTO databaseDTO) {
+	public boolean connectTest(DatabaseDTO databaseDTO) {
 		String driverName = null;
 		if (databaseDTO.getDbType().equals(DbType.Mysql.getValue())) {
 			driverName = "com.mysql.jdbc.Driver";
 		} else if (databaseDTO.getDbType().equals(DbType.Oracle.getValue())) {
 			driverName = "oracle.jdbc.driver.OracleDriver";
 		}
-		String username = databaseDTO.getName();
+		String username = databaseDTO.getUserName();
 		String password = databaseDTO.getPassWord();
 		String url = databaseDTO.getUrl();
 		Connection conn = null;
+		boolean flag = false;
         try {
             Class.forName(driverName);
             conn = DriverManager.getConnection(url, username, password);
+            flag = true;
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -101,5 +103,9 @@ public class DatabaseService {
                 e.printStackTrace();
             }
         }
+        DatabaseDO databaseDO = CopyUtil.copyProperties(databaseDTO, DatabaseDO.class);
+        databaseDO.setLastTestTime(new Date());
+        databaseDao.updateById(databaseDO);
+        return flag;
 	}
 }

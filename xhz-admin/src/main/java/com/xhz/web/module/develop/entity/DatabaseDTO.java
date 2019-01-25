@@ -1,16 +1,13 @@
 package com.xhz.web.module.develop.entity;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
+
+import com.xhz.validator.CharLength;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -21,7 +18,7 @@ import io.swagger.annotations.ApiModelProperty;
  * </p>
  *
  * @author zhangzm
- * @since 2019-01-23
+ * @since 2019-01-25
  */
 @ApiModel(value="DatabaseDTO对象", description="数据源配置")
 public class DatabaseDTO {
@@ -32,25 +29,26 @@ public class DatabaseDTO {
 
     @ApiModelProperty(value = "数据源名称", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "数据源名称不能为空")
-    @Length(max = 30, groups = { AddGroup.class, UpdateGroup.class }, message = "数据源名称最长度不允许超过30")
+    @CharLength(max = 60, groups = { AddGroup.class, UpdateGroup.class }, message = "数据源名称最长度不允许超过60")
     private String name;
 
     @ApiModelProperty(value = "链接地址", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "链接地址不能为空")
-    @Length(max = 127, groups = { AddGroup.class, UpdateGroup.class }, message = "链接地址最长度不允许超过127")
+    @CharLength(max = 255, groups = { AddGroup.class, UpdateGroup.class }, message = "链接地址最长度不允许超过255")
     private String url;
 
     @ApiModelProperty(value = "用户名", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "用户名不能为空")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "用户名最长度不允许超过20")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "用户名最长度不允许超过40")
     private String userName;
 
     @ApiModelProperty(value = "密码", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "密码不能为空")
-    @Length(max = 20, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过20")
+    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "密码最长度不允许超过40")
     private String passWord;
 
-    @ApiModelProperty(value = "数据库类型")
+    @ApiModelProperty(value = "数据库类型", required = true)
+    @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "数据库类型不能为空")
     private String dbType;
 
     @ApiModelProperty(value = "最近测试链接时间")

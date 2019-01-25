@@ -151,7 +151,17 @@ var vm = new Vue({
 			});
 		},
 		connectTest : function (row) {
-			alert(row.name);
+			Ajax.request({
+				url : vm.baseUrl + "/connectTest",
+				params : JSON.stringify(row),
+				contentType : "application/json",
+				type : 'POST',
+				successCallback : function() {
+					alert('连接成功', function(index) {
+						vm.reload();
+					});
+				}
+			});
 		},
 		reload : function() {
 			vm.query();
@@ -199,8 +209,11 @@ layui.use('table', function() {
 			title : '用户名'
 		}, {
 			field : 'lastTestTime',
-			width : 150,
-			title : '最近测试连接时间'
+			width : 160,
+			title : '最近测试连接时间',
+			templet : function (d) {
+				return constant.transDate(d.lastTestTime);
+			}
 		}, {
 			field : 'dbType',
 			width : 110,

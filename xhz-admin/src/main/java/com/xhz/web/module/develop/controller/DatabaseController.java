@@ -145,8 +145,11 @@ public class DatabaseController {
 	@ApiOperation(value="链接测试")
 	@RequestMapping(value = "/databases/connectTest", method = RequestMethod.POST)
 	public R connectTest(@RequestBody DatabaseDTO databaseDTO) {
-		databaseService.connectTest(databaseDTO);
-		return R.ok();
+		boolean flag = databaseService.connectTest(databaseDTO);
+		if (flag) {
+			return R.ok();
+		}
+		return R.error("连接失败");
 	}
 
 }

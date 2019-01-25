@@ -1,5 +1,6 @@
 package ${package.Entity};
 
+import com.xhz.validator.CharLength;
 import javax.validation.constraints.NotNull;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
@@ -71,7 +72,7 @@ public class ${entityDTO} {
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}不能为空")
     	</#if>
    		<#if field.customMap.DataLength??>
-    @Length(max = ${field.customMap.DataLength}, groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}最长度不允许超过${field.customMap.DataLength}")
+    @CharLength(max = ${field.customMap.DataLength}, groups = { AddGroup.class, UpdateGroup.class }, message = "${field.comment!''}最长度不允许超过${field.customMap.DataLength}")
     	</#if>
     <#else>
     @NotNull(groups = { UpdateGroup.class }, message = "修改时${field.comment!''}不能为空")
