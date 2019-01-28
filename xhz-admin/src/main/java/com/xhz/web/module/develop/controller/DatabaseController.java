@@ -143,9 +143,9 @@ public class DatabaseController {
 	 * @return R.ok()
 	 */
 	@ApiOperation(value="链接测试")
-	@RequestMapping(value = "/databases/connectTest", method = RequestMethod.POST)
-	public R connectTest(@RequestBody DatabaseDTO databaseDTO) {
-		boolean flag = databaseService.connectTest(databaseDTO);
+	@RequestMapping(value = "/databases/connectTest/{id}", method = RequestMethod.GET)
+	public R connectTest(@PathVariable("id") String id) {
+		boolean flag = databaseService.connectTest(id);
 		if (flag) {
 			return R.ok();
 		}

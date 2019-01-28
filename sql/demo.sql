@@ -11,7 +11,7 @@ Target Server Type    : ORACLE
 Target Server Version : 100200
 File Encoding         : 65001
 
-Date: 2019-01-23 15:10:50
+Date: 2019-01-28 18:15:48
 */
 
 
@@ -45,7 +45,9 @@ COMMENT ON COLUMN "XHZ"."SYS_DATABASE"."LAST_TEST_TIME" IS '最近测试链接�
 -- ----------------------------
 -- Records of SYS_DATABASE
 -- ----------------------------
-INSERT INTO "XHZ"."SYS_DATABASE" VALUES ('d027a701319a4862933bf667a85251c0', '123', '123', '23', '123', '1', null);
+INSERT INTO "XHZ"."SYS_DATABASE" VALUES ('d027a701319a4862933bf667a85251c0', '新豪智框架数据库Mysql', 'jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=UTF-8', 'root', 'root', '0', TO_DATE('2019-01-28 18:14:36', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO "XHZ"."SYS_DATABASE" VALUES ('e5a1f2d31d2f4447bcab145f818585fb', '新豪智框架数据库Oracle', 'jdbc:oracle:thin:@172.16.5.11:1521:xhzframe', 'xhz', 'xhz', '1', TO_DATE('2019-01-28 18:14:33', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO "XHZ"."SYS_DATABASE" VALUES ('36647ca6e0324b90b6cefc8365ea9b23', '张张张张张张张张张张张', '1', '张12345678', '3', '1', TO_DATE('2019-01-28 18:14:35', 'YYYY-MM-DD HH24:MI:SS'));
 
 -- ----------------------------
 -- Table structure for SYS_MENU
@@ -58,7 +60,7 @@ CREATE TABLE "XHZ"."SYS_MENU" (
 "URL" VARCHAR2(255 BYTE) NULL ,
 "PERMS" VARCHAR2(255 BYTE) NULL ,
 "TYPE" CHAR(1 BYTE) NOT NULL ,
-"ICON" VARCHAR2(30 BYTE) NULL ,
+"ICON" VARCHAR2(50 BYTE) NULL ,
 "ORDER_NUM" CHAR(2 BYTE) NOT NULL ,
 "IS_DELETED" CHAR(1 BYTE) NOT NULL 
 )
@@ -86,9 +88,10 @@ INSERT INTO "XHZ"."SYS_MENU" VALUES ('143bad3a894e484f811e5c24db298b6b', 'f58a5c
 INSERT INTO "XHZ"."SYS_MENU" VALUES ('0f42d387706f498fa583e96bb7cc43ba', '0', '开发工具', null, null, '0', 'fa fa-code', '1 ', '0');
 INSERT INTO "XHZ"."SYS_MENU" VALUES ('9d6d722665614b3e9d8dc8e0eed3ebc2', 'f58a5c7175c549139b7769c22722ce5a', '菜单管理', '/sys/menu.html', null, '1', 'fa fa-bars', '1 ', '0');
 INSERT INTO "XHZ"."SYS_MENU" VALUES ('66d772c698634771a1c3d6477454fb39', '0f42d387706f498fa583e96bb7cc43ba', '图标库', '/develop/icon.html', null, '1', 'fa fa-info', '0 ', '0');
-INSERT INTO "XHZ"."SYS_MENU" VALUES ('95f06aa70f2848a89206133d0846a19a', '0f42d387706f498fa583e96bb7cc43ba', '数据源配置', '/develop/database.html', null, '1', 'fa fa-database', '0 ', '0');
+INSERT INTO "XHZ"."SYS_MENU" VALUES ('95f06aa70f2848a89206133d0846a19a', '0f42d387706f498fa583e96bb7cc43ba', '数据源配置', '/develop/database.html', null, '1', 'fa fa-database', '1 ', '0');
 INSERT INTO "XHZ"."SYS_MENU" VALUES ('d02a6be9f15644edb13cda9c9ff4864b', '0', '功能测试', null, null, '0', 'fa fa-bug', '2 ', '0');
 INSERT INTO "XHZ"."SYS_MENU" VALUES ('8c4a889d2e0a4d9486d8323818bf9f03', 'd02a6be9f15644edb13cda9c9ff4864b', 'swagger', '/swagger-ui.html', null, '1', 'fa fa-book', '0 ', '0');
+INSERT INTO "XHZ"."SYS_MENU" VALUES ('799fff0ec93a4240bc07cd83782e0a13', '0f42d387706f498fa583e96bb7cc43ba', '数据库文档', '/develop/databaseDoc.html', null, '1', 'fa fa-file-word-o', '3 ', '0');
 
 -- ----------------------------
 -- Table structure for SYS_USER
@@ -140,7 +143,7 @@ COMMENT ON COLUMN "XHZ"."SYS_USER"."UPDATE_USER_ID" IS '修改人ID';
 -- ----------------------------
 INSERT INTO "XHZ"."SYS_USER" VALUES ('3fd523b9fc234b06b73ccefa4284aea5', '2', '2334', null, null, '12', null, null, '1', null, null, '0', null, null, null, null);
 INSERT INTO "XHZ"."SYS_USER" VALUES ('0b515447984d492db3d9da7129898590', '123', '123', null, null, '123', null, null, null, null, null, '0', null, null, null, null);
-INSERT INTO "XHZ"."SYS_USER" VALUES ('c61755734c9e4a40bf8a89334cb94568', '123', '33111', null, null, '123', null, null, null, null, null, '0', null, null, null, null);
+INSERT INTO "XHZ"."SYS_USER" VALUES ('c61755734c9e4a40bf8a89334cb94568', '123', '33111', null, null, '123', null, null, '1', null, null, '0', null, null, null, null);
 
 -- ----------------------------
 -- Indexes structure for table SYS_DATABASE

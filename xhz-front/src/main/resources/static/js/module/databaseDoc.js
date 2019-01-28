@@ -6,10 +6,20 @@ var vm = new Vue({
 		q : {
 			id : ''
 		},
-		datasourceItem : {}
+		datasourceItem : []
 	},
 	methods : {
 		query : function() {
+			
+		},
+		queryDatabaseDoc : function () {
+			Ajax.request({
+				url: '/develop/databaseDocs/' + vm.q.id,
+				async: true,
+				successCallback: function(r) {
+					
+				}
+			});
 		},
 		reload : function() {
 			vm.query();
@@ -24,15 +34,20 @@ var vm = new Vue({
 			async: true,
 			type: 'GET',
 			successCallback: function(r) {
-//				console.log(r.data);
+				if (r.data.length > 0) {
+					for (var database of r.data) {
+						var obj = {
+								label : database.name,
+								value : database.id
+						}
+						vm.datasourceItem.push(obj);
+					}
+				}
 			}
 		});
 	}
 });
 
-layui.use('table', function() {
+layui.use(['table'], function() {
 	var table = layui.table;
-	var $ = layui.$;
-	var form = layui.form;
-	
 });

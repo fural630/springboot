@@ -151,11 +151,10 @@ var vm = new Vue({
 			});
 		},
 		connectTest : function (row) {
+			var id = row.id;
 			Ajax.request({
-				url : vm.baseUrl + "/connectTest",
-				params : JSON.stringify(row),
-				contentType : "application/json",
-				type : 'POST',
+				url : vm.baseUrl + "/connectTest/" + id,
+				async : true,
 				successCallback : function() {
 					alert('连接成功', function(index) {
 						vm.reload();
@@ -174,16 +173,6 @@ var vm = new Vue({
 		handleReset : function(name) {
 			handleResetForm(vm, name);
 		}
-	},
-	created : function () {
-		Ajax.request({
-			url: '/develop/databases',
-			async: true,
-			type: 'GET',
-			successCallback: function(r) {
-				console.log(r.data);
-			}
-		});
 	}
 });
 

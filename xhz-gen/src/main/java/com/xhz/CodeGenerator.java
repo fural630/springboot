@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.xhz.util.DatabaseUtil;
 import com.xhz.util.Dumper;
 
 public class CodeGenerator {
@@ -114,7 +115,7 @@ public class CodeGenerator {
 		dsc.getDbType();
 		DbType dbType = dsc.getDbType();
 		if (dbType == DbType.MYSQL) {
-			String schema = getSchemaByUrl(dsc.getUrl());
+			String schema = DatabaseUtil.getSchemaByUrl(dsc.getUrl());
 			dsc.setDbQuery(new CustomDbMysqlQuery(schema));
 		} 
 		if (dbType == DbType.ORACLE) {
@@ -233,19 +234,5 @@ public class CodeGenerator {
 		mpg.setStrategy(strategy);
 		mpg.setTemplateEngine(new FreemarkerTemplateEngine());
 		mpg.execute();
-	}
-	
-	/**
-	 * mysql时截取出数据库名称
-	 * @param url
-	 * @return 数据库名称
-	 */
-	private static String getSchemaByUrl(String url) {
-		if (StringUtils.isEmpty(url)) {
-			return null;
-		}
-		String schema = url.contains("?") ? url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"))
-				: url.substring(url.lastIndexOf("/") + 1, url.length());
-		return schema;
 	}
 }

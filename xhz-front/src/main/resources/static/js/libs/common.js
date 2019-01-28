@@ -1,19 +1,3 @@
-layui.use(['layer'], function () {
-	
-});
-
-//iframe自适应
-$(window).on('resize', function() {
-	var $content = $('#mainApp');
-	$content.height($(this).height());
-	$content.find('iframe').each(function() {
-		$(this).height($content.height() - 150);
-	});
-	var $rrapp = $('#rrapp').parent();
-	$rrapp.height($(this).height());
-	$(this).height($content.height());
-}).resize();
-
 $.ajaxSetup({
 	dataType : "json",
 	cache : false
@@ -235,13 +219,15 @@ Ajax = function () {
 
 
 function dialogLoading(flag) {
-	if (flag) {
-		layui.layer.load(2, {
-			shade : [ 0.2, '#000' ],
-			time : 5000
-		});
-	} else {
-		layui.layer.closeAll('loading');
+	if (layui.layer) {
+		if (flag) {
+			layui.layer.load(2, {
+				shade : [ 0.2, '#000' ],
+				time : 5000
+			});
+		} else {
+			layui.layer.closeAll('loading');
+		}
 	}
 }
 

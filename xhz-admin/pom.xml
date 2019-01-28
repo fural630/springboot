@@ -18,6 +18,11 @@
 			<artifactId>xhz-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.xhz</groupId>
+			<artifactId>xhz-gen</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 </project>

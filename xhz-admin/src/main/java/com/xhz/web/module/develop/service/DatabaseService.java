@@ -76,16 +76,17 @@ public class DatabaseService {
 		return databaseDao.selectList(null);
 	}
 
-	public boolean connectTest(DatabaseDTO databaseDTO) {
+	public boolean connectTest(String id) {
+		DatabaseDO databaseDO = selectById(id);
 		String driverName = null;
-		if (databaseDTO.getDbType().equals(DbType.Mysql.getValue())) {
+		if (databaseDO.getDbType().equals(DbType.Mysql.getValue())) {
 			driverName = "com.mysql.jdbc.Driver";
-		} else if (databaseDTO.getDbType().equals(DbType.Oracle.getValue())) {
+		} else if (databaseDO.getDbType().equals(DbType.Oracle.getValue())) {
 			driverName = "oracle.jdbc.driver.OracleDriver";
 		}
-		String username = databaseDTO.getUserName();
-		String password = databaseDTO.getPassWord();
-		String url = databaseDTO.getUrl();
+		String username = databaseDO.getUserName();
+		String password = databaseDO.getPassWord();
+		String url = databaseDO.getUrl();
 		Connection conn = null;
 		boolean flag = false;
         try {
@@ -103,7 +104,6 @@ public class DatabaseService {
                 e.printStackTrace();
             }
         }
-        DatabaseDO databaseDO = CopyUtil.copyProperties(databaseDTO, DatabaseDO.class);
         databaseDO.setLastTestTime(new Date());
         databaseDao.updateById(databaseDO);
         return flag;

@@ -297,3 +297,5 @@ var vm = new Vue({
 		this.loadAllIcon();
 	}
 });
+
+layui.use('layer');
