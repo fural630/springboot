@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhz.web.module.develop.dao.DatabaseTableFieldDao">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xhz.web.module.develop.entity.databasedoc.DatabaseTableFieldDO">
+        <id column="FIELD_ID" property="fieldId" />
+        <result column="TABLE_ID" property="tableId" />
+        <result column="DATABASE_ID" property="databaseId" />
+        <result column="KEY_FLAG" property="keyFlag" />
+        <result column="NAME" property="name" />
+        <result column="TYPE" property="type" />
+        <result column="PROPERTY_NAME" property="propertyName" />
+        <result column="PROPERTY_TYPE" property="propertyType" />
+        <result column="COMMENT" property="comment" />
+        <result column="NULLABLE" property="nullable" />
+        <result column="DATA_LENGTH" property="dataLength" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        FIELD_ID, TABLE_ID, DATABASE_ID, KEY_FLAG, NAME, TYPE, PROPERTY_NAME, PROPERTY_TYPE, COMMENT, NULLABLE, DATA_LENGTH
+    </sql>
+
+</mapper>
