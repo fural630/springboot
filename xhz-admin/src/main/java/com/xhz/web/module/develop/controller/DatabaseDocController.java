@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xhz.util.Dumper;
 import com.xhz.util.R;
+import com.xhz.web.module.develop.entity.DatabaseDocDTO;
 import com.xhz.web.module.develop.service.DatabaseDocService;
 
 import io.swagger.annotations.Api;
@@ -37,6 +39,18 @@ public class DatabaseDocController {
 	
 	
 	/**
+	 * 拉取数据
+	 * @param id
+	 * @return R.ok().put("data", databaseDTO)
+	 */
+	@ApiOperation(value="拉取数据")
+	@RequestMapping(value = "/databaseDocs/pull/{id}", method = RequestMethod.GET)
+	public R pullData(@PathVariable("id") String id) {
+		databaseDocService.pullDataByDatabaseId(id);
+		return R.ok();
+	}
+	
+	/**
 	 * 查询
 	 * @param id
 	 * @return R.ok().put("data", databaseDTO)
@@ -44,8 +58,8 @@ public class DatabaseDocController {
 	@ApiOperation(value="查询")
 	@RequestMapping(value = "/databaseDocs/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") String id) {
-		databaseDocService.selectDatabaseDocById(id);
-		return R.ok().put("data", null);
+		DatabaseDocDTO databaseDocDTO = databaseDocService.selectDatabaseDocById(id);
+		return R.ok().put("data", databaseDocDTO);
 	}
 	
 

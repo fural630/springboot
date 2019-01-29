@@ -1,10 +1,12 @@
 package com.xhz.web.module.develop.entity.databasedoc;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.util.List;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
@@ -40,9 +42,12 @@ public class DatabaseTableDO implements Serializable {
     /**
      * 备注
      */
-    @TableField("COMMENT")
-    private String comment;
-
+    @TableField("REMARK")
+    private String remark;
+    
+    @TableField(exist = false)
+    private List<DatabaseTableFieldDO> databaseTableFieldDOList;
+    
     public String getTableId() {
         return tableId;
     }
@@ -64,21 +69,21 @@ public class DatabaseTableDO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public String getComment() {
-        return comment;
-    }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    @Override
-    public String toString() {
-        return "DatabaseTableDO{" +
-        "tableId=" + tableId +
-        ", databaseId=" + databaseId +
-        ", name=" + name +
-        ", comment=" + comment +
-        "}";
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public List<DatabaseTableFieldDO> getDatabaseTableFieldDOList() {
+		return databaseTableFieldDOList;
+	}
+
+	public void setDatabaseTableFieldDOList(List<DatabaseTableFieldDO> databaseTableFieldDOList) {
+		this.databaseTableFieldDOList = databaseTableFieldDOList;
+	}
+	
 }

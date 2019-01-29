@@ -8,12 +8,20 @@
         <id column="TABLE_ID" property="tableId" />
         <result column="DATABASE_ID" property="databaseId" />
         <result column="NAME" property="name" />
-        <result column="COMMENT" property="comment" />
+        <result column="REMARK" property="remark" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        TABLE_ID, DATABASE_ID, NAME, COMMENT
+        TABLE_ID, DATABASE_ID, NAME, REMARK
     </sql>
+    
+    <delete id="deleteByDatabaseId">
+    	delete from SYS_DATABASE_TABLE where DATABASE_ID = #{id}
+    </delete>
+    
+    <select id="selectTableByDatabaseId" resultMap="BaseResultMap">
+    	select * from SYS_DATABASE_TABLE where DATABASE_ID = #{id}
+    </select>
 
 </mapper>

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.generator.config.IDbQuery;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
@@ -24,6 +25,7 @@ import com.xhz.constant.Constant.YESNO;
 import com.xhz.util.DatabaseUtil;
 import com.xhz.util.RRException;
 import com.xhz.web.module.develop.entity.DatabaseDO;
+import com.xhz.web.module.develop.entity.DatabaseDocDTO;
 import com.xhz.web.module.develop.entity.databasedoc.CustomITypeConvert;
 import com.xhz.web.module.develop.entity.databasedoc.CustomMySqlTypeConvert;
 import com.xhz.web.module.develop.entity.databasedoc.CustomOracleTypeConvert;
@@ -45,8 +47,32 @@ public class DatabaseDocService {
 
 	@Autowired
 	private DatabaseService databaseService;
+	@Autowired
+	private DatabaseTableService databaseTableService;
+	@Autowired
+	private DatabaseTableFieldService databaseTableFieldService;
+	
+	public DatabaseDocDTO selectDatabaseDocById(String id) {
+		DatabaseDO databaseDO = databaseService.selectById(id);
+		checkDatabaseConnect(databaseDO);
+		List<DatabaseTableDO> databaseTableDOList = databaseTableService.selectTableByDatabaseId(id);
+		if (CollectionUtils.isNotEmpty(databaseTableDOList)) {
+			for (DatabaseTableDO databaseTableDO : databaseTableDOList) {
+				String tableId = databaseTableDO.getTableId();
+				List<DatabaseTableFieldDO> databaseTableFieldDOList = databaseTableFieldService.selectTableFieldByTableId(tableId);
+				if (CollectionUtils.isNotEmpty(databaseTableFieldDOList)) {
+					databaseTableDO.setDatabaseTableFieldDOList(databaseTableFieldDOList);
+				}
+			}
+		}
+		DatabaseDocDTO databaseDocDTO = new DatabaseDocDTO();
+		databaseDocDTO.setDatabaseDO(databaseDO);
+		databaseDocDTO.setDatabaseTableDOList(databaseTableDOList);
+		return databaseDocDTO;
+	}
 
-	public void selectDatabaseDocById(String id) {
+	@Transactional
+	public void pullDataByDatabaseId(String id) {
 		DatabaseDO databaseDO = databaseService.selectById(id);
 		checkDatabaseConnect(databaseDO);
 		IDbQuery dbQuery = null;
@@ -76,17 +102,24 @@ public class DatabaseDocService {
 				String tableName = results.getString(dbQuery.tableName());
 				String comment = results.getString(dbQuery.tableComment());
 				if (StringUtils.isNotEmpty(tableName)) {
-					databaseTable = new DatabaseTableDO();
-					databaseTable.setName(tableName);
-					if (StringUtils.isNotEmpty(comment)) {
-						databaseTable.setComment(comment);
+					if (!excludeTableList(tableName)) {
+						databaseTable = new DatabaseTableDO();
+						databaseTable.setName(tableName);
+						if (StringUtils.isNotEmpty(comment)) {
+							databaseTable.setRemark(comment);
+						}
+						databaseTableList.add(databaseTable);
 					}
-					databaseTableList.add(databaseTable);
 				} else {
 					logger.error("当前数据库为空！！！");
 				}
 			}
 			if (CollectionUtils.isNotEmpty(databaseTableList)) {
+				removeAllTableByDatabaseId(id);
+				for (DatabaseTableDO databaseTableDO : databaseTableList) {
+					databaseTableDO.setDatabaseId(id);
+					databaseTableService.insert(databaseTableDO);
+				}
 				convertTableFields(databaseTableList, dbQuery, databaseDO, connection, typeConvert);
 			}
 		} catch (Exception e) {
@@ -107,11 +140,15 @@ public class DatabaseDocService {
 
 	}
 
+	private void removeAllTableByDatabaseId(String id) {
+		databaseTableService.deleteByDatabaseId(id);
+		databaseTableFieldService.deleteByDatabaseId(id);
+	}
+
 	private void convertTableFields(List<DatabaseTableDO> dataBaseTableList, IDbQuery dbQuery, DatabaseDO databaseDO,
 			Connection connection, CustomITypeConvert typeConvert) {
 		for (DatabaseTableDO databaseTable : dataBaseTableList) {
 			boolean haveId = false;
-			List<DatabaseTableFieldDO> fieldList = new ArrayList<>();
 			try {
 				String tableFieldsSql = dbQuery.tableFieldsSql();
 				if (com.baomidou.mybatisplus.annotation.DbType.ORACLE == dbQuery.dbType()) {
@@ -126,6 +163,8 @@ public class DatabaseDocService {
 				ResultSet results = preparedStatement.executeQuery();
 				while (results.next()) {
 					DatabaseTableFieldDO field = new DatabaseTableFieldDO();
+					field.setTableId(databaseTable.getTableId());
+					field.setDatabaseId(databaseTable.getDatabaseId());
 					String key = results.getString(dbQuery.fieldKey());
 					boolean isId = StringUtils.isNotEmpty(key) && "PRI".equals(key.toUpperCase());
 					if (isId && !haveId) {
@@ -146,8 +185,8 @@ public class DatabaseDocService {
 					field.setPropertyName(processPropertyName(field.getName()));
 					PropertyInfo propertyInfo = processPropertyType(typeConvert, field.getType());
 					field.setPropertyType(propertyInfo.getType());
-					field.setComment(results.getString(dbQuery.fieldComment()));
-					fieldList.add(field);
+					field.setRemark(results.getString(dbQuery.fieldComment()));
+					databaseTableFieldService.insert(field);
 				}
 			} catch (Exception e) {
 				logger.error("Exception： {}", e.getMessage());
@@ -191,5 +230,14 @@ public class DatabaseDocService {
 		}
 		return DatabaseUtil.getConn(databaseDO.getUrl(), databaseDO.getUserName(), databaseDO.getPassWord(),
 				driverName);
+	}
+
+	private boolean excludeTableList(String tableName) {
+		String[] excludeTable = new String[] { "SYS_DATABASE", "SYS_DATABASE_TABLE", "SYS_DATABASE_TABLE_FIELD" };
+		for (String s : excludeTable) {
+			if (s.equalsIgnoreCase(tableName))
+				return true;
+		}
+		return false;
 	}
 }

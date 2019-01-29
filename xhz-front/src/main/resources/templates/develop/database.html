@@ -42,29 +42,29 @@
 					<table class="layui-hide" id="databaseTable" lay-filter="databaseTable"></table>
 				</div>
 			</div>
-			
+
 			<div id="databaseDialog" class="frame-dialog">
 				<el-card class="box-card">
 					<el-form @submit.native.prevent ref="databaseForm" :rules="ruleValidate" :model="database" label-width="100px">
 						<el-form-item label="数据库类型" prop="dbType">
-			            	<el-radio-group v-model="database.dbType">
-			                	<el-radio v-for="item in dbTypeItem" :label="item.value" :key="item.value">
-			                		{{item.label}}
-			                	</el-radio>
-			                </el-radio-group>
-			            </el-form-item>
+							<el-radio-group v-model="database.dbType">
+								<el-radio v-for="item in dbTypeItem" :label="item.value" :key="item.value">
+									{{item.label}}
+								</el-radio>
+							</el-radio-group>
+						</el-form-item>
 						<el-form-item label="名称" prop="name">
-			                <el-input v-model="database.name" placeholder="数据源名称" clearable/>
-			            </el-form-item>
-			            <el-form-item label="链接地址" prop="url">
-			                <el-input v-model="database.url" placeholder="链接地址" clearable/>
-			            </el-form-item>
-			            <el-form-item label="用户名" prop="userName">
-			                <el-input v-model="database.userName" placeholder="用户名" clearable/>
-			            </el-form-item>
-			            <el-form-item label="密码" prop="passWord">
-			                <el-input v-model="database.passWord" type="password" placeholder="密码" clearable/>
-			            </el-form-item>
+							<el-input v-model="database.name" placeholder="数据源名称" clearable />
+						</el-form-item>
+						<el-form-item label="链接地址" prop="url">
+							<el-input v-model="database.url" placeholder="链接地址" clearable />
+						</el-form-item>
+						<el-form-item label="用户名" prop="userName">
+							<el-input v-model="database.userName" placeholder="用户名" clearable />
+						</el-form-item>
+						<el-form-item label="密码" prop="passWord">
+							<el-input v-model="database.passWord" type="password" placeholder="密码" clearable />
+						</el-form-item>
 					</el-form>
 				</el-card>
 			</div>

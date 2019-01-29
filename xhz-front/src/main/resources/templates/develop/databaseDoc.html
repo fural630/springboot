@@ -9,26 +9,51 @@
 	<body>
 		<div id="app" v-cloak>
 			<div class="frame-card">
-					<div class="frame-card-header">
-						<el-form ref="queryForm" :model="q" label-width="70px">
-							<el-row>
-								<el-col :span="4">
-									<el-form-item prop="id" label="数据源">
-										<el-select v-model="q.id" clearable>
-											<el-option v-for="item in datasourceItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
-										</el-select>
-									</el-form-item>
-								</el-col>
-								&nbsp;&nbsp;
-								<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-								<el-button type="danger" @click="queryDatabaseDoc"><i class="fa fa-download"></i>&nbsp;拉取数据</el-button>
-							</el-row>
-						</el-form>
-					</div>
-					<div>
-<!-- 						<table class="layui-hide" id="databaseTable" lay-filter="databaseTable"></table> -->
-					</div>
+				<div class="frame-card-header">
+					<el-form ref="queryForm" :model="q" label-width="70px">
+						<el-row>
+							<el-col :span="6">
+								<el-form-item prop="id" label="数据源">
+									<el-select v-model="q.id" clearable>
+										<el-option v-for="item in datasourceItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
+									</el-select>
+								</el-form-item>
+							</el-col>
+							&nbsp;&nbsp;
+							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+							<el-button type="danger" @click="queryDatabaseDoc"><i class="fa fa-download"></i>&nbsp;拉取数据</el-button>
+						</el-row>
+					</el-form>
 				</div>
+				<div style="width:920px;">
+					<template v-if="databaseShow">
+						<blockquote class="layui-elem-quote">数据源信息：
+							<el-tooltip class="item" effect="light" content="数据源名称" placement="top">
+								<el-tag type="success">{{database.name}}</el-tag>
+							</el-tooltip>&nbsp;&nbsp;
+							<el-tooltip class="item" effect="light" content="数据库类型" placement="top">
+								<template v-if="database.dbType === '0'">
+									<el-tag>Mysql</el-tag>
+								</template>
+								<template v-else-if="database.dbType === '1'">
+									<el-tag>Oracle</el-tag>
+								</template>
+							</el-tooltip>&nbsp;&nbsp;
+							<el-tooltip class="item" effect="light" content="链接地址" placement="top">
+								<el-tag type="warning">{{database.url}}</el-tag>
+							</el-tooltip>&nbsp;&nbsp;
+							<el-tooltip class="item" effect="light" content="最近拉取时间" placement="top">
+								<el-tag type="danger">{{database.lastTestTime}}</el-tag>
+							</el-tooltip>
+						</blockquote>
+					</template>
+					<div id="doc"></div>
+				</div>
+			</div>
+			<div id="contentDialog" style="display:none;padding:10px;">
+				<ul class="site-dir layui-layer-wrap" style="display: block;">
+				</ul>
+			</div>
 		</div>
 		<script src="${basePath}/js/module/databaseDoc.js?_${.now?long}"></script>
 	</body>

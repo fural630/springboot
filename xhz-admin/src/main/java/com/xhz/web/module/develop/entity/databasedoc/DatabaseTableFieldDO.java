@@ -1,10 +1,11 @@
 package com.xhz.web.module.develop.entity.databasedoc;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
@@ -70,8 +71,8 @@ public class DatabaseTableFieldDO implements Serializable {
     /**
      * 备注
      */
-    @TableField("COMMENT")
-    private String comment;
+    @TableField("REMARK")
+    private String remark;
 
     /**
      * 是否为空
@@ -141,13 +142,7 @@ public class DatabaseTableFieldDO implements Serializable {
     public void setPropertyType(String propertyType) {
         this.propertyType = propertyType;
     }
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+    
     public String getNullable() {
         return nullable;
     }
@@ -163,20 +158,11 @@ public class DatabaseTableFieldDO implements Serializable {
         this.dataLength = dataLength;
     }
 
-    @Override
-    public String toString() {
-        return "DatabaseTableFieldDO{" +
-        "fieldId=" + fieldId +
-        ", tableId=" + tableId +
-        ", databaseId=" + databaseId +
-        ", keyFlag=" + keyFlag +
-        ", name=" + name +
-        ", type=" + type +
-        ", propertyName=" + propertyName +
-        ", propertyType=" + propertyType +
-        ", comment=" + comment +
-        ", nullable=" + nullable +
-        ", dataLength=" + dataLength +
-        "}";
-    }
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 }

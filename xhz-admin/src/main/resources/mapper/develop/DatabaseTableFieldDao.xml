@@ -13,14 +13,22 @@
         <result column="TYPE" property="type" />
         <result column="PROPERTY_NAME" property="propertyName" />
         <result column="PROPERTY_TYPE" property="propertyType" />
-        <result column="COMMENT" property="comment" />
+        <result column="REMARK" property="remark" />
         <result column="NULLABLE" property="nullable" />
         <result column="DATA_LENGTH" property="dataLength" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        FIELD_ID, TABLE_ID, DATABASE_ID, KEY_FLAG, NAME, TYPE, PROPERTY_NAME, PROPERTY_TYPE, COMMENT, NULLABLE, DATA_LENGTH
+        FIELD_ID, TABLE_ID, DATABASE_ID, KEY_FLAG, NAME, TYPE, PROPERTY_NAME, PROPERTY_TYPE, REMARK, NULLABLE, DATA_LENGTH
     </sql>
+    
+    <delete id="deleteByDatabaseId">
+    	delete from SYS_DATABASE_TABLE_FIELD where DATABASE_ID = #{id}
+    </delete>
+    
+    <select id="selectByTableId" resultMap="BaseResultMap">
+    	select * from SYS_DATABASE_TABLE_FIELD where TABLE_ID = #{id}
+    </select>
 
 </mapper>

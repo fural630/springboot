@@ -45,4 +45,13 @@ public class DatabaseTableFieldService {
 	public List<DatabaseTableFieldDO> selectList() {
 		return databaseTableFieldDao.selectList(null);
 	}
+
+	public void deleteByDatabaseId(String id) {
+		databaseTableFieldDao.deleteByDatabaseId(id);
+		
+	}
+
+	public List<DatabaseTableFieldDO> selectTableFieldByTableId(String id) {
+		return databaseTableFieldDao.selectByTableId(id);
+	}
 }
