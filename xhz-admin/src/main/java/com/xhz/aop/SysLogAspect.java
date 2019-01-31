@@ -11,12 +11,16 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
 import com.xhz.annotation.SysLog;
+import com.xhz.util.IPUtils;
+import com.xhz.web.module.sys.entity.RecordLogDO;
+import com.xhz.web.module.sys.service.RecordLogService;
 
 /**
  * 
@@ -26,6 +30,9 @@ import com.xhz.annotation.SysLog;
 @Aspect
 @Component
 public class SysLogAspect {
+	
+	@Autowired
+	RecordLogService recordLogService;
 	
 	private final static Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
 	
@@ -41,10 +48,12 @@ public class SysLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         
+        RecordLogDO recordLogDO = new RecordLogDO();
+        
         SysLog syslog = method.getAnnotation(SysLog.class);
         if (syslog != null) {
             //注解上的描述
-//            sysLog.setOperation(syslog.value());
+            recordLogDO.setOperation(syslog.value());
         }
         
         //请求的方法名
@@ -55,10 +64,11 @@ public class SysLogAspect {
         Object[] args = joinPoint.getArgs();
         String params = JSON.toJSONString(args[0]);
         
-        logger.info("className : {}", className);
-        logger.info("methodName : {}", className + "." + methodName + "()");
-        logger.info("params : {}", params);
+        recordLogDO.setMethod(className + "." + methodName + "()");
+        recordLogDO.setParams(params);
+        recordLogDO.setId(IPUtils.getIpAddr(request));
+        recordLogDO.setUserName("1");
+        recordLogDO.setAccount("2");
+        recordLogService.insert(recordLogDO);
 	}
-	
-	
 }

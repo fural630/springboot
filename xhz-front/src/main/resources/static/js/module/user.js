@@ -50,6 +50,18 @@ var vm = new Vue({
 		title : ''
 	},
 	methods : {
+		testError : function () {
+			Ajax.request({
+				url : "/sys/test/" + 18,
+				async: true,
+				type : 'GET',
+				successCallback: function(r) {
+					alert("操作成功！", function () {
+						
+					});
+				}
+			});
+		},
 		query : function() {
 			layui.table.reload(vm.moduleName + 'Table', {
 				where : {

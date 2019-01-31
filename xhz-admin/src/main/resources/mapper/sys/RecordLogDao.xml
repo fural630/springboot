@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhz.web.module.sys.dao.RecordLogDao">
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xhz.web.module.sys.entity.RecordLogDO">
+        <id column="ID" property="id" />
+        <result column="ACCOUNT" property="account" />
+        <result column="USER_NAME" property="userName" />
+        <result column="METHOD" property="method" />
+        <result column="OPERATION" property="operation" />
+        <result column="PARAMS" property="params" />
+        <result column="IP" property="ip" />
+        <result column="CREATE_DATE" property="createDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, ACCOUNT, USER_NAME, METHOD, OPERATION, PARAMS, IP, CREATE_DATE
+    </sql>
+
+
+	<select id="selectRecordLogDTOPage" resultType="com.xhz.web.module.sys.entity.RecordLogDTO">
+    	select * from SYS_RECORD_LOG
+    	<where>
+    		1=1
+    	</where>
+    	<choose>
+            <when test="field != null and field.trim() != ''">
+                order by ${field} ${order}
+            </when>
+            <otherwise>
+                order by ID desc
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="selectRecordLogDTOList" resultType="com.xhz.web.module.sys.entity.RecordLogDTO">
+		select * from SYS_RECORD_LOG
+	</select>
+	
+	<select id="selectRecordLogDTOById" resultType="com.xhz.web.module.sys.entity.RecordLogDTO">
+		select * from SYS_RECORD_LOG where ID = #{id}
+	</select>
+
+</mapper>

@@ -16,9 +16,11 @@ import com.xhz.util.RRException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandleAdvice {
-
+	
 	private final static Logger logger = LoggerFactory.getLogger(ControllerExceptionHandleAdvice.class);
-
+	
+	
+	
 	@ResponseBody
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
