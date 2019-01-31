@@ -201,9 +201,6 @@ Ajax = function () {
         	   //关闭遮罩
         	   dialogLoading(false);
         	   var result = eval('(' + xhr.responseText + ')');
-        	   if (result.msg.indexOf("exception") > 0) {
-        		   result.msg = "此页面发生未知异常,请联系管理员";
-        	   }
     		   layui.layer.alert(result.msg, {icon: 5});
            }
        });
@@ -223,7 +220,7 @@ function dialogLoading(flag) {
 		if (flag) {
 			layui.layer.load(2, {
 				shade : [ 0.2, '#000' ],
-				time : 5000
+				time : 10 * 1000
 			});
 		} else {
 			layui.layer.closeAll('loading');

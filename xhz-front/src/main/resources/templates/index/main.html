@@ -8,21 +8,11 @@
 	</head>
 	<body>
 		<div id="app" v-cloak>
-			<el-button type="primary" @click="openTab('用户管理', '/sys/user.html')">
-				<i class="fa fa-user"></i>&nbsp;&nbsp;用户管理
-			</el-button>
-			<el-button type="primary" @click="openTab('菜单管理', '/sys/menu.html')">
-				<i class="fa fa-bars"></i>&nbsp;&nbsp;菜单管理
-			</el-button>
-			<el-button type="primary" @click="openTab('图标库', '/develop/icon.html')">
-				<i class="fa fa-info"></i>&nbsp;&nbsp;图标库
-			</el-button>
-			<el-button type="primary" @click="openTab('数据库文档', '/develop/database.html')">
-				<i class="fa fa-database"></i>&nbsp;&nbsp;数据库文档
-			</el-button>
-			<el-button type="primary" @click="openTab('swagger接口测试', '/swagger-ui.html')">
-				<i class="fa fa-book"></i>&nbsp;&nbsp;swagger接口测试
-			</el-button>
+			<template v-for="item in menuItem">
+				<el-button type="primary" @click="openTab(item.name, item.url)">
+					<i :class="item.icon"></i>&nbsp;&nbsp;{{item.name}}
+				</el-button>
+			</template>
 		</div>
 		<script src="${basePath}/js/module/main.js?_${.now?long}"></script>
 	</body>

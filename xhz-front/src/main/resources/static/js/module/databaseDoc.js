@@ -21,6 +21,7 @@ var vm = new Vue({
 				vm.$message.warning("请选择要查询的数据源！");
 				return;
 			}
+			vm.databaseShow = false;
 			Ajax.request({
 				url: vm.baseUrl + '/' + vm.q.id,
 				async: true,
@@ -109,14 +110,16 @@ var vm = new Vue({
 			vm.database.lastTestTime = constant.transDate(databaseDO.lastTestTime);
 		},
 		queryDatabaseDoc : function () {
-			Ajax.request({
-				url: vm.baseUrl + '/pull/' + vm.q.id,
-				async: true,
-				successCallback: function(r) {
-					alert("拉取成功！", function () {
-						vm.reload();
-					});
-				}
+			confirm('确认要重新拉取数据吗？', function () {
+				Ajax.request({
+					url: vm.baseUrl + '/pull/' + vm.q.id,
+					async: true,
+					successCallback: function(r) {
+						alert("拉取成功！", function () {
+							vm.query();
+						});
+					}
+				});
 			});
 		},
 		handleReset : function(name) {
@@ -132,7 +135,7 @@ var vm = new Vue({
 				if (r.data.length > 0) {
 					for (var i = 0; i < r.data.length; i++) {
 						var database = r.data[i];
-						if (i == 1) {
+						if (i == 0) {
 							vm.q.id = database.id;
 						}
 						var obj = {
@@ -140,6 +143,7 @@ var vm = new Vue({
 								value : database.id
 						}
 						vm.datasourceItem.push(obj);
+						vm.query();
 					}
 				}
 			}

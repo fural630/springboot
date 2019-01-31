@@ -20,5 +20,7 @@ public interface DatabaseTableFieldDao extends BaseMapper<DatabaseTableFieldDO> 
 	void deleteByDatabaseId(String id);
 
 	List<DatabaseTableFieldDO> selectByTableId(String id);
+
+	void saveBatch(List<DatabaseTableFieldDO> databaseTableFieldDOList);
 	
 }

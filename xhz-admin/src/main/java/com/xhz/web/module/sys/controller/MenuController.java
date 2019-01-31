@@ -121,8 +121,8 @@ public class MenuController {
 	 */
 	@ApiOperation(value="查询所有")
 	@RequestMapping(value = "/menus", method = RequestMethod.GET)
-	public R getAll() {
-		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList();
+	public R getAll(@RequestParam Map<String, Object> params) {
+		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList(params);
 		return R.ok().put("data", menuDTOList);
 	}
 	

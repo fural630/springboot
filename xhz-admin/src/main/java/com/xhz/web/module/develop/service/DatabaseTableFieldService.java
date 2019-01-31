@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xhz.web.module.develop.dao.DatabaseTableFieldDao;
 import com.xhz.web.module.develop.entity.databasedoc.DatabaseTableFieldDO;
 
@@ -17,11 +18,11 @@ import com.xhz.web.module.develop.entity.databasedoc.DatabaseTableFieldDO;
  * @since 2019-01-29
  */
 @Service
-public class DatabaseTableFieldService {
+public class DatabaseTableFieldService extends ServiceImpl<DatabaseTableFieldDao, DatabaseTableFieldDO> {
 
 	@Autowired
 	private DatabaseTableFieldDao databaseTableFieldDao;
-	
+
 	public void insert(DatabaseTableFieldDO databaseTableFieldDO) {
 		databaseTableFieldDao.insert(databaseTableFieldDO);
 	}
@@ -34,21 +35,16 @@ public class DatabaseTableFieldService {
 		databaseTableFieldDao.deleteBatchIds(fieldIds);
 	}
 
-	public void updateById(DatabaseTableFieldDO databaseTableFieldDO) {
-		databaseTableFieldDao.updateById(databaseTableFieldDO);
-	}
-
 	public DatabaseTableFieldDO selectById(String fieldId) {
 		return databaseTableFieldDao.selectById(fieldId);
 	}
-	
+
 	public List<DatabaseTableFieldDO> selectList() {
 		return databaseTableFieldDao.selectList(null);
 	}
 
 	public void deleteByDatabaseId(String id) {
 		databaseTableFieldDao.deleteByDatabaseId(id);
-		
 	}
 
 	public List<DatabaseTableFieldDO> selectTableFieldByTableId(String id) {

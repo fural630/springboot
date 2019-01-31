@@ -42,8 +42,8 @@ public class MenuService {
 		return menuDao.selectMenuDTOById(menuId);
 	}
 	
-	public List<MenuDTO> selectMenuDTOList() {
-		return menuDao.selectMenuDTOList();
+	public List<MenuDTO> selectMenuDTOList(Map<String, Object> params) {
+		return menuDao.selectMenuDTOList(params);
 	}
 	
 	public List<MenuDTO> selectMenuDTOPage(Map<String, Object> query) {

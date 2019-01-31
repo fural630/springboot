@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xhz.web.module.develop.dao.DatabaseTableDao;
 import com.xhz.web.module.develop.entity.databasedoc.DatabaseTableDO;
 
@@ -17,7 +18,7 @@ import com.xhz.web.module.develop.entity.databasedoc.DatabaseTableDO;
  * @since 2019-01-29
  */
 @Service
-public class DatabaseTableService {
+public class DatabaseTableService extends ServiceImpl<DatabaseTableDao, DatabaseTableDO>{
 
 	@Autowired
 	private DatabaseTableDao databaseTableDao;
@@ -32,10 +33,6 @@ public class DatabaseTableService {
 
 	public void deleteBatchIds(List<String> tableIds) {
 		databaseTableDao.deleteBatchIds(tableIds);
-	}
-
-	public void updateById(DatabaseTableDO databaseTableDO) {
-		databaseTableDao.updateById(databaseTableDO);
 	}
 
 	public DatabaseTableDO selectById(String tableId) {

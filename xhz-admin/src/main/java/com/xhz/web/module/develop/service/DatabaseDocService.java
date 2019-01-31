@@ -64,6 +64,8 @@ public class DatabaseDocService {
 					databaseTableDO.setDatabaseTableFieldDOList(databaseTableFieldDOList);
 				}
 			}
+		} else {
+			throw new RRException("未查询到数据，首次查询，请先拉取数据！");
 		}
 		DatabaseDocDTO databaseDocDTO = new DatabaseDocDTO();
 		databaseDocDTO.setDatabaseDO(databaseDO);
@@ -118,8 +120,8 @@ public class DatabaseDocService {
 				removeAllTableByDatabaseId(id);
 				for (DatabaseTableDO databaseTableDO : databaseTableList) {
 					databaseTableDO.setDatabaseId(id);
-					databaseTableService.insert(databaseTableDO);
 				}
+				databaseTableService.saveBatch(databaseTableList);
 				convertTableFields(databaseTableList, dbQuery, databaseDO, connection, typeConvert);
 			}
 		} catch (Exception e) {
@@ -161,6 +163,7 @@ public class DatabaseDocService {
 				logger.info("tableFieldsSql : {}", tableFieldsSql);
 				PreparedStatement preparedStatement = connection.prepareStatement(tableFieldsSql);
 				ResultSet results = preparedStatement.executeQuery();
+				List<DatabaseTableFieldDO> fieldList = new ArrayList<>();
 				while (results.next()) {
 					DatabaseTableFieldDO field = new DatabaseTableFieldDO();
 					field.setTableId(databaseTable.getTableId());
@@ -186,8 +189,9 @@ public class DatabaseDocService {
 					PropertyInfo propertyInfo = processPropertyType(typeConvert, field.getType());
 					field.setPropertyType(propertyInfo.getType());
 					field.setRemark(results.getString(dbQuery.fieldComment()));
-					databaseTableFieldService.insert(field);
+					fieldList.add(field);
 				}
+				databaseTableFieldService.saveBatch(fieldList);
 			} catch (Exception e) {
 				logger.error("Exception： {}", e.getMessage());
 			}

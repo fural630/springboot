@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>通用数据字典</title>
+    <#include "/common/header.html">
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="frame-card">
+            <div class="frame-card-header">
+                <el-form ref="queryForm" :model="q" label-width="80px">
+                    <el-row>
+                        <el-col :span="4">
+                            <el-form-item prop="name" label="字典名称">
+                                <el-input v-model="q.name" clearable></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item prop="value" label="字典值">
+                                <el-input v-model="q.value" clearable></el-input>
+                            </el-form-item>
+                        </el-col>
+                        &nbsp;&nbsp;
+                        <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                        <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+                    </el-row>
+                </el-form>
+            </div>
+            <el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+            <el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+            <el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+            <div>
+                <table class="layui-hide" id="dictionaryTable" lay-filter="dictionaryTable"></table>
+            </div>
+        </div>
+        <div id="dictionaryDialog" class="frame-dialog">
+            <el-card class="box-card">
+                <el-form @submit.native.prevent ref="dictionaryForm" :rules="ruleValidate" :model="dictionary"
+                    label-width="80px">
+                    <el-row>
+                        <el-form-item prop="type" label="类型">
+                            <template v-if="dictionary.type === '0'">
+                                <span class="layui-badge layui-bg-green">目录</span>
+                            </template>
+                            <template v-if="dictionary.type === '1'">
+                                <span class="layui-badge layui-bg-blue">参数配置</span>
+                            </template>
+                        </el-form-item>
+                    </el-row>
+                    <el-row>
+                        <el-form-item prop="parentName" label="上级目录">
+                            <el-input v-model.trim="dictionary.parentName" disabled></el-input>
+                        </el-form-item>
+                    </el-row>
+                    <el-row>
+                        <el-form-item prop="name" label="名称">
+                            <el-input v-model.trim="dictionary.name" clearable placeholder="目录\参数配置名称"></el-input>
+                        </el-form-item>
+                    </el-row>
+                    <el-row v-if="dictionary.type === '0'">
+                        <el-form-item prop="value" label="关键字">
+                            <el-input v-model.trim="dictionary.value" clearable placeholder="关键字"></el-input>
+                        </el-form-item>
+                    </el-row>
+                    <el-row v-if="dictionary.type === '1'">
+                        <el-form-item prop="value" label="字典值">
+                            <el-input v-model.trim="dictionary.value" clearable placeholder="字典值"></el-input>
+                        </el-form-item>
+                    </el-row>
+                    <el-row>
+                        <el-form-item prop="orderNum" label="排序号">
+                            <el-input-number v-model="dictionary.orderNum" :min="0" :max="20"></el-input-number>
+                        </el-form-item>
+                    </el-row>
+                    <el-row>
+                        <el-form-item prop="remark" label="备注">
+                            <el-input type="textarea" v-model="dictionary.remark" placeholder="备注" :rows="4"></el-input>
+                        </el-form-item>
+                    </el-row>
+                </el-form>
+            </el-card>
+        </div>
+    </div>
+    <script src="${basePath}/js/module/dictionary.js?_${.now?long}"></script>
+</body>
+
+</html>

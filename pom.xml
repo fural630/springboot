@@ -26,6 +26,7 @@
 		<pagehelper-spring-boot-version>1.2.10</pagehelper-spring-boot-version>
 		<pinyin4j-version>2.5.0</pinyin4j-version>
 		<dozer-version>5.5.1</dozer-version>
+		<fastjson-version>1.2.54</fastjson-version>
 	</properties>
 	
 	<parent>
@@ -38,6 +39,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
 		<dependency>
@@ -118,5 +124,12 @@
 		    <artifactId>dozer</artifactId>
 		    <version>${dozer-version}</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>${fastjson-version}</version>
+		</dependency>
+		
 	</dependencies>
 </project>
