@@ -30,45 +30,46 @@ import com.xhz.web.module.sys.service.RecordLogService;
 @Aspect
 @Component
 public class SysLogAspect {
-	
-	@Autowired
-	RecordLogService recordLogService;
-	
-	private final static Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
-	
-	@Pointcut("@annotation(com.xhz.annotation.SysLog)")
-	public void logPointCut() {};
-	
-	@Before("logPointCut()")
-	public void saveSysLog(JoinPoint joinPoint) {
-		
-		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+
+    @Autowired
+    RecordLogService recordLogService;
+
+    private final static Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
+
+    @Pointcut("@annotation(com.xhz.annotation.SysLog)")
+    public void logPointCut() {
+    };
+
+    @Before("logPointCut()")
+    public void saveSysLog(JoinPoint joinPoint) {
+
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        
+
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        
+
         RecordLogDO recordLogDO = new RecordLogDO();
-        
+
         SysLog syslog = method.getAnnotation(SysLog.class);
         if (syslog != null) {
-            //注解上的描述
+            // 注解上的描述
             recordLogDO.setOperation(syslog.value());
         }
-        
-        //请求的方法名
+
+        // 请求的方法名
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = signature.getName();
-        
-        //请求的参数
+
+        // 请求的参数
         Object[] args = joinPoint.getArgs();
         String params = JSON.toJSONString(args[0]);
-        
+
         recordLogDO.setMethod(className + "." + methodName + "()");
         recordLogDO.setParams(params);
-        recordLogDO.setId(IPUtils.getIpAddr(request));
+        recordLogDO.setIp(IPUtils.getIpAddr(request));
         recordLogDO.setUserName("1");
         recordLogDO.setAccount("2");
         recordLogService.insert(recordLogDO);
-	}
+    }
 }

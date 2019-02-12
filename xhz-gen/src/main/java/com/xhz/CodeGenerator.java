@@ -57,28 +57,34 @@ public class CodeGenerator {
 		String mapper = rb.getString("mapper");
 		String xml = rb.getString("xml");
 		String controller = rb.getString("controller");
-		
+
 		String superEntityClass = rb.getString("superEntityClass");
 		String superEntityColumns = rb.getString("superEntityColumns");
 		String superControllerClass = rb.getString("superControllerClass");
-		boolean entityBooleanColumnRemoveIsPrefix = Boolean.parseBoolean(rb.getString("entityBooleanColumnRemoveIsPrefix"));
+		boolean entityBooleanColumnRemoveIsPrefix = Boolean
+				.parseBoolean(rb.getString("entityBooleanColumnRemoveIsPrefix"));
 		boolean restControllerStyle = Boolean.parseBoolean(rb.getString("restControllerStyle"));
 		boolean controllerMappingHyphenStyle = Boolean.parseBoolean(rb.getString("controllerMappingHyphenStyle"));
-		boolean entityTableFieldAnnotationEnable = Boolean.parseBoolean(rb.getString("entityTableFieldAnnotationEnable"));
+		boolean entityTableFieldAnnotationEnable = Boolean
+				.parseBoolean(rb.getString("entityTableFieldAnnotationEnable"));
 		String include = rb.getString("include");
 		String exclude = rb.getString("exclude");
 		String tablePrefix = rb.getString("tablePrefix");
-		
+
 		String logicDeleteFieldName = rb.getString("logicDeleteFieldName");
-		
+
 		String dir = rb.getString("outputDirectory");
-		
+
 		boolean swagger2 = Boolean.parseBoolean(rb.getString("swagger2"));
 
 		// 全局配置
 		GlobalConfig gc = new GlobalConfig();
 		String projectPath = System.getProperty("user.dir");
-		final String outputProjectPath = StringUtils.isEmpty(dir) ? projectPath : projectPath.substring(0, projectPath.lastIndexOf("\\") + 1) + dir;
+		if (!projectPath.endsWith("\\")) {
+			projectPath = projectPath + "\\";
+		}
+		final String outputProjectPath = StringUtils.isEmpty(dir) ? projectPath
+				: projectPath.substring(0, projectPath.lastIndexOf("\\") + 1) + dir;
 		gc.setOutputDir(outputProjectPath + "/src/main/java");
 		gc.setFileOverride(fileOverride);
 		gc.setAuthor(author);
@@ -117,7 +123,7 @@ public class CodeGenerator {
 		if (dbType == DbType.MYSQL) {
 			String schema = DatabaseUtil.getSchemaByUrl(dsc.getUrl());
 			dsc.setDbQuery(new CustomDbMysqlQuery(schema));
-		} 
+		}
 		if (dbType == DbType.ORACLE) {
 			dsc.setDbQuery(new CustomDbOracleQuery());
 			gc.setIdType(IdType.UUID);
@@ -168,8 +174,9 @@ public class CodeGenerator {
 			@Override
 			public String outputFile(TableInfo tableInfo) {
 				String parentPath = pc.getParent().replace(".", "/");
-				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getServiceImpl().replace(".", "/") + "/"
-						+ tableInfo.getServiceImplName() + StringPool.DOT_JAVA;
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/"
+						+ pc.getServiceImpl().replace(".", "/") + "/" + tableInfo.getServiceImplName()
+						+ StringPool.DOT_JAVA;
 				return path;
 			}
 		});
@@ -177,8 +184,8 @@ public class CodeGenerator {
 			@Override
 			public String outputFile(TableInfo tableInfo) {
 				String parentPath = pc.getParent().replace(".", "/");
-				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getMapper().replace(".", "/") + "/"
-						+ tableInfo.getMapperName() + StringPool.DOT_JAVA;
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/"
+						+ pc.getMapper().replace(".", "/") + "/" + tableInfo.getMapperName() + StringPool.DOT_JAVA;
 				return path;
 			}
 		});
@@ -186,8 +193,8 @@ public class CodeGenerator {
 			@Override
 			public String outputFile(TableInfo tableInfo) {
 				String parentPath = pc.getParent().replace(".", "/");
-				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getEntity().replace(".", "/") + "/"
-						+ tableInfo.getEntityName() + StringPool.DOT_JAVA;
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/"
+						+ pc.getEntity().replace(".", "/") + "/" + tableInfo.getEntityName() + StringPool.DOT_JAVA;
 				return path;
 			}
 		});
@@ -195,15 +202,16 @@ public class CodeGenerator {
 			@Override
 			public String outputFile(TableInfo tableInfo) {
 				String parentPath = pc.getParent().replace(".", "/");
-				String path = outputProjectPath + "/src/main/java/" + parentPath + "/" + pc.getEntity().replace(".", "/") + "/"
-						+ tableInfo.getEntityName().replace("DO", "DTO") + StringPool.DOT_JAVA;
+				String path = outputProjectPath + "/src/main/java/" + parentPath + "/"
+						+ pc.getEntity().replace(".", "/") + "/" + tableInfo.getEntityName().replace("DO", "DTO")
+						+ StringPool.DOT_JAVA;
 				return path;
 			}
 		});
 		cfg.setFileOutConfigList(focList);
 		mpg.setCfg(cfg);
-		mpg.setTemplate(new TemplateConfig().setXml(null).setController(null)
-				.setService(null).setServiceImpl(null).setMapper(null).setEntity(null));
+		mpg.setTemplate(new TemplateConfig().setXml(null).setController(null).setService(null).setServiceImpl(null)
+				.setMapper(null).setEntity(null));
 
 		// 策略配置
 		StrategyConfig strategy = new StrategyConfig();

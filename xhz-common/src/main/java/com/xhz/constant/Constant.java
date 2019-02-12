@@ -18,6 +18,11 @@ public class Constant {
 	public static final int SUCCESS_CODE = 200;
 
 	/**
+	 * 错误提示模板
+	 */
+	public static final String ERROR_TOOLTIP = "此操作发生未知异常,请联系管理员！<br/>错误代码: %s";
+
+	/**
 	 * 菜单类型
 	 */
 	public enum MenuType {
@@ -95,9 +100,10 @@ public class Constant {
 			return value;
 		}
 	}
-	
+
 	/**
 	 * 是否枚举
+	 * 
 	 * @author zhangzm
 	 *
 	 */

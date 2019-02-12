@@ -51,12 +51,12 @@ public class ${table.serviceImplName} {
 	
 	public void insert${entityDTO}(${entityDTO} ${entitydto}) {
 		${entityName} ${entityname} = CopyUtil.copyProperties(${entitydto}, ${entityName}.class);
-		${daoname}.insert(${entityname});
+		this.insert(${entityname});
 	}
 	
 	public void update${entityDTO}ById(${entityDTO} ${entitydto}) {
 		${entityName} ${entityname} = CopyUtil.copyProperties(${entitydto}, ${entityName}.class);
-		${daoname}.updateById(${entityname});
+		this.updateById(${entityname});
 	}
 	
 	public ${entityDTO} select${entityDTO}ById(${columnType} ${pkName}) {
