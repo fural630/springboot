@@ -1,104 +1,104 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<title>用户管理</title>
-		<#include "/common/header.html">
-	</head>
-	<body>
-		<div id="app" v-cloak>
-			<div v-show="showList" class="frame-card">
-				<div class="frame-card-header">
-					<el-form ref="queryForm" :model="q" label-width="80px">
-						<el-row>
-							<el-col :span="4">
-								<el-form-item prop="deptId" label="所属部门">
-									<el-input v-model="q.deptId" clearable></el-input>
-								</el-form-item>
-							</el-col>
-							<el-col :span="4">
-								<el-form-item prop="name" label="姓名">
-									<el-input v-model="q.name" clearable></el-input>
-								</el-form-item>
-							</el-col>
-							<el-col :span="4">
-								<el-form-item prop="isDeleted" label="状态">
-									<el-select v-model="q.isDeleted" clearable>
-										<el-option v-for="item in isDeletedItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
-									</el-select>
-								</el-form-item>
-							</el-col>
-							&nbsp;&nbsp;
-							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-							<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
-						</el-row>
-					</el-form>
-				</div>
-				<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
-				<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
-				<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
-				<el-button type="warning" @click="testError">
-					异常测试
-				</el-button>
-				<table class="layui-hide" id="userTable" lay-filter="userTable"></table>
-			</div>
-			<div v-show="!showList">
-				<el-card>
-					<div slot="header">
-						<span>{{title}}</span>
-					</div>
-					<el-row>
-						<el-col :span="12">
-							<el-form @submit.native.prevent ref="userForm" :model="user" :rules="ruleValidate" label-width="80px">
-								<el-form-item label="账号" prop="account">
-									<el-input v-model="user.account" placeholder="账号" />
-								</el-form-item>
-								<el-form-item label="密码" prop="passWord">
-									<el-input type="password" v-model="user.passWord" placeholder="账号" />
-								</el-form-item>
-								<el-form-item label="用户名" prop="name">
-									<el-input v-model="user.name" placeholder="用户名" />
-								</el-form-item>
-								<el-form-item label="所属部门" prop="deptName">
-									<el-input type="text" v-model="user.deptName" readonly="readonly" readonly="readonly" placeholder="所属部门" />
-								</el-form-item>
-								<el-form-item label="身份证号" prop="idCard">
-									<el-input v-model="user.idCard" placeholder="身份证号" />
-								</el-form-item>
-								<el-form-item label="出生年月" prop="birthDay">
-									<el-date-picker type="date" placeholder="出生年月" v-model="user.birthDay"></el-date-picker>
-								</el-form-item>
-								<el-form-item label="性别" prop="sex">
-									<el-radio-group v-model="user.sex">
-										<el-radio v-for="item in sexItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
-									</el-radio-group>
-								</el-form-item>
-								<el-form-item label="邮箱" prop="email">
-									<el-input v-model="user.email" placeholder="邮箱" />
-								</el-form-item>
-								<el-form-item label="手机号" prop="phone">
-									<el-input v-model="user.phone" placeholder="手机号" />
-								</el-form-item>
-								<el-form-item label="状态" prop="isDeleted">
-									<el-radio-group v-model="user.isDeleted">
-										<el-radio v-for="item in isDeletedItem" :label="item.value" :key="item.value">
-											{{item.label}}
-										</el-radio>
-									</el-radio-group>
-								</el-form-item>
-								<el-form-item>
-									<el-button type="primary" @click="handleSubmit('userForm')">提交</el-button>
-									<el-button type="warning" @click="reload" style="margin-left: 8px">返回</el-button>
-									<el-button @click="handleReset('userForm')" style="margin-left: 8px">重置</el-button>
-								</el-form-item>
-							</el-form>
-						</el-col>
-					</el-row>
-				</el-card>
-			</div>
-		</div>
 
-		<script src="${basePath}/js/module/user.js?_${.now?long}"></script>
-	</body>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>用户管理</title>
+	<#include "/common/header.html">
+</head>
+
+<body>
+	<div id="app" v-cloak>
+		<div v-show="showList" class="frame-card">
+			<div class="frame-card-header">
+				<el-form ref="queryForm" :model="q" label-width="80px">
+					<el-row>
+						<el-col :span="4">
+							<el-form-item prop="deptId" label="所属部门">
+								<el-input v-model="q.deptId" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :span="4">
+							<el-form-item prop="name" label="姓名">
+								<el-input v-model="q.name" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :span="4">
+							<el-form-item prop="isDeleted" label="状态">
+								<el-select v-model="q.isDeleted" clearable>
+									<el-option v-for="item in isDeletedItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
+								</el-select>
+							</el-form-item>
+						</el-col>
+						&nbsp;&nbsp;
+						<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+						<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+					</el-row>
+				</el-form>
+			</div>
+			<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+			<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+			<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+			<table class="layui-hide" id="userTable" lay-filter="userTable"></table>
+		</div>
+		<div v-show="!showList">
+			<el-card>
+				<div slot="header">
+					<span>{{title}}</span>
+				</div>
+				<el-row>
+					<el-col :span="12">
+						<el-form @submit.native.prevent ref="userForm" :model="user" :rules="ruleValidate" label-width="80px">
+							<el-form-item label="账号" prop="account">
+								<el-input v-model="user.account" placeholder="账号" />
+							</el-form-item>
+							<el-form-item label="密码" prop="passWord">
+								<el-input type="password" v-model="user.passWord" placeholder="账号" />
+							</el-form-item>
+							<el-form-item label="用户名" prop="name">
+								<el-input v-model="user.name" placeholder="用户名" />
+							</el-form-item>
+							<el-form-item label="所属部门" prop="deptName">
+								<el-input type="text" v-model="user.deptName" readonly="readonly" readonly="readonly" placeholder="所属部门" />
+							</el-form-item>
+							<el-form-item label="身份证号" prop="idCard">
+								<el-input v-model="user.idCard" placeholder="身份证号" />
+							</el-form-item>
+							<el-form-item label="出生年月" prop="birthDay">
+								<el-date-picker type="date" placeholder="出生年月" v-model="user.birthDay"></el-date-picker>
+							</el-form-item>
+							<el-form-item label="性别" prop="sex">
+								<el-radio-group v-model="user.sex">
+									<el-radio v-for="item in sexItem" :label="item.value" :key="item.value">{{item.label}}</el-radio>
+								</el-radio-group>
+							</el-form-item>
+							<el-form-item label="邮箱" prop="email">
+								<el-input v-model="user.email" placeholder="邮箱" />
+							</el-form-item>
+							<el-form-item label="手机号" prop="phone">
+								<el-input v-model="user.phone" placeholder="手机号" />
+							</el-form-item>
+							<el-form-item label="状态" prop="isDeleted">
+								<el-radio-group v-model="user.isDeleted">
+									<el-radio v-for="item in isDeletedItem" :label="item.value" :key="item.value">
+										{{item.label}}
+									</el-radio>
+								</el-radio-group>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="primary" @click="handleSubmit('userForm')">提交</el-button>
+								<el-button type="warning" @click="reload" style="margin-left: 8px">返回</el-button>
+								<el-button @click="handleReset('userForm')" style="margin-left: 8px">重置</el-button>
+							</el-form-item>
+						</el-form>
+					</el-col>
+				</el-row>
+			</el-card>
+		</div>
+	</div>
+
+	<script src="${basePath}/js/module/user.js?_${.now?long}"></script>
+</body>
+
 </html>
