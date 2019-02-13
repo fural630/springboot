@@ -19,7 +19,8 @@ import io.swagger.annotations.ApiOperation;
 
 <#assign className = table.controllerName?replace("Controller", "") />
 <#assign classname = className?lower_case/>
-<#assign requestPath = "${classname}s"/>
+<#assign path = className?uncap_first/>
+<#assign requestPath = "${path}s"/>
 <#assign entityDTO = "${className}DTO"/>
 <#assign entitydto = "${classname}DTO"/>
 <#assign serviceName = table.serviceImplName />

@@ -51,7 +51,7 @@ public class DatabaseDocService {
 	private DatabaseTableService databaseTableService;
 	@Autowired
 	private DatabaseTableFieldService databaseTableFieldService;
-	
+
 	public DatabaseDocDTO selectDatabaseDocById(String id) {
 		DatabaseDO databaseDO = databaseService.selectById(id);
 		checkDatabaseConnect(databaseDO);
@@ -59,7 +59,8 @@ public class DatabaseDocService {
 		if (CollectionUtils.isNotEmpty(databaseTableDOList)) {
 			for (DatabaseTableDO databaseTableDO : databaseTableDOList) {
 				String tableId = databaseTableDO.getTableId();
-				List<DatabaseTableFieldDO> databaseTableFieldDOList = databaseTableFieldService.selectTableFieldByTableId(tableId);
+				List<DatabaseTableFieldDO> databaseTableFieldDOList = databaseTableFieldService
+						.selectTableFieldByTableId(tableId);
 				if (CollectionUtils.isNotEmpty(databaseTableFieldDOList)) {
 					databaseTableDO.setDatabaseTableFieldDOList(databaseTableFieldDOList);
 				}
@@ -120,8 +121,8 @@ public class DatabaseDocService {
 				removeAllTableByDatabaseId(id);
 				for (DatabaseTableDO databaseTableDO : databaseTableList) {
 					databaseTableDO.setDatabaseId(id);
+					databaseTableService.insert(databaseTableDO);
 				}
-				databaseTableService.saveBatch(databaseTableList);
 				convertTableFields(databaseTableList, dbQuery, databaseDO, connection, typeConvert);
 			}
 		} catch (Exception e) {
@@ -163,7 +164,6 @@ public class DatabaseDocService {
 				logger.info("tableFieldsSql : {}", tableFieldsSql);
 				PreparedStatement preparedStatement = connection.prepareStatement(tableFieldsSql);
 				ResultSet results = preparedStatement.executeQuery();
-				List<DatabaseTableFieldDO> fieldList = new ArrayList<>();
 				while (results.next()) {
 					DatabaseTableFieldDO field = new DatabaseTableFieldDO();
 					field.setTableId(databaseTable.getTableId());
@@ -189,9 +189,8 @@ public class DatabaseDocService {
 					PropertyInfo propertyInfo = processPropertyType(typeConvert, field.getType());
 					field.setPropertyType(propertyInfo.getType());
 					field.setRemark(results.getString(dbQuery.fieldComment()));
-					fieldList.add(field);
+					databaseTableFieldService.insert(field);
 				}
-				databaseTableFieldService.saveBatch(fieldList);
 			} catch (Exception e) {
 				logger.error("Exception： {}", e.getMessage());
 			}

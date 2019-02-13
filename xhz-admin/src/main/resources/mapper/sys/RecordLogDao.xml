@@ -24,7 +24,18 @@
 	<select id="selectRecordLogDTOPage" resultType="com.xhz.web.module.sys.entity.RecordLogDTO">
     	select * from SYS_RECORD_LOG
     	<where>
-    		1=1
+    		<if test="userName != null and userName.trim() != ''">
+                and USER_NAME like '%'||#{userName}||'%'
+            </if>
+            <if test="operation != null and operation.trim() != ''">
+                and OPERATION like '%'||#{operation}||'%'
+            </if>
+            <if test="createDateStart != null and createDateStart.trim() != ''">
+                <![CDATA[ and CREATE_DATE >= to_date(#{createDateStart},'yyyy-MM-dd') ]]>
+    		</if>
+            <if test="createDateEnd != null and createDateEnd.trim() != ''">
+                <![CDATA[ and CREATE_DATE < to_date(#{createDateEnd},'yyyy-MM-dd') ]]>
+    		</if>
     	</where>
     	<choose>
             <when test="field != null and field.trim() != ''">
