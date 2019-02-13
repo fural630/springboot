@@ -21,7 +21,9 @@
 	<select id="selectErrorLogDTOPage" resultType="com.xhz.web.module.sys.entity.ErrorLogDTO">
     	select * from SYS_ERROR_LOG
     	<where>
-    		1=1
+    		<if test="id != null and id.trim() != ''">
+    			and ID = #{id}
+    		</if>
     	</where>
     	<choose>
             <when test="field != null and field.trim() != ''">
@@ -40,5 +42,9 @@
 	<select id="selectErrorLogDTOById" resultType="com.xhz.web.module.sys.entity.ErrorLogDTO">
 		select * from SYS_ERROR_LOG where ID = #{id}
 	</select>
+
+    <delete id="deleteAll">
+        delete from SYS_ERROR_LOG
+    </delete>
 
 </mapper>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <#include "/common/header.html">
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <el-card>
+            <div slot="header">
+                <span>
+                    <el-form ref="queryForm" :model="q">
+                        <el-row>
+                            <el-col :span="4">
+                                <el-form-item prop="id">
+                                    <el-input v-model="q.id" placeholder="错误编号" clearable></el-input>
+                                </el-form-item>
+                            </el-col>
+                            &nbsp;&nbsp;
+                            <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                            <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+                        </el-row>
+                    </el-form>
+                </span>
+            </div>
+            <el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;批量删除</el-button>
+            <el-button type="warning" @click="deleteBatch"><i class="fa fa-trash-o"></i>&nbsp;全部删除</el-button>
+            <table class="layui-hide" id="errorlogTable" lay-filter="errorlogTable"></table>
+        </el-card>
+    </div>
+    <script src="/js/module/errorlog.js?_${.now?long}"></script>
+</body>
+
+</html>

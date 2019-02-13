@@ -25,6 +25,10 @@ public class ErrorLogService {
 	@Autowired
 	private ErrorLogDao errorLogDao;
 
+	public void deleteAll() {
+		errorLogDao.deleteAll();
+	}
+
 	public void insertErrorLogDTO(ErrorLogDTO errorlogDTO) {
 		ErrorLogDO errorLogDO = CopyUtil.copyProperties(errorlogDTO, ErrorLogDO.class);
 		this.insert(errorLogDO);

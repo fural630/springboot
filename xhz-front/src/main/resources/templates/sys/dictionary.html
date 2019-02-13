@@ -11,8 +11,8 @@
 
 <body>
     <div id="app" v-cloak>
-        <div class="frame-card">
-            <div class="frame-card-header">
+        <el-card>
+            <div slot="header">
                 <el-form ref="queryForm" :model="q" label-width="80px">
                     <el-row>
                         <el-col :span="4">
@@ -34,11 +34,9 @@
             <el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
             <el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
             <el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
-            <div>
-                <table class="layui-hide" id="dictionaryTable" lay-filter="dictionaryTable"></table>
-            </div>
-        </div>
-        <div id="dictionaryDialog" class="frame-dialog">
+            <table class="layui-hide" id="dictionaryTable" lay-filter="dictionaryTable"></table>
+        </el-card>
+        <div id="dictionaryDialog" class="layui-dialog">
             <el-card class="box-card">
                 <el-form @submit.native.prevent ref="dictionaryForm" :rules="ruleValidate" :model="dictionary"
                     label-width="80px">
@@ -86,7 +84,7 @@
             </el-card>
         </div>
     </div>
-    <script src="${basePath}/js/module/dictionary.js?_${.now?long}"></script>
+    <script src="/js/module/dictionary.js?_${.now?long}"></script>
 </body>
 
 </html>
