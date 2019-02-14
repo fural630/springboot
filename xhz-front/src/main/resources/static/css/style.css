@@ -19,6 +19,10 @@ body {
 	padding: 10px;
 }
 
+.el-card__header .el-form-item {
+	margin-bottom: 0px;
+}
+
 .el-card__body {
 	padding: 10px;
 }

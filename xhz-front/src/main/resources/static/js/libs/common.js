@@ -1,37 +1,33 @@
-$.ajaxSetup({
-	dataType : "json",
-	cache : false
-});
-
 //重写alert
-window.alert = function(msg, callback) {
-	// parent.layer.alert 弹出在iframe外的页面。
-	layui.layer.alert(msg, function(index) {
-		layui.layer.close(index);
-		if (typeof (callback) === "function") {
-			callback("ok");
-		}
-	});
+window.alert = function (msg, callback) {
+    // parent.layer.alert 弹出在iframe外的页面。
+    layui.layer.alert(msg, function (index) {
+        layui.layer.close(index);
+        if (typeof (callback) === "function") {
+            callback("ok");
+        }
+    });
 };
 
 // 重写confirm式样框
-window.confirm = function(msg, callback, callback2) {
-	// 如果没有定义回调函数，直接返回true
-	if (!callback) {
-		return true;
-	}
-	layui.layer.confirm(msg, {
-		skin : 'layui-layer-lan',
-		btn : [ '确定', '取消' ]
-	}, function() {// 确定事件
-		if (typeof (callback) === "function") {
-			callback("ok");
-		}
-	}, function () {
-		if (typeof (callback2) === "function") {
-			callback2("ok");
-		}
-	});
+window.confirm = function (msg, callback, callback2) {
+    // 如果没有定义回调函数，直接返回true
+    if (!callback) {
+        return true;
+    }
+    layui.layer.confirm(msg, {
+        icon: 3,
+        skin: 'layui-layer-lan',
+        btn: ['确定', '取消']
+    }, function () { // 确定事件
+        if (typeof (callback) === "function") {
+            callback("ok");
+        }
+    }, function () { // 取消事件
+        if (typeof (callback2) === "function") {
+            callback2("ok");
+        }
+    });
 };
 
 
@@ -40,25 +36,25 @@ window.confirm = function(msg, callback, callback2) {
  * @param options
  */
 window.openWindow = function (options) {
-   let globalParams = {
-       skin: 'layui-layer-lan',//皮肤
-       title: '标题',//标题
-       type: 1,//打开窗口的类型 1：html里的div内容 2：iframe方式，页面的路径
-       closeBtn: 1, //关闭按钮的形状 0、1
-       anim: -1,
-       isOutAnim: false,
-       shadeClose: false,
-       area: ['90%', '95%'],
-       content: '',
-       btn: false, //按钮
-       top: false //窗口弹出是否在iframe上层
-   };
-   globalParams = $.extend(globalParams, options);
-   if (globalParams.top) {
-       return parent.layui.layer.open(globalParams);
-   } else {
-	   return layui.layer.open(globalParams);
-   }
+    let globalParams = {
+        skin: 'layui-layer-lan', //皮肤
+        title: '标题', //标题
+        type: 1, //打开窗口的类型 1：html里的div内容 2：iframe方式，页面的路径
+        closeBtn: 1, //关闭按钮的形状 0、1
+        anim: -1,
+        isOutAnim: false,
+        shadeClose: false,
+        area: ['90%', '95%'],
+        content: '',
+        btn: false, //按钮
+        top: false //窗口弹出是否在iframe上层
+    };
+    globalParams = $.extend(globalParams, options);
+    if (globalParams.top) {
+        return parent.layui.layer.open(globalParams);
+    } else {
+        return layui.layer.open(globalParams);
+    }
 };
 
 /**
@@ -71,7 +67,8 @@ function eyeImages(data) {
             "title": "预览", //相册标题
             "start": 0, //初始显示的图片序号，默认0
             "data": data
-        }, anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+        },
+        anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
     });
 };
 
@@ -95,7 +92,7 @@ function handleSubmitValidate(vue, name, callback) {
         if (valid) {
             callback();
         } else {
-        	vue.$message.error('请填写完整信息!');
+            vue.$message.error('请填写完整信息!');
             return false;
         }
     })
@@ -106,7 +103,7 @@ function toUrl(href) {
 }
 
 function newTab(title, url) {
-	top.$.learuntab.openTab(title, url);
+    top.$.learuntab.openTab(title, url);
 }
 
 /**
@@ -118,114 +115,122 @@ function newTab(title, url) {
  */
 Ajax = function () {
 
-   //var opt = { type:'GET',dataType:'json',resultMsg:true };
-   function request(opt) {
-	 //添加遮罩层
-       dialogLoading(true);
-       
-       if (typeof opt.cache == 'undefined') {
-           opt.cache = false;
-       }
+    //var opt = { type:'GET',dataType:'json',resultMsg:true };
+    function request(opt) {
+        //添加遮罩层
+        dialogLoading(true);
 
-       if (typeof opt == 'undefined') {
-           return;
-       }
-       //opt = $.extend(opt, p);
-       if (typeof(opt.type) == 'undefined') {
-           opt.type = 'GET'
-       }
-       if (typeof(opt.async) == 'undefined') {
-           opt.async = false;
-       }
-       if (typeof(opt.dataType) == 'undefined') {
-           opt.dataType = 'json'
-       }
-       if (typeof(opt.contentType) == 'undefined') {
-           opt.contentType = 'application/x-www-form-urlencoded;chartset=UTF-8'
-       }
-       if (typeof(opt.params) == 'undefined' || opt.params == null) {
-           opt.params = {};
-       }
-       opt.params.date = new Date();
-       if (typeof(opt.beforeSubmit) != 'undefined') {
-           var flag = opt.beforeSubmit(opt);
-           if (!flag) {
-               return;
-           }
-       }
+        if (typeof opt.cache == 'undefined') {
+            opt.cache = false;
+        }
 
-       if (typeof(opt.resultMsg) == 'undefined') {
-           opt.resultMsg = true;
-       }
+        if (typeof opt == 'undefined') {
+            return;
+        }
+        //opt = $.extend(opt, p);
+        if (typeof (opt.type) == 'undefined') {
+            opt.type = 'GET'
+        }
+        if (typeof (opt.async) == 'undefined') {
+            opt.async = false;
+        }
+        if (typeof (opt.dataType) == 'undefined') {
+            opt.dataType = 'json'
+        }
+        if (typeof (opt.contentType) == 'undefined') {
+            opt.contentType = 'application/x-www-form-urlencoded;chartset=UTF-8'
+        }
+        if (typeof (opt.params) == 'undefined' || opt.params == null) {
+            opt.params = {};
+        }
+        // opt.params.date = new Date();
+        if (typeof (opt.beforeSubmit) != 'undefined') {
+            var flag = opt.beforeSubmit(opt);
+            if (!flag) {
+                return;
+            }
+        }
 
-       $.ajax({
-           async: opt.async,
-           url: opt.url,
-           dataType: opt.dataType,
-           contentType: opt.contentType,
-           data: opt.params,
-           crossDomain: opt.crossDomain || false,
-           type: opt.type,
-           cache: opt.cache,
-           success: function (data) {
-               //关闭遮罩
-               dialogLoading(false);
+        if (typeof (opt.resultMsg) == 'undefined') {
+            opt.resultMsg = true;
+        }
 
-               if (typeof data == 'string' && data.indexOf("exception") > 0 || typeof data.code != 'undefined' && data.code != '0') {
-                   var result = {code: null};
-                   if (typeof data == 'string') {
-                       result = eval('(' + data + ')')
-                   } else if (typeof data == 'object') {
-                       result = data;
-                   }
+        $.ajax({
+            async: opt.async,
+            url: opt.url,
+            dataType: opt.dataType,
+            contentType: opt.contentType,
+            data: opt.params,
+            crossDomain: opt.crossDomain || false,
+            type: opt.type,
+            cache: opt.cache,
+            success: function (data) {
+                //关闭遮罩
+                dialogLoading(false);
 
-                   if (opt.resultMsg && result.msg) {
-                       layui.layer.alert(result.msg, {icon: 5});
-                   }
-                   return;
-               }
-               if (opt.resultMsg && data.msg) {
-                   layui.layer.alert(data.msg, {icon: 6}, function () {
-                       if (typeof(opt.successCallback) != 'undefined') {
-                           opt.successCallback(data);
-                       }
-                   });
-                   return;
-               }
+                if (typeof data == 'string' && data.indexOf("exception") > 0 || typeof data.code != 'undefined' && data.code != '0') {
+                    var result = {
+                        code: null
+                    };
+                    if (typeof data == 'string') {
+                        result = eval('(' + data + ')')
+                    } else if (typeof data == 'object') {
+                        result = data;
+                    }
 
-               if (typeof(opt.successCallback) != 'undefined') {
-                   opt.successCallback(data);
-               }
-           },
-           error: function (xhr) {
-        	   //关闭遮罩
-        	   dialogLoading(false);
-        	   var result = eval('(' + xhr.responseText + ')');
-    		   layui.layer.alert(result.msg, {icon: 5});
-           }
-       });
-   }
+                    if (opt.resultMsg && result.msg) {
+                        layui.layer.alert(result.msg, {
+                            icon: 5
+                        });
+                    }
+                    return;
+                }
+                if (opt.resultMsg && data.msg) {
+                    layui.layer.alert(data.msg, {
+                        icon: 6
+                    }, function () {
+                        if (typeof (opt.successCallback) != 'undefined') {
+                            opt.successCallback(data);
+                        }
+                    });
+                    return;
+                }
 
-   return {
-       /**
-        * Ajax调用request
-        */
-       request: request
-   };
+                if (typeof (opt.successCallback) != 'undefined') {
+                    opt.successCallback(data);
+                }
+            },
+            error: function (xhr) {
+                //关闭遮罩
+                dialogLoading(false);
+                var result = eval('(' + xhr.responseText + ')');
+                layui.layer.alert(result.msg, {
+                    icon: 5
+                });
+            }
+        });
+    }
+
+    return {
+        /**
+         * Ajax调用request
+         */
+        request: request
+    };
 }();
 
 
 function dialogLoading(flag) {
-	if (layui.layer) {
-		if (flag) {
-			layui.layer.load(2, {
-				shade : [ 0.2, '#000' ],
-				time : 10 * 1000
-			});
-		} else {
-			layui.layer.closeAll('loading');
-		}
-	}
+    if (layui.layer) {
+        if (flag) {
+            layui.layer.load(2, {
+                shade: [0.2, '#000'],
+                time: 10 * 1000
+            });
+        } else {
+            layui.layer.closeAll('loading');
+        }
+    }
 }
 
 
@@ -266,7 +271,7 @@ function exportFile(formId, url, extraObj) {
         json = $.extend(json, extraObj);
     }
 
-    $('body').append(form);//将表单放置在web中
+    $('body').append(form); //将表单放置在web中
     for (var i in json) {
         var input = $('<input>');
         input.attr('type', 'hidden');
@@ -275,7 +280,7 @@ function exportFile(formId, url, extraObj) {
         form.append(input);
     }
 
-    form.submit();//表单提交
+    form.submit(); //表单提交
 }
 
 /**
@@ -312,7 +317,8 @@ Dict = function () {
                 url: '/sys/dict/getDictValue',
                 dataType: 'json',
                 params: {
-                    groupCode: groupCode, dictKey: dictKey
+                    groupCode: groupCode,
+                    dictKey: dictKey
                 },
                 cache: true,
                 async: false,
