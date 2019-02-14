@@ -1,10 +1,10 @@
-<#include "/common/var.html">
+<#assign basePath="${rc.contextPath}" />
+<#assign time="?_${.now?long?c}" />
+<!-- <#assign time="" /> -->
 <!-- layui -->
 <link rel="stylesheet" href="${basePath}/plugins/layui/css/layui.css">
 <!-- font-awesome -->
 <link rel="stylesheet" href="${basePath}/font/font-awesome/css/font-awesome.min.css">
-
-<!-- <link rel="stylesheet" href="${basePath}/plugins/iview/styles/iview.css"> -->
 
 <link rel="stylesheet" href="${basePath}/plugins/element-ui/lib/theme-chalk/index.css">
 
@@ -20,13 +20,10 @@
 <!-- vue -->
 <script src="${basePath}/plugins/vue/js/vue.js"></script>
 
-<!-- iView -->
-<!-- <script src="${basePath}/plugins/iview/iview.min.js"></script> -->
-
 <script src="${basePath}/plugins/element-ui/lib/index.js"></script>
 
 <script src="${basePath}/plugins/ztree/js/jquery.ztree.core.min.js"></script>
 
 <script src="${basePath}/js/libs/jquery-extend.js"></script>
-<script src="${basePath}/js/libs/common.js"></script>
-<script src="${basePath}/js/libs/constant.js"></script>
+<script src="${basePath}/js/libs/common.js${time}"></script>
+<script src="${basePath}/js/libs/constant.js${time}"></script>
