@@ -1,49 +1,46 @@
 var vm = new Vue({
-    el: '#app',
+    el: '#login',
     data: {
-        moduleName: '',
         baseUrl: '',
-        title: '',
-        q: {
-
+        title: '新豪智集成框架',
+        username: '账号',
+        password: '密码',
+        rememberPwd: false,
+        passwordType: 'password',
+        loginForm: {
+            username: '',
+            password: ''
         },
         ruleValidate: {
-
+            username: [{
+                required: true,
+                message: '账号不能为空',
+                trigger: 'blur'
+            }],
+            password: [{
+                required: true,
+                message: '密码不能为空',
+                trigger: 'blur'
+            }]
         },
     },
     methods: {
-        query: function () {
-            layui.table.reload(vm.moduleName + 'Table', {
-                where: {
-
-                }
-            });
+        showPwd: function () {
+            if (this.passwordType === 'password') {
+                this.passwordType = ''
+            } else {
+                this.passwordType = 'password'
+            }
         },
-        add: function () {
-
-        },
-        update: function () {
-
-        },
-        del: function () {
-
-        },
-        saveOrUpdate: function (layerIndex) {
-
-        },
-        openDialog: function () {
-
-        },
-        reload: function () {
-            vm.query();
-        },
-        handleSubmit: function (name, layerIndex) {
-            handleSubmitValidate(vm, name, function () {
-                vm.saveOrUpdate(layerIndex);
-            });
-        },
-        handleReset: function (name) {
-            handleResetForm(vm, name);
+        handleLogin: function () {
+            toUrl("/");
+            // this.$refs.loginForm.validate(function (valid) {
+            //     if (valid) {
+            //         toUrl("/");
+            //     } else {
+            //         return false;
+            //     }
+            // })
         }
     }
 });

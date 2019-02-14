@@ -6,12 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
-    <#include "/common/header.html">
+    <#include "/common/header.html" />
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 
-<body>
-    <div id="app" v-cloak>
-
+<body style="background-color: #2d3a4b">
+    <div id="login" v-cloak>
+        <div class="login-container">
+            <el-form ref="loginForm" :model="loginForm" :rules="ruleValidate" class="login-form" auto-complete="on"
+                label-position="left">
+                <div class="title-container">
+                    <h3 class="title">
+                        {{title}}
+                    </h3>
+                </div>
+                <el-form-item prop="username">
+                    <span class="svg-container">
+                        <i class="fa fa-user"></i>
+                    </span>|
+                    <el-input :placeholder="username" v-model="loginForm.username" type="text" auto-complete="on" />
+                </el-form-item>
+                <el-form-item prop="password">
+                    <span class="svg-container">
+                        <i class="fa fa-lock"></i>
+                    </span>|
+                    <span class="show-pwd" @click="showPwd">
+                        <i :class="passwordType === 'password' ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+                    </span>
+                    <el-input :placeholder="password" v-model="loginForm.password" auto-complete="on" :type="passwordType"
+                        @keyup.enter.native="handleLogin" />
+                </el-form-item>
+                <el-checkbox v-model="rememberPwd">记住账号</el-checkbox>
+                <el-button type="primary" class="login-btn" @click.native.prevent="handleLogin">
+                    登&nbsp;&nbsp;录
+                </el-button>
+                <div class="copyright">© 2019 ~ 广西新豪智云技术股份有限公司 版权所有</div>
+            </el-form>
+        </div>
     </div>
     <script src="/js/module/login.js${time}"></script>
 </body>
