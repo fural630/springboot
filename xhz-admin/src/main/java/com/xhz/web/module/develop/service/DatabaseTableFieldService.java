@@ -18,7 +18,7 @@ import com.xhz.web.module.develop.entity.databasedoc.DatabaseTableFieldDO;
  * @since 2019-01-29
  */
 @Service
-public class DatabaseTableFieldService extends ServiceImpl<DatabaseTableFieldDao, DatabaseTableFieldDO> {
+public class DatabaseTableFieldService {
 
 	@Autowired
 	private DatabaseTableFieldDao databaseTableFieldDao;
