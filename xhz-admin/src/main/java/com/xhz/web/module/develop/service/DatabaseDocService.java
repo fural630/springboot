@@ -74,7 +74,6 @@ public class DatabaseDocService {
 		return databaseDocDTO;
 	}
 
-	@Transactional
 	public void pullDataByDatabaseId(String id) {
 		DatabaseDO databaseDO = databaseService.selectById(id);
 		checkDatabaseConnect(databaseDO);
