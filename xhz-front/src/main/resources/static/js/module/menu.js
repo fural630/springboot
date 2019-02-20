@@ -22,6 +22,12 @@ var vm = new Vue({
 			icon: '',
 			isDeleted: 0
 		},
+		parmsMenu: {
+			menuId: '',
+			name: '',
+			url: '',
+			icon: ''
+		},
 		parmsObjList: [{
 				name: 'name1',
 				parms: '授权1',
@@ -191,10 +197,7 @@ var vm = new Vue({
 				async: true,
 				type: 'GET',
 				successCallback: function (r) {
-					vm.menu = r.data;
-					if (vm.menu.parentName == null) {
-						vm.menu.parentName = "一级菜单";
-					}
+					vm.parmsMenu = r.data;
 					openWindow({
 						title: '批量授权管理',
 						area: ['600px', '530px'],

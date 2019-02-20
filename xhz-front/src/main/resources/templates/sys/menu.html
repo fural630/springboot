@@ -93,49 +93,49 @@
 		</div>
 		<div id="parmsDialog" class="layui-dialog">
 			<el-card>
-				<el-form @submit.native.prevent ref="parmsForm" :model="parms" label-width="80px">
+				<el-form :model="parmsMenu" label-width="80px">
 					<el-row>
 						<el-col :span="12">
 							<el-form-item label="菜单名称">
-								<span class="layui-badge layui-bg-cyan">{{menu.name}}</span>
+								<span class="layui-badge layui-bg-cyan">{{parmsMenu.name}}</span>
 							</el-form-item>
 						</el-col>
 						<el-col :span="12">
 							<el-form-item label="菜单URL">
-								<span class="layui-badge layui-bg-cyan">{{menu.url}}</span>
+								<span class="layui-badge layui-bg-cyan">{{parmsMenu.url}}</span>
 							</el-form-item>
 						</el-col>
 					</el-row>
-					<el-row>
-						<fieldset class="layui-elem-field layui-field-title">
-							<legend>批量授权</legend>
-							<div class="layui-field-box">
-								<el-row>
-									<el-button type="primary" size="mini"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
-									<el-button type="primary" size="mini"><i class="fa fa-plus"></i>&nbsp;自动生成</el-button>
+				</el-form>
+				<el-row>
+					<fieldset class="layui-elem-field layui-field-title">
+						<legend>批量授权</legend>
+						<div class="layui-field-box">
+							<el-row>
+								<el-button type="primary" size="mini"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+								<el-button type="primary" size="mini"><i class="fa fa-plus"></i>&nbsp;自动生成</el-button>
+							</el-row>
+							<br />
+							<template v-for="(item, index) in parmsObjList">
+								<el-row :gutter="5">
+									<el-col :span="4">
+										<el-input placeholder="名称" v-model="item.name"></el-input>
+									</el-col>
+									<el-col :span="10">
+										<el-input placeholder="授权标识" v-model="item.parms"></el-input>
+									</el-col>
+									<el-col :span="4">
+										<el-input placeholder="排序号" v-model="item.order"></el-input>
+									</el-col>
+									<el-col :span="2">
+										<el-button type="danger" size="mini"><i class="fa fa-trash-o"></i></el-button>
+									</el-col>
 								</el-row>
 								<br />
-								<template v-for="(item, index) in parmsObjList">
-									<el-row :gutter="5">
-										<el-col :span="4">
-											<el-input placeholder="名称" v-model="item.name"></el-input>
-										</el-col>
-										<el-col :span="10">
-											<el-input placeholder="授权标识" v-model="item.parms"></el-input>
-										</el-col>
-										<el-col :span="4">
-											<el-input placeholder="排序号" v-model="item.order"></el-input>
-										</el-col>
-										<el-col :span="2">
-											<el-button type="danger" size="mini"><i class="fa fa-trash-o"></i></el-button>
-										</el-col>
-									</el-row>
-									<br />
-								</template>
-							</div>
-						</fieldset>
-					</el-row>
-				</el-form>
+							</template>
+						</div>
+					</fieldset>
+				</el-row>
 			</el-card>
 		</div>
 	</div>
