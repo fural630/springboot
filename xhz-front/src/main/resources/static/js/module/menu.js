@@ -1,8 +1,8 @@
 var vm = new Vue({
 	el: '#app',
 	data: {
-		moduleName : 'menu',
-		baseUrl : '/sys/menus',
+		moduleName: 'menu',
+		baseUrl: '/sys/menus',
 		q: {
 			name: '',
 			url: ''
@@ -22,8 +22,19 @@ var vm = new Vue({
 			icon: '',
 			isDeleted: 0
 		},
+		parmsObjList: [{
+				name: 'name1',
+				parms: '授权1',
+				order: '1'
+			},
+			{
+				name: 'name2',
+				parms: '授权2',
+				order: '2'
+			}
+		],
 		ruleValidate: {
-			name : [{
+			name: [{
 				required: true,
 				message: '菜单名称不能为空',
 				trigger: 'blur'
@@ -31,11 +42,6 @@ var vm = new Vue({
 			url: [{
 				required: true,
 				message: '菜单url不能为空',
-				trigger: 'blur'
-			}],
-			parentName: [{
-				required: true,
-				message: '上级菜单不能为空',
 				trigger: 'blur'
 			}],
 			icon: [{
@@ -46,7 +52,7 @@ var vm = new Vue({
 		}
 	},
 	methods: {
-		query: function() {
+		query: function () {
 			treeGrid.reload(vm.moduleName + 'Table', {
 				where: {
 					name: vm.q.name,
@@ -54,7 +60,7 @@ var vm = new Vue({
 				}
 			});
 		},
-		add: function() {
+		add: function () {
 			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
 			var type = '0';
 			var parentId = '0';
@@ -83,7 +89,7 @@ var vm = new Vue({
 			};
 			this.openDialog();
 		},
-		update: function() {
+		update: function () {
 			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
 			if (selectedData.menuId == undefined) {
 				vm.$message.warning("请选择要修改的数据！");
@@ -96,7 +102,7 @@ var vm = new Vue({
 				url: vm.baseUrl + "/" + menuId,
 				async: true,
 				type: 'GET',
-				successCallback: function(r) {
+				successCallback: function (r) {
 					vm.menu = r.data;
 					if (vm.menu.parentName == null) {
 						vm.menu.parentName = "一级菜单";
@@ -105,26 +111,26 @@ var vm = new Vue({
 				}
 			});
 		},
-		del: function() {
+		del: function () {
 			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
 			if (selectedData.menuId == undefined) {
 				vm.$message.warning("请选择要删除的数据！");
 				return;
 			}
-			confirm("确认要删除吗，删除后子节点都将被删除？", function() {
+			confirm("确认要删除吗，删除后子节点都将被删除？", function () {
 				var menuId = selectedData.menuId;
 				Ajax.request({
 					url: vm.baseUrl + "/" + menuId,
 					type: 'DELETE',
-					successCallback: function() {
-						alert('操作成功', function(index) {
+					successCallback: function () {
+						alert('操作成功', function (index) {
 							vm.reload();
 						});
 					}
 				});
 			});
 		},
-		saveOrUpdate: function(layerIndex) {
+		saveOrUpdate: function (layerIndex) {
 			var url = vm.baseUrl;
 			var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
 			Ajax.request({
@@ -132,58 +138,94 @@ var vm = new Vue({
 				params: JSON.stringify(vm.menu),
 				contentType: "application/json",
 				type: type,
-				successCallback: function() {
+				successCallback: function () {
 					layer.close(layerIndex);
-					alert('操作成功', function(index) {
+					alert('操作成功', function (index) {
 						vm.reload();
 					});
 				}
 			});
 
 		},
-		openDialog: function() {
+		openDialog: function () {
 			openWindow({
 				title: this.title,
 				area: ['600px', '530px'],
 				content: jQuery("#" + vm.moduleName + "Dialog"),
 				btn: ['保存', '取消'],
-				yes: function(index) {
+				yes: function (index) {
 					vm.handleSubmit(vm.moduleName + 'Form', index);
 				},
-				end: function() {
+				end: function () {
 					vm.handleReset(vm.moduleName + 'Form');
 				}
 			});
 		},
-		handleSubmit: function(name, layerIndex) {
-			handleSubmitValidate(vm, name, function() {
-				vm.saveOrUpdate(layerIndex);
-			});
-		},
-		handleReset: function(name) {
-			handleResetForm(vm, name);
-		},
-		reload: function() {
-			vm.query();
-		},
-		isDeletedMenuById: function(menuId, isDeleted) {
+		isDeletedMenuById: function (menuId, isDeleted) {
 			var url = isDeleted ? vm.baseUrl + "/enable/" + menuId : vm.baseUrl + "/disable/" + menuId;
 			Ajax.request({
 				url: url,
 				async: true,
 				type: 'GET',
-				successCallback: function(r) {
-					alert('操作成功', function(index) {
+				successCallback: function (r) {
+					alert('操作成功', function (index) {
 						vm.reload();
 					});
 				}
 			});
+		},
+		manageParms: function () {
+			// var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
+			// if (selectedData.menuId == undefined) {
+			// 	vm.$message.warning("请选择要处理的数据！");
+			// 	return;
+			// }
+			// if (selectedData.type != "1") {
+			// 	vm.$message.warning("请选择一个菜单！");
+			// 	return;
+			// }
+
+			// var menuId = selectedData.menuId;
+			Ajax.request({
+				url: vm.baseUrl + "/" + "143bad3a894e484f811e5c24db298b6b",
+				async: true,
+				type: 'GET',
+				successCallback: function (r) {
+					vm.menu = r.data;
+					if (vm.menu.parentName == null) {
+						vm.menu.parentName = "一级菜单";
+					}
+					openWindow({
+						title: '批量授权管理',
+						area: ['600px', '530px'],
+						content: jQuery("#parmsDialog"),
+						btn: ['保存', '取消'],
+						yes: function (index) {
+							// vm.handleSubmit(vm.moduleName + 'Form', index);
+						},
+						end: function () {
+							// vm.handleReset(vm.moduleName + 'Form');
+						}
+					});
+				}
+			});
+		},
+		handleSubmit: function (name, layerIndex) {
+			handleSubmitValidate(vm, name, function () {
+				vm.saveOrUpdate(layerIndex);
+			});
+		},
+		handleReset: function (name) {
+			handleResetForm(vm, name);
+		},
+		reload: function () {
+			vm.query();
 		}
 	},
 	watch: {
-		'menu.icon': function() {
+		'menu.icon': function () {
 			vm.iconLoading = true;
-			window.setTimeout(function() {
+			window.setTimeout(function () {
 				vm.iconLoading = false;
 				vm.iconShow = vm.menu.icon;
 			}, 500);
@@ -197,7 +239,7 @@ layui.config({
 	base: '/plugins/layui/extend/'
 }).extend({
 	treeGrid: 'treeGrid'
-}).use(['jquery', 'treeGrid', 'layer'], function() {
+}).use(['jquery', 'treeGrid', 'layer'], function () {
 	var $ = layui.jquery;
 	treeGrid = layui.treeGrid; //很重要
 	var layer = layui.layer;
@@ -219,11 +261,11 @@ layui.config({
 		cols: [
 			[{
 				type: 'radio'
-			},{
+			}, {
 				field: 'name',
 				width: 200,
 				title: '名称',
-				templet: function(d) {
+				templet: function (d) {
 					if (d.icon != null) {
 						return '&nbsp;&nbsp;<i class="' + d.icon + ' fa-lg"></i>&nbsp;&nbsp;' + d.name;
 					}
@@ -233,7 +275,7 @@ layui.config({
 				field: 'parentName',
 				width: 100,
 				title: '上级菜单',
-				templet: function(d) {
+				templet: function (d) {
 					if (d.parentName == null) {
 						return "一级菜单";
 					} else {
@@ -245,7 +287,7 @@ layui.config({
 				width: 80,
 				title: '类型',
 				align: 'center',
-				templet: function(d) {
+				templet: function (d) {
 					if (d.type === "0") {
 						return '<span class="layui-badge layui-bg-green">目录</span>';
 					}
@@ -271,7 +313,7 @@ layui.config({
 				field: 'isDeleted',
 				title: '操作',
 				width: 90,
-				templet: function(d) {
+				templet: function (d) {
 					var checked = d.isDeleted === '0' ? 'checked' : '';
 					return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.menuId +
 						'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
@@ -280,19 +322,19 @@ layui.config({
 		]
 	});
 
-	form.on('switch(isDeleted)', function(obj) {
+	form.on('switch(isDeleted)', function (obj) {
 		var menuId = this.value;
 		if (obj.elem.checked) {
-			confirm("确认要开启吗，开启后子节点都将被开启？", function() {
+			confirm("确认要开启吗，开启后子节点都将被开启？", function () {
 				vm.isDeletedMenuById(menuId, true);
-			}, function() {
+			}, function () {
 				$("input[type='checkbox'][value='" + menuId + "']").prop("checked", false);
 				form.render('checkbox');
 			});
 		} else {
-			confirm("确认要禁用吗，禁用后子节点都将被禁用？", function() {
+			confirm("确认要禁用吗，禁用后子节点都将被禁用？", function () {
 				vm.isDeletedMenuById(menuId, false);
-			}, function() {
+			}, function () {
 				$("input[type='checkbox'][value='" + menuId + "']").prop("checked", true);
 				form.render('checkbox');
 			});

@@ -58,6 +58,11 @@ public class MenuDTO {
     @ApiModelProperty(value = "删除标识", required = true)
     @NotNull(groups = { AddGroup.class, UpdateGroup.class }, message = "删除标识不能为空")
     private String isDeleted;
+    
+    /**
+     * 上级菜单
+     */
+    private String parentName;
 
     public String getMenuId() {
         return menuId;
@@ -122,5 +127,13 @@ public class MenuDTO {
     public void setIsDeleted(String isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
 
 }
