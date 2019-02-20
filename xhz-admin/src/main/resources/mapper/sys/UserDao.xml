@@ -7,7 +7,7 @@
     <resultMap id="BaseResultMap" type="com.xhz.web.module.sys.entity.UserDO">
         <id column="ID" property="id" />
         <result column="NAME" property="name" />
-        <result column="ACCOUNT" property="account" />
+        <result column="USER_NAME" property="userName" />
         <result column="DEPT_ID" property="deptId" />
         <result column="BIRTH_DAY" property="birthDay" />
         <result column="PASS_WORD" property="passWord" />
@@ -21,11 +21,15 @@
         <result column="UPDATE_TIME" property="updateTime" />
         <result column="CREATE_USER_ID" property="createUserId" />
         <result column="UPDATE_USER_ID" property="updateUserId" />
+        <result column="PYM" property="pym" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ID, NAME, ACCOUNT, DEPT_ID, BIRTH_DAY, PASS_WORD, SEX, EMAIL, PHONE, ID_CARD, AVATAR_ID, IS_DELETED, CREATE_TIME, UPDATE_TIME, CREATE_USER_ID, UPDATE_USER_ID
+        ID, NAME, USER_NAME, DEPT_ID, BIRTH_DAY, PASS_WORD, 
+        SEX, EMAIL, PHONE, ID_CARD, AVATAR_ID, IS_DELETED, 
+        CREATE_TIME, UPDATE_TIME, CREATE_USER_ID, UPDATE_USER_ID,
+        PYM
     </sql>
 
 
@@ -55,6 +59,10 @@
 	
 	<select id="selectUserDTOById" resultType="com.xhz.web.module.sys.entity.UserDTO">
 		select * from SYS_USER where ID = #{id}
+	</select>
+	
+	<select id="selectByUserName" resultMap="BaseResultMap">
+		select * from SYS_USER where USER_NAME = #{userName}
 	</select>
 
 </mapper>

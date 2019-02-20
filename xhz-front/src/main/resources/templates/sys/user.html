@@ -49,8 +49,8 @@
 			<el-row>
 				<el-col :span="12">
 					<el-form @submit.native.prevent ref="userForm" :model="user" :rules="ruleValidate" label-width="80px">
-						<el-form-item label="账号" prop="account">
-							<el-input v-model="user.account" placeholder="账号" />
+						<el-form-item label="账号" prop="userName">
+							<el-input v-model="user.userName" placeholder="账号" />
 						</el-form-item>
 						<el-form-item label="密码" prop="passWord">
 							<el-input type="password" v-model="user.passWord" placeholder="账号" />

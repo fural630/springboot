@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.realm.text.TextConfigurationRealm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -15,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
+
+import com.xhz.shiro.UserRealm;
 
 @Configuration
 @Profile({"pro", "test", "dev"})
@@ -28,12 +29,7 @@ public class ShrioConfig {
 	@Bean
 	@DependsOn("lifecycleBeanPostProcessor")
 	public Realm realm() {
-		TextConfigurationRealm realm = new TextConfigurationRealm();
-		realm.setUserDefinitions("joe.coder=password,user\n" + "admin=123,admin");
-
-		realm.setRoleDefinitions("admin=read,write\n" + "user=read");
-		realm.setCachingEnabled(true);
-		return realm;
+		return new UserRealm();
 	}
 
 	@Bean

@@ -44,11 +44,9 @@ var vm = new Vue({
                          },
                          success: function (result) {
                              if (result.code == 0) {//登录成功
-                                 parent.location.href = 'index.html';
+                                 parent.location.href = '/';
                              } else {
-                            	 console.log(result.msg);
-//                                 vm.refreshCode();
-//                                 iview.Message.error(result.msg);
+                            	 vm.$message.error(result.msg);
                              }
                          }
                      });

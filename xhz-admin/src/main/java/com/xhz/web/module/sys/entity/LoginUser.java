@@ -1,126 +1,85 @@
 package com.xhz.web.module.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * <p>
- * 用户信息
- * </p>
- *
+ * 当前登录用户的实体
+ * 
  * @author zhangzm
- * @since 2019-01-23
+ *
  */
-@TableName("SYS_USER")
-public class UserDO implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class LoginUser {
 
 	/**
 	 * 用户ID
 	 */
-	@TableId(value = "ID", type = IdType.UUID)
 	private String id;
 
 	/**
 	 * 用户名
 	 */
-	@TableField("NAME")
 	private String name;
 
 	/**
 	 * 用户账号
 	 */
-	@TableField("USER_NAME")
 	private String userName;
 
 	/**
 	 * 部门ID
 	 */
-	@TableField("DEPT_ID")
 	private String deptId;
+
+	/**
+	 * 部门名称
+	 */
+	private String deptName;
 
 	/**
 	 * 出生日期
 	 */
-	@TableField("BIRTH_DAY")
 	private Date birthDay;
-
-	/**
-	 * 密码
-	 */
-	@TableField("PASS_WORD")
-	private String passWord;
 
 	/**
 	 * 性别
 	 */
-	@TableField("SEX")
 	private String sex;
 
 	/**
 	 * 邮箱
 	 */
-	@TableField("EMAIL")
 	private String email;
 
 	/**
 	 * 手机号
 	 */
-	@TableField("PHONE")
 	private String phone;
 
 	/**
 	 * 身份证号
 	 */
-	@TableField("ID_CARD")
 	private String idCard;
 
 	/**
 	 * 头像ID
 	 */
-	@TableField("AVATAR_ID")
 	private String avatarId;
 
 	/**
 	 * 删除标识
 	 */
-	@TableField("IS_DELETED")
 	private String isDeleted;
 
 	/**
-	 * 创建时间
+	 * 登录用户拥有的角色
 	 */
-	@TableField("CREATE_TIME")
-	private Date createTime;
+	private List<String> roleIdList;
 
 	/**
-	 * 修改时间
+	 * 登录用户拥有的权限
 	 */
-	@TableField("UPDATE_TIME")
-	private Date updateTime;
-
-	/**
-	 * 创建人ID
-	 */
-	@TableField("CREATE_USER_ID")
-	private String createUserId;
-
-	/**
-	 * 修改人ID
-	 */
-	@TableField("UPDATE_USER_ID")
-	private String updateUserId;
-
-	/**
-	 * 拼音码
-	 */
-	@TableField("PYM")
-	private String pym;
+	private List<String> permsList;
 
 	public String getId() {
 		return id;
@@ -152,14 +111,6 @@ public class UserDO implements Serializable {
 
 	public void setBirthDay(Date birthDay) {
 		this.birthDay = birthDay;
-	}
-
-	public String getPassWord() {
-		return passWord;
-	}
-
-	public void setPassWord(String passWord) {
-		this.passWord = passWord;
 	}
 
 	public String getSex() {
@@ -210,36 +161,28 @@ public class UserDO implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
+	public List<String> getRoleIdList() {
+		return roleIdList;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setRoleIdList(List<String> roleIdList) {
+		this.roleIdList = roleIdList;
 	}
 
-	public Date getUpdateTime() {
-		return updateTime;
+	public List<String> getPermsList() {
+		return permsList;
 	}
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
+	public void setPermsList(List<String> permsList) {
+		this.permsList = permsList;
 	}
 
-	public String getCreateUserId() {
-		return createUserId;
+	public String getDeptName() {
+		return deptName;
 	}
 
-	public void setCreateUserId(String createUserId) {
-		this.createUserId = createUserId;
-	}
-
-	public String getUpdateUserId() {
-		return updateUserId;
-	}
-
-	public void setUpdateUserId(String updateUserId) {
-		this.updateUserId = updateUserId;
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 
 	public String getUserName() {
@@ -248,14 +191,6 @@ public class UserDO implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getPym() {
-		return pym;
-	}
-
-	public void setPym(String pym) {
-		this.pym = pym;
 	}
 
 }

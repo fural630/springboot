@@ -24,4 +24,6 @@ public interface UserDao extends BaseMapper<UserDO> {
 	UserDTO selectUserDTOById(String id);
 	
 	List<UserDTO> selectUserDTOList();
+	
+	UserDO selectByUserName(String userName);
 }

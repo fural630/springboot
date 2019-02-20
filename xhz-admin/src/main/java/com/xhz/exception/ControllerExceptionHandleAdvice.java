@@ -10,6 +10,7 @@ import com.xhz.util.RRException;
 import com.xhz.web.module.sys.entity.ErrorLogDO;
 import com.xhz.web.module.sys.service.ErrorLogService;
 
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +45,16 @@ public class ControllerExceptionHandleAdvice {
 		String msg = String.format(Constant.ERROR_TOOLTIP, errorId);
 		return R.error(msg);
 	}
+	
+	/**
+	 * 遇到自定义错误时，不记录日志，直接将自定义提示内容展示到前台
+	 */
+	@ResponseBody
+	@ExceptionHandler(UnauthorizedException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public R handlerUnauthorizedException(UnauthorizedException e) {
+		return R.error(Constant.UNAUTHORIZED_TOOLTIP);
+	}
 
 	/**
 	 * 遇到自定义错误时，不记录日志，直接将自定义提示内容展示到前台
@@ -54,4 +65,6 @@ public class ControllerExceptionHandleAdvice {
 	public R handlerRRException(RRException e) {
 		return R.error(e.getMessage());
 	}
+	
+	
 }

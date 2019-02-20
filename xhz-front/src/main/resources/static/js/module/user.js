@@ -10,7 +10,7 @@ var vm = new Vue({
 		},
 		user: {
 			id: '',
-			account: '',
+			userName: '',
 			passWord: '',
 			name: '',
 			deptName: '',
@@ -24,7 +24,7 @@ var vm = new Vue({
 		sexItem: constant.sexItem,
 		isDeletedItem: constant.isDeletedItem,
 		ruleValidate: {
-			account: [{
+			userName: [{
 				required: true,
 				message: '账号不能为空',
 				trigger: 'blur'
@@ -66,7 +66,7 @@ var vm = new Vue({
 			vm.user = {
 				id: '',
 				passWord: '',
-				account: '',
+				userName: '',
 				name: '',
 				deptName: '',
 				idCard: '',
@@ -89,8 +89,6 @@ var vm = new Vue({
 				this.$message.warning('请只勾选一条要修改的数据!');
 				return;
 			}
-			vm.title = '修改';
-			vm.showList = false;
 
 			var userId = checkStatus.data[0].id;
 
@@ -100,6 +98,8 @@ var vm = new Vue({
 				type: 'GET',
 				successCallback: function (r) {
 					vm.user = r.data;
+					vm.title = '修改';
+					vm.showList = false;
 				}
 			});
 
@@ -195,7 +195,7 @@ layui.use('table', function () {
 				width: 130,
 				title: '姓名'
 			}, {
-				field: 'account',
+				field: 'userName',
 				width: 200,
 				title: '账号'
 			}, {

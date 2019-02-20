@@ -3,6 +3,8 @@ package com.xhz.web.module.sys.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,6 +108,7 @@ public class UserController {
 	 * @return R.ok().put("data", userDTO)
 	 */
 	@ApiOperation(value="查询")
+	@RequiresPermissions("test")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public R info(@PathVariable("id") String id) {
 		UserDTO userDTO = userService.selectUserDTOById(id);
