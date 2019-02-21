@@ -10,32 +10,23 @@
 
 <body>
 	<div id="app" v-cloak>
-		<el-card>
+		<el-card v-show="showList">
 			<div slot="header">
-				<span>
-					<el-form ref="queryForm" :model="q" label-width="80px">
-						<el-row>
-							<el-col :span="4">
-								<el-form-item prop="name" label="菜单名称">
-									<el-input v-model="q.name" clearable></el-input>
-								</el-form-item>
-							</el-col>
-							<el-col :span="4">
-								<el-form-item prop="url" label="菜单URL">
-									<el-input v-model="q.url" clearable></el-input>
-								</el-form-item>
-							</el-col>
-							&nbsp;&nbsp;
-							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-							<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
-						</el-row>
-					</el-form>
-				</span>
+				<el-form ref="queryForm" :model="q" :inline="true">
+					<el-form-item prop="name" label="菜单名称">
+						<el-input v-model="q.name" clearable></el-input>
+					</el-form-item>
+					<el-form-item prop="url" label="菜单URL">
+						<el-input v-model="q.url" clearable></el-input>
+					</el-form-item>
+					<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+					<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+				</el-form>
 			</div>
 			<el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
 			<el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
 			<el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
-			<el-button type="success" @click="manageParms"><i class="fa fa-eye"></i>&nbsp;批量管理授权</el-button>
+			<el-button type="success" @click="managePerms"><i class="fa fa-eye"></i>&nbsp;批量管理授权</el-button>
 			<table class="layui-hide" id="menuTable" lay-filter="menuTable"></table>
 		</el-card>
 		<div id="menuDialog" class="layui-dialog">
@@ -91,53 +82,79 @@
 				</el-form>
 			</el-card>
 		</div>
-		<div id="parmsDialog" class="layui-dialog">
-			<el-card>
-				<el-form :model="parmsMenu" label-width="80px">
+		<el-card v-show="!showList">
+			<div slot="header">
+				<span>批量授权管理</span>
+			</div>
+			<el-row>
+				<el-col :span="12">
+					<el-form :model="permsMenu" :inline="true">
+						<el-row>
+							<el-col :span="12">
+								<el-form-item label="菜单名称">
+									<el-input v-model="permsMenu.parentName" readonly></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="12">
+								<el-form-item label="菜单URL">
+									<el-input v-model="permsMenu.url" readonly></el-input>
+								</el-form-item>
+							</el-col>
+						</el-row>
+					</el-form>
 					<el-row>
-						<el-col :span="12">
-							<el-form-item label="菜单名称">
-								<span class="layui-badge layui-bg-cyan">{{parmsMenu.name}}</span>
-							</el-form-item>
-						</el-col>
-						<el-col :span="12">
-							<el-form-item label="菜单URL">
-								<span class="layui-badge layui-bg-cyan">{{parmsMenu.url}}</span>
-							</el-form-item>
-						</el-col>
+						<el-button type="primary" size="mini" @click="addPermsMenu"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+						<el-button type="primary" size="mini" @click="autoBuildPermsMenu"><i class="fa fa-plus"></i>&nbsp;自动生成</el-button>
 					</el-row>
-				</el-form>
-				<el-row>
-					<fieldset class="layui-elem-field layui-field-title">
-						<legend>批量授权</legend>
-						<div class="layui-field-box">
-							<el-row>
-								<el-button type="primary" size="mini"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
-								<el-button type="primary" size="mini"><i class="fa fa-plus"></i>&nbsp;自动生成</el-button>
+					<br />
+					<el-form :model="permsMenu" ref="permsMenuForm">
+						<el-row type="flex" justify="space-between" style="text-align: center">
+							<el-col :span="6">权限名称</el-col>
+							<el-col :span="10">权限参数</el-col>
+							<el-col :span="4">序号</el-col>
+							<el-col :span="2">操作</el-col>
+						</el-row>
+						<br />
+						<template v-for="(domain, index) in permsMenu.permsMenus">
+							<el-row type="flex" justify="space-between">
+								<el-col :span="6">
+									<el-form-item :prop="'permsMenus.' + index + '.name'" :key="'domain.menuId' + index" :rules="{
+											required: true, 
+											message: '域名不能为空', 
+											trigger: 'blur'}">
+										<el-input placeholder="权限名称" v-model="domain.name" clearable></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :span="10">
+									<el-form-item :prop="'permsMenus.' + index + '.perms'" :key="'domain.menuId' + index" :rules="{
+											required: true,
+											message: '权限参数不能为空',
+											trigger: 'blur'
+										}">
+										<el-input placeholder="权限参数" v-model="domain.perms" clearable></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :span="4">
+									<el-form-item :prop="'permsMenus.' + index + '.orderNum'" :key="'domain.menuId' + index" :rules="[
+											{ required: true, message: '不能为空'}]">
+										<el-input placeholder="序号" v-model.number="domain.orderNum" clearable></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :span="2">
+									<el-form-item>
+										<el-button type="danger" size="mini" @click="removePermsMenu(domain)"><i class="fa fa-trash-o"></i></el-button>
+									</el-form-item>
+								</el-col>
 							</el-row>
-							<br />
-							<template v-for="(item, index) in parmsObjList">
-								<el-row :gutter="5">
-									<el-col :span="4">
-										<el-input placeholder="名称" v-model="item.name"></el-input>
-									</el-col>
-									<el-col :span="10">
-										<el-input placeholder="授权标识" v-model="item.parms"></el-input>
-									</el-col>
-									<el-col :span="4">
-										<el-input placeholder="排序号" v-model="item.order"></el-input>
-									</el-col>
-									<el-col :span="2">
-										<el-button type="danger" size="mini"><i class="fa fa-trash-o"></i></el-button>
-									</el-col>
-								</el-row>
-								<br />
-							</template>
-						</div>
+						</template>
+						<el-button type="primary" @click="handleSubmit('permsMenuForm')">提交</el-button>
+						<el-button type="warning" @click="back" style="margin-left: 8px">返回</el-button>
+						<el-button @click="handleReset('permsMenuForm')" style="margin-left: 8px">重置</el-button>
+					</el-form>
 					</fieldset>
-				</el-row>
-			</el-card>
-		</div>
+				</el-col>
+			</el-row>
+		</el-card>
 	</div>
 	<script src="/js/module/menu.js${time}"></script>
 </body>

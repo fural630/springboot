@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 import com.xhz.shiro.UserRealm;
 
 @Configuration
-@Profile({"pro", "test", "dev"})
+@Profile({ "pro", "test", "dev" })
 public class ShrioConfig {
 
 	@Bean
@@ -37,7 +37,7 @@ public class ShrioConfig {
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		shiroFilter.setSecurityManager(defaultWebSecurityManager());
 		shiroFilter.setLoginUrl("/login.html");
-		shiroFilter.setSuccessUrl("/index.html");
+		// shiroFilter.setSuccessUrl("/index.html");
 		Map<String, String> filterChainDefinitionMap = new HashMap<String, String>();
 		// 登录请求，允许访问
 		filterChainDefinitionMap.put("/sys/login", "anon");
@@ -53,7 +53,7 @@ public class ShrioConfig {
 		filterChainDefinitionMap.put("/**", "authc");
 		shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilter;
-	}	
+	}
 
 	@Bean
 	public DefaultWebSessionManager defaultWebSessionManager() {
@@ -64,16 +64,15 @@ public class ShrioConfig {
 		sessionManager.setSessionIdUrlRewritingEnabled(false);
 		return sessionManager;
 	}
-	
-	@Bean 
+
+	@Bean
 	public DefaultWebSecurityManager defaultWebSecurityManager() {
 		DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
 		defaultWebSecurityManager.setSessionManager(defaultWebSessionManager());
 		defaultWebSecurityManager.setRealm(realm());
 		return defaultWebSecurityManager;
 	}
-	
-	
+
 	@Bean
 	public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
 		DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
@@ -83,7 +82,7 @@ public class ShrioConfig {
 
 	@Bean
 	@DependsOn("lifecycleBeanPostProcessor")
-	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor () {
+	public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
 		AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
 		authorizationAttributeSourceAdvisor.setSecurityManager(defaultWebSecurityManager());
 		return authorizationAttributeSourceAdvisor;

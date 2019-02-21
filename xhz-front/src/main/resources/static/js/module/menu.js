@@ -8,6 +8,7 @@ var vm = new Vue({
 			url: ''
 		},
 		title: '',
+		showList: true,
 		iconLoading: false,
 		iconShow: '',
 		menu: {
@@ -22,23 +23,12 @@ var vm = new Vue({
 			icon: '',
 			isDeleted: 0
 		},
-		parmsMenu: {
-			menuId: '',
-			name: '',
+		permsMenu: {
+			parentId: '',
+			parentName: '',
 			url: '',
-			icon: ''
+			permsMenus: []
 		},
-		parmsObjList: [{
-				name: 'name1',
-				parms: '授权1',
-				order: '1'
-			},
-			{
-				name: 'name2',
-				parms: '授权2',
-				order: '2'
-			}
-		],
 		ruleValidate: {
 			name: [{
 				required: true,
@@ -55,7 +45,7 @@ var vm = new Vue({
 				message: '请选择一个图标',
 				trigger: 'blur'
 			}]
-		}
+		},
 	},
 	methods: {
 		query: function () {
@@ -138,20 +128,34 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (layerIndex) {
 			var url = vm.baseUrl;
-			var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
-			Ajax.request({
-				url: url,
-				params: JSON.stringify(vm.menu),
-				contentType: "application/json",
-				type: type,
-				successCallback: function () {
-					layer.close(layerIndex);
-					alert('操作成功', function (index) {
-						vm.reload();
-					});
-				}
-			});
-
+			if (vm.showList) {
+				var type = vm.menu.menuId == '' ? 'POST' : 'PATCH';
+				Ajax.request({
+					url: url,
+					params: JSON.stringify(vm.menu),
+					contentType: "application/json",
+					type: type,
+					successCallback: function () {
+						layer.close(layerIndex);
+						alert('操作成功', function (index) {
+							vm.reload();
+						});
+					}
+				});
+			} else {
+				Ajax.request({
+					url: url,
+					params: JSON.stringify(vm.permsMenu.permsMenus),
+					contentType: "application/json",
+					type: 'PUT',
+					successCallback: function () {
+						alert('操作成功', function (index) {
+							vm.back();
+							vm.reload();
+						});
+					}
+				});
+			}
 		},
 		openDialog: function () {
 			openWindow({
@@ -180,38 +184,81 @@ var vm = new Vue({
 				}
 			});
 		},
-		manageParms: function () {
-			// var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
-			// if (selectedData.menuId == undefined) {
-			// 	vm.$message.warning("请选择要处理的数据！");
-			// 	return;
-			// }
-			// if (selectedData.type != "1") {
-			// 	vm.$message.warning("请选择一个菜单！");
-			// 	return;
-			// }
-
-			// var menuId = selectedData.menuId;
+		managePerms: function () {
+			var selectedData = treeGrid.radioStatus(vm.moduleName + 'Table');
+			if (selectedData.menuId == undefined) {
+				vm.$message.warning("请选择要处理的数据！");
+				return;
+			}
+			if (selectedData.type != "1") {
+				vm.$message.warning("请选择一个菜单类型的数据！");
+				return;
+			}
+			vm.permsMenu.parentId = selectedData.menuId;
+			vm.permsMenu.parentName = selectedData.name;
+			vm.permsMenu.url = selectedData.url;
+			vm.permsMenu.permsMenus = [];
+			vm.showList = false;
 			Ajax.request({
-				url: vm.baseUrl + "/" + "143bad3a894e484f811e5c24db298b6b",
+				url: vm.baseUrl + "/child/" + selectedData.menuId,
 				async: true,
 				type: 'GET',
 				successCallback: function (r) {
-					vm.parmsMenu = r.data;
-					openWindow({
-						title: '批量授权管理',
-						area: ['600px', '530px'],
-						content: jQuery("#parmsDialog"),
-						btn: ['保存', '取消'],
-						yes: function (index) {
-							// vm.handleSubmit(vm.moduleName + 'Form', index);
-						},
-						end: function () {
-							// vm.handleReset(vm.moduleName + 'Form');
-						}
-					});
+					if (r.code == 0) {
+						vm.permsMenu.permsMenus = r.data;
+					}
 				}
 			});
+		},
+		addPermsMenu: function () {
+			vm.permsMenu.permsMenus.push({
+				parentId: vm.permsMenu.parentId
+			});
+		},
+		autoBuildPermsMenu: function () {
+			var url = vm.permsMenu.url;
+			var perms = url.replace('.html', '').replace(/\//g, ':').substring(1) + ':';
+			var permsTemplate = [{
+				name: '新增',
+				perms: perms + 'insert',
+				orderNum: 0,
+				parentId: vm.permsMenu.parentId
+			}, {
+				name: '删除',
+				perms: perms + 'delete',
+				orderNum: 1,
+				parentId: vm.permsMenu.parentId
+			}, {
+				name: '批量删除',
+				perms: perms + 'deleteBatch',
+				orderNum: 2,
+				parentId: vm.permsMenu.parentId
+			}, {
+				name: '修改',
+				perms: perms + 'update',
+				orderNum: 3,
+				parentId: vm.permsMenu.parentId
+			}, {
+				name: '查询',
+				perms: perms + 'info',
+				orderNum: 4,
+				parentId: vm.permsMenu.parentId
+			}, {
+				name: '分页查询',
+				perms: perms + 'page',
+				orderNum: 5,
+				parentId: vm.permsMenu.parentId
+			}]
+			vm.permsMenu.permsMenus = vm.permsMenu.permsMenus.concat(permsTemplate);
+		},
+		back: function () {
+			vm.showList = true;
+		},
+		removePermsMenu: function (item) {
+			var index = vm.permsMenu.permsMenus.indexOf(item)
+			if (index !== -1) {
+				vm.permsMenu.permsMenus.splice(index, 1)
+			}
 		},
 		handleSubmit: function (name, layerIndex) {
 			handleSubmitValidate(vm, name, function () {

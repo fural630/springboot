@@ -18,7 +18,8 @@ public class PageController {
 	}
 
 	@RequestMapping("/{url}.html")
-	public String login(@PathVariable String url) {
+	public String toUrl(@PathVariable String url) {
 		return "/" + url;
 	}
+
 }

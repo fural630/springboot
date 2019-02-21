@@ -1,3 +1,13 @@
+[v-cloak] {
+    display: none;
+}
+
+body {
+    background-color: #2d3a4b;
+    padding: 0px;
+    margin: 0px;
+}
+
 .login-container {
     min-height: 100%;
     width: 100%;

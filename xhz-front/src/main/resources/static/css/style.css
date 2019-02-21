@@ -23,6 +23,10 @@ body {
 	margin-bottom: 0px;
 }
 
+.el-card__header .el-input {
+	width: 150px;
+}
+
 .el-card__body {
 	padding: 10px;
 }

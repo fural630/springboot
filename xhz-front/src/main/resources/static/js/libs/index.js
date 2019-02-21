@@ -24,9 +24,9 @@
             var currentId = $('.page-tabs-content').find('.active').attr('data-id');
             var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
             var url = target.attr('src');
-//            $.loading(true);
+            //            $.loading(true);
             target.attr('src', url).load(function () {
-//                $.loading(false);
+                //                $.loading(false);
             });
         },
         activeTab: function () {
@@ -204,7 +204,8 @@
             }, "fast");
         },
         scrollToTab: function (element) {
-            var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()), marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
+            var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()),
+                marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
             var tabOuterWidth = $.learuntab.calSumWidth($(".content-tabs").children().not(".menuTabs"));
             var visibleWidth = $(".content-tabs").outerWidth(true) - tabOuterWidth;
             var scrollVal = 0;
@@ -265,12 +266,12 @@
                 }
             });
         },
-        openTab : function (title, url) {
-        	if ($("a.menuItem[data-id='" + url + "']").length == 0) {
-				$("#hiddenMenu").append('<a class="menuItem" data-id="' + url + '" href="' + url + '">' + title + '</a>');
-				$.learuntab.init();
-			}
-        	$("a.menuItem[data-id='" + url + "']").click();
+        openTab: function (title, url) {
+            if ($("a.menuItem[data-id='" + url + "']").length == 0) {
+                $("#hiddenMenu").append('<a class="menuItem" data-id="' + url + '" href="' + url + '">' + title + '</a>');
+                $.learuntab.init();
+            }
+            $("a.menuItem[data-id='" + url + "']").click();
         }
     };
     $.learunindex = {
@@ -316,12 +317,16 @@
                     _html += '<a href="#">'
                     _html += '<i class="' + row.F_Icon + '"></i><span>' + row.F_FullName + '</span><i class="fa fa-angle-left pull-right"></i>'
                     _html += '</a>'
-                    var childNodes = $.learunindex.jsonWhere(data, function (v) { return v.F_ParentId == row.F_ModuleId });
+                    var childNodes = $.learunindex.jsonWhere(data, function (v) {
+                        return v.F_ParentId == row.F_ModuleId
+                    });
                     if (childNodes.length > 0) {
                         _html += '<ul class="treeview-menu">';
                         $.each(childNodes, function (i) {
                             var subrow = childNodes[i];
-                            var subchildNodes = $.learunindex.jsonWhere(data, function (v) { return v.F_ParentId == subrow.F_ModuleId });
+                            var subchildNodes = $.learunindex.jsonWhere(data, function (v) {
+                                return v.F_ParentId == subrow.F_ModuleId
+                            });
                             _html += '<li>';
                             if (subchildNodes.length > 0) {
                                 _html += '<a href="#"><i class="' + subrow.F_Icon + '"></i>' + subrow.F_FullName + '';
@@ -345,21 +350,22 @@
             });
             $("#sidebar-menu").append(_html);
             $("#sidebar-menu li a").click(function () {
-                var d = $(this), e = d.next();
+                var d = $(this),
+                    e = d.next();
                 if (e.is(".treeview-menu") && e.is(":visible")) {
                     e.slideUp(500, function () {
-                        e.removeClass("menu-open")
-                    }),
-                    e.parent("li").removeClass("active")
+                            e.removeClass("menu-open")
+                        }),
+                        e.parent("li").removeClass("active")
                 } else if (e.is(".treeview-menu") && !e.is(":visible")) {
                     var f = d.parents("ul").first(),
-                    g = f.find("ul:visible").slideUp(500);
+                        g = f.find("ul:visible").slideUp(500);
                     g.removeClass("menu-open");
                     var h = d.parent("li");
                     e.slideDown(500, function () {
                         e.addClass("menu-open"),
-                        f.find("li.active").removeClass("active"),
-                        h.addClass("active");
+                            f.find("li.active").removeClass("active"),
+                            h.addClass("active");
 
                         var _height1 = $(window).height() - $("#sidebar-menu >li.active").position().top - 41;
                         var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10
@@ -376,28 +382,30 @@
         }
     };
     $.learunMenu = {
-		 loadMenu: function () {
-			 var menu = [];
-			 $.ajax({
-				url: "/sys/menus/enable/",
-				async: false,
-				type: 'GET',
-				success: function(r) {
-					if (r.data.length > 0) {
-						for (var i = 0; i < r.data.length; i++) {
-							var fmenu = {
-								F_ModuleId : r.data[i].menuId,
-								F_ParentId : r.data[i].parentId,
-								F_FullName : r.data[i].name,
-								F_UrlAddress : r.data[i].url,
-								F_Icon : r.data[i].icon
-							}
-							menu.push(fmenu);
-						}
-					}
-				}
-			});
-			return menu;
-		 }
+        loadMenu: function () {
+            var menu = [];
+            $.ajax({
+                url: "/sys/menus/enable/",
+                async: false,
+                type: 'GET',
+                success: function (r) {
+                    if (r.data.length > 0) {
+                        for (var i = 0; i < r.data.length; i++) {
+                            if (r.data[i].type != "2") { //去除按钮
+                                var fmenu = {
+                                    F_ModuleId: r.data[i].menuId,
+                                    F_ParentId: r.data[i].parentId,
+                                    F_FullName: r.data[i].name,
+                                    F_UrlAddress: r.data[i].url,
+                                    F_Icon: r.data[i].icon
+                                }
+                                menu.push(fmenu);
+                            }
+                        }
+                    }
+                }
+            });
+            return menu;
+        }
     };
 })(jQuery);

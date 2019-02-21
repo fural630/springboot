@@ -33,27 +33,27 @@ var vm = new Vue({
             }
         },
         handleLogin: function () {
-             this.$refs.loginForm.validate(function (valid) {
-                 if (valid) {
-                	 $.ajax({
-                         type: "POST",
-                         url: "/sys/login",
-                         data: {
-                        	username : vm.loginForm.username,
-                        	password : vm.loginForm.password
-                         },
-                         success: function (result) {
-                             if (result.code == 0) {//登录成功
-                                 parent.location.href = '/';
-                             } else {
-                            	 vm.$message.error(result.msg);
-                             }
-                         }
-                     });
-                 } else {
-                     return false;
-                 }
-             })
+            this.$refs.loginForm.validate(function (valid) {
+                if (valid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/sys/login",
+                        data: {
+                            username: vm.loginForm.username,
+                            password: vm.loginForm.password
+                        },
+                        success: function (result) {
+                            if (result.code == 0) { //登录成功
+                                parent.location.href = '/index.html';
+                            } else {
+                                vm.$message.error(result.msg);
+                            }
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            })
         }
     }
 });

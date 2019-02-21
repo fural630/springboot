@@ -6,6 +6,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.xhz.constant.Constant;
+import com.xhz.constant.Constant.MenuType;
+import com.xhz.constant.Constant.YESNO;
+import com.xhz.util.CopyUtil;
+import com.xhz.util.Dumper;
+import com.xhz.web.module.sys.dao.UserDao;
+import com.xhz.web.module.sys.entity.LoginUser;
+import com.xhz.web.module.sys.entity.MenuDO;
+import com.xhz.web.module.sys.entity.UserDO;
+import com.xhz.web.module.sys.service.MenuService;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -23,21 +35,12 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.xhz.constant.Constant;
-import com.xhz.constant.Constant.YESNO;
-import com.xhz.util.CopyUtil;
-import com.xhz.web.module.sys.dao.MenuDao;
-import com.xhz.web.module.sys.dao.UserDao;
-import com.xhz.web.module.sys.entity.LoginUser;
-import com.xhz.web.module.sys.entity.MenuDO;
-import com.xhz.web.module.sys.entity.UserDO;
-
 public class UserRealm extends AuthorizingRealm {
 
 	@Autowired
 	private UserDao UserDao;
 	@Autowired
-	private MenuDao menuDao;
+	private MenuService menuService;
 
 	/**
 	 * 授权(验证权限时调用)
@@ -48,7 +51,19 @@ public class UserRealm extends AuthorizingRealm {
 		String userId = loginUser.getId();
 
 		List<String> permsList = new ArrayList<String>();
-		permsList.add("test1");
+		if (Constant.SUPER_ADMIN.equals(userId)) { // 如果是超级管理员
+			List<MenuDO> menuDOList = menuService.selectEnableMemu();
+			if (CollectionUtils.isNotEmpty(menuDOList)) {
+				for (MenuDO menuDO : menuDOList) {
+					if (menuDO.getType().equals(MenuType.BUTTON.getValue())
+							&& StringUtils.isNoneBlank(menuDO.getPerms())) {
+						permsList.add(menuDO.getPerms());
+					}
+				}
+			}
+		} else {
+
+		}
 
 		// 用户权限列表
 		Set<String> permsSet = new HashSet<String>();
@@ -60,7 +75,7 @@ public class UserRealm extends AuthorizingRealm {
 				permsSet.addAll(Arrays.asList(perms.trim().split(",")));
 			}
 		}
-
+		Dumper.dump(permsSet);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.setStringPermissions(permsSet);
 		return info;
@@ -96,7 +111,7 @@ public class UserRealm extends AuthorizingRealm {
 
 		// 如果是超级管理员权限
 		if (user.getId().equals(Constant.SUPER_ADMIN)) {
-			List<MenuDO> menuDOList = menuDao.selectEnableMemu();
+			List<MenuDO> menuDOList = menuService.selectEnableMemu();
 			for (MenuDO menuDO : menuDOList) {
 				if (StringUtils.isNotBlank(menuDO.getPerms())) {
 					permsList.add(menuDO.getPerms());

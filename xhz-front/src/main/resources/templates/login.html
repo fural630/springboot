@@ -6,11 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
-    <#include "/common/header.html" />
+    <script>
+        if (self != top) {
+            top.location.href = self.location.href;
+        }
+    </script>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="/font/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/plugins/element-ui/lib/theme-chalk/index.css">
+    <script src="/js/libs/jquery.min.js"></script>
+    <script src="/plugins/vue/js/vue.js"></script>
+    <script src="/plugins/element-ui/lib/index.js"></script>
     <link rel="stylesheet" href="/css/login.css">
 </head>
 
-<body style="background-color: #2d3a4b">
+<body>
     <div id="login" v-cloak>
         <div class="login-container">
             <el-form ref="loginForm" :model="loginForm" :rules="ruleValidate" class="login-form" auto-complete="on"
@@ -44,7 +54,7 @@
             </el-form>
         </div>
     </div>
-    <script src="/js/module/login.js${time}"></script>
+    <script src="/js/module/login.js?_${.now?long?c}"></script>
 </body>
 
 </html>
