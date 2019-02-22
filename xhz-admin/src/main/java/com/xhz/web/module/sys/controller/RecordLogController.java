@@ -3,6 +3,7 @@ package com.xhz.web.module.sys.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,32 +49,6 @@ public class RecordLogController {
 	@Autowired
 	private RecordLogService recordLogService;
 
-	/**
-	 * 新增
-	 * 
-	 * @param RecordLogDTO
-	 * @return R.ok()
-	 */
-	@ApiOperation(value = "新增")
-	@RequestMapping(value = "/recordLogs", method = RequestMethod.POST)
-	public R insert(@RequestBody RecordLogDTO recordlogDTO) {
-		ValidatorUtils.validateEntity(recordlogDTO, AddGroup.class);
-		recordLogService.insertRecordLogDTO(recordlogDTO);
-		return R.ok();
-	}
-
-	/**
-	 * 删除
-	 * 
-	 * @param id
-	 * @return R.ok()
-	 */
-	@ApiOperation(value = "删除")
-	@RequestMapping(value = "/recordLogs/{id}", method = RequestMethod.DELETE)
-	public R delete(@PathVariable("id") String id) {
-		recordLogService.deleteById(id);
-		return R.ok();
-	}
 
 	/**
 	 * 批量删除
@@ -83,22 +58,9 @@ public class RecordLogController {
 	 */
 	@ApiOperation(value = "批量删除")
 	@RequestMapping(value = "/recordLogs/deleteBatch", method = RequestMethod.POST)
+	@RequiresPermissions("sys:recordLog:deleteBatch")
 	public R deleteBatchByIds(@RequestBody List<String> ids) {
 		recordLogService.deleteBatchIds(ids);
-		return R.ok();
-	}
-
-	/**
-	 * 修改
-	 * 
-	 * @param RecordLogDTO
-	 * @return R.ok()
-	 */
-	@ApiOperation(value = "修改")
-	@RequestMapping(value = "/recordLogs", method = RequestMethod.PATCH)
-	public R update(@RequestBody RecordLogDTO recordlogDTO) {
-		ValidatorUtils.validateEntity(recordlogDTO, UpdateGroup.class);
-		recordLogService.updateRecordLogDTOById(recordlogDTO);
 		return R.ok();
 	}
 
@@ -110,6 +72,7 @@ public class RecordLogController {
 	 */
 	@ApiOperation(value = "查询")
 	@RequestMapping(value = "/recordLogs/{id}", method = RequestMethod.GET)
+	@RequiresPermissions("sys:recordLog:info")
 	public R info(@PathVariable("id") String id) {
 		RecordLogDTO recordlogDTO = recordLogService.selectRecordLogDTOById(id);
 		return R.ok().put("data", recordlogDTO);
@@ -122,6 +85,7 @@ public class RecordLogController {
 	 */
 	@ApiOperation(value = "查询所有")
 	@RequestMapping(value = "/recordLogs", method = RequestMethod.GET)
+	@RequiresPermissions("sys:recordLog:getAll")
 	public R getAll() {
 		List<RecordLogDTO> recordlogDTOList = recordLogService.selectRecordLogDTOList();
 		return R.ok().put("data", recordlogDTOList);
@@ -135,6 +99,7 @@ public class RecordLogController {
 	 */
 	@ApiOperation(value = "分页查询")
 	@RequestMapping(value = "/recordLogs/page", method = RequestMethod.GET)
+	@RequiresPermissions("sys:recordLog:page")
 	public R page(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);
 		PageHelper.startPage(query.getPage(), query.getLimit());

@@ -11,8 +11,8 @@
 					background-color:#DCDFE6;
 				}
 		</style>
-		<script src="${basePath}/plugins/clipboard/dist/clipboard.min.js"></script>
-		<script src="${basePath}/js/libs/iconLib.js"></script>
+		<script src="/plugins/clipboard/dist/clipboard.min.js"></script>
+		<script src="/js/libs/iconLib.js"></script>
 </head>
 
 <body>
@@ -20,17 +20,12 @@
 		<el-card>
 			<div slot="header">
 				<span>
-					<el-form @submit.native.prevent ref="queryForm" :model="q" label-width="80px">
-						<el-row>
-							<el-col :span="4">
-								<el-form-item prop="name" label="图标搜索">
-									<el-input v-model.trim="q.name" clearable prefix-icon="el-icon-search" @keyup.enter.native="query"></el-input>
-								</el-form-item>
-							</el-col>
-							&nbsp;&nbsp;
-							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-							<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;刷新</el-button>
-						</el-row>
+					<el-form @submit.native.prevent ref="queryForm" :model="q" :inline="true">
+						<el-form-item prop="name" label="图标搜索">
+							<el-input v-model.trim="q.name" clearable prefix-icon="el-icon-search" @keyup.enter.native="query"></el-input>
+						</el-form-item>
+						<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+						<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;刷新</el-button>
 					</el-form>
 				</span>
 			</div>

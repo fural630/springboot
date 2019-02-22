@@ -14,17 +14,12 @@
         <el-card>
             <div slot="header">
                 <span>
-                    <el-form ref="queryForm" :model="q">
-                        <el-row>
-                            <el-col :span="4">
-                                <el-form-item prop="id">
-                                    <el-input v-model="q.id" placeholder="错误编号" clearable></el-input>
-                                </el-form-item>
-                            </el-col>
-                            &nbsp;&nbsp;
-                            <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-                            <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
-                        </el-row>
+                    <el-form ref="queryForm" :model="q" :inline="true">
+                        <el-form-item prop="id" label="错误编号">
+                            <el-input v-model="q.id" clearable></el-input>
+                        </el-form-item>
+                        <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                        <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
                     </el-form>
                 </span>
             </div>

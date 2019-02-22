@@ -13,33 +13,21 @@
     <div id="app" v-cloak>
         <el-card>
             <div slot="header">
-                <span>
-                    <el-form ref="queryForm" :model="q" label-width="86px">
-                        <el-row>
-                            <el-col :span="4">
-                                <el-form-item label="操作人名称" prop="userName">
-                                    <el-input v-model="q.userName" clearable></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="4">
-                                <el-form-item label="操作方式" prop="operation">
-                                    <el-input v-model="q.operation" clearable></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="7">
-                                <el-form-item label="操作时间" prop="createDateList">
-                                    <el-date-picker v-model="q.createDateList" type="daterange" range-separator="至"
-                                        start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy 年 MM 月 dd 日"
-                                        value-format="yyyy-MM-dd">
-                                    </el-date-picker>
-                                </el-form-item>
-                            </el-col>
-                            &nbsp;&nbsp;
-                            <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-                            <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
-                        </el-row>
-                    </el-form>
-                </span>
+                <el-form ref="queryForm" :model="q" :inline="true">
+                    <el-form-item label="操作人名称" prop="userName">
+                        <el-input v-model="q.userName" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="操作方式" prop="operation">
+                        <el-input v-model="q.operation" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="操作时间" prop="createDateList">
+                        <el-date-picker v-model="q.createDateList" type="daterange" range-separator="至"
+                            start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                    <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+                </el-form>
             </div>
             <el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
             <table class="layui-hide" id="recordLogTable" lay-filter="recordLogTable"></table>

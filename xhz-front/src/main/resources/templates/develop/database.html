@@ -13,29 +13,20 @@
 		<el-card>
 			<div slot="header">
 				<span>
-					<el-form ref="queryForm" :model="q" label-width="90px">
-						<el-row>
-							<el-col :span="4">
-								<el-form-item prop="name" label="数据源名称">
-									<el-input v-model="q.name" clearable></el-input>
-								</el-form-item>
-							</el-col>
-							<el-col :span="4">
-								<el-form-item prop="url" label="链接地址">
-									<el-input v-model="q.url" clearable></el-input>
-								</el-form-item>
-							</el-col>
-							<el-col :span="4">
-								<el-form-item prop="dbType" label="数据库类型">
-									<el-select v-model="q.dbType" clearable>
-										<el-option v-for="item in dbTypeItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
-									</el-select>
-								</el-form-item>
-							</el-col>
-							&nbsp;&nbsp;
-							<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-							<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
-						</el-row>
+					<el-form ref="queryForm" :model="q" :inline="true">
+						<el-form-item prop="name" label="数据源名称">
+							<el-input v-model="q.name" clearable></el-input>
+						</el-form-item>
+						<el-form-item prop="url" label="链接地址">
+							<el-input v-model="q.url" clearable></el-input>
+						</el-form-item>
+						<el-form-item prop="dbType" label="数据库类型">
+							<el-select v-model="q.dbType" clearable>
+								<el-option v-for="item in dbTypeItem" :value="item.value" :key="item.value" :label="item.label"></el-option>
+							</el-select>
+						</el-form-item>
+						<el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+						<el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
 					</el-form>
 				</span>
 			</div>

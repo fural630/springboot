@@ -19,7 +19,11 @@ import org.springframework.context.annotation.Profile;
 
 import com.xhz.shiro.UserFormAuthenticationFilter;
 import com.xhz.shiro.UserRealm;
-
+/**
+ * 权限管控配置，如果开发环境不需要权限控制，可将@Profile的dev去掉即可
+ * @author zhangzm
+ *
+ */
 @Configuration
 @Profile({ "pro", "test", "dev" })
 public class ShiroConfig {

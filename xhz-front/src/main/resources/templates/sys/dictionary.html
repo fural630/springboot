@@ -13,22 +13,15 @@
     <div id="app" v-cloak>
         <el-card>
             <div slot="header">
-                <el-form ref="queryForm" :model="q" label-width="80px">
-                    <el-row>
-                        <el-col :span="4">
-                            <el-form-item prop="name" label="字典名称">
-                                <el-input v-model="q.name" clearable></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="4">
-                            <el-form-item prop="value" label="字典值">
-                                <el-input v-model="q.value" clearable></el-input>
-                            </el-form-item>
-                        </el-col>
-                        &nbsp;&nbsp;
-                        <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-                        <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
-                    </el-row>
+                <el-form ref="queryForm" :model="q" :inline="true">
+                    <el-form-item prop="name" label="字典名称">
+                        <el-input v-model="q.name" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="value" label="字典值">
+                        <el-input v-model="q.value" clearable></el-input>
+                    </el-form-item>
+                    <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                    <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
                 </el-form>
             </div>
             <el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
