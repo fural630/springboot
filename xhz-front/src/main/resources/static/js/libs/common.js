@@ -1,8 +1,8 @@
 //重写alert
 window.alert = function (msg, callback) {
     // parent.layer.alert 弹出在iframe外的页面。
-    layui.layer.alert(msg, function (index) {
-        layui.layer.close(index);
+    layer.alert(msg, function (index) {
+        layer.close(index);
         if (typeof (callback) === "function") {
             callback("ok");
         }
@@ -15,7 +15,7 @@ window.confirm = function (msg, callback, callback2) {
     if (!callback) {
         return true;
     }
-    layui.layer.confirm(msg, {
+    layer.confirm(msg, {
         icon: 3,
         skin: 'layui-layer-lan',
         btn: ['确定', '取消']
@@ -51,9 +51,9 @@ window.openWindow = function (options) {
     };
     globalParams = $.extend(globalParams, options);
     if (globalParams.top) {
-        return parent.layui.layer.open(globalParams);
+        return parent.layer.open(globalParams);
     } else {
-        return layui.layer.open(globalParams);
+        return layer.open(globalParams);
     }
 };
 
@@ -62,7 +62,7 @@ window.openWindow = function (options) {
  * @param data
  */
 function eyeImages(data) {
-    layui.layer.photos({
+    layer.photos({
         photos: {
             "title": "预览", //相册标题
             "start": 0, //初始显示的图片序号，默认0
@@ -104,6 +104,23 @@ function toUrl(href) {
 
 function newTab(title, url) {
     top.$.learuntab.openTab(title, url);
+}
+
+/**
+* 超时登录的弹出层
+*/
+function openLoginDialog(title) {
+	openWindow({
+		title: title,
+	 	type: 2,
+	 	top: true,
+	 	shade: [0.8, '#000'],
+	 	area:['900px', '630px'],
+	 	anim: 6,
+	 	resize: false,
+	 	closeBtn: 0,
+	 	content: '/login.html?target=self'
+	 });
 }
 
 /**
@@ -179,14 +196,14 @@ Ajax = function () {
                     }
 
                     if (opt.resultMsg && result.msg) {
-                        layui.layer.alert(result.msg, {
+                        layer.alert(result.msg, {
                             icon: 5
                         });
                     }
                     return;
                 }
                 if (opt.resultMsg && data.msg) {
-                    layui.layer.alert(data.msg, {
+                    layer.alert(data.msg, {
                         icon: 6
                     }, function () {
                         if (typeof (opt.successCallback) != 'undefined') {
@@ -204,15 +221,16 @@ Ajax = function () {
                 //关闭遮罩
                 dialogLoading(false);
                 var result = eval('(' + xhr.responseText + ')');
-                layui.layer.alert(result.msg, {
-                    icon: 5
-                }, function (index) {
-                    layer.close(index);
-                    // 处理登录超时后台返回未授权访问的情况
-                    if (result.code == 302) {
-                        top.location.href = "/login.html"
-                    }
-                });
+                // 处理登录超时后台返回session超时的情况
+                if (result.code == 301) {
+                	openLoginDialog(result.msg);
+                } else {
+                	layer.alert(result.msg, {
+                		icon: 5
+                	}, function (index) {
+                		layer.close(index);
+                	});
+                }
             }
         });
     }
@@ -227,15 +245,13 @@ Ajax = function () {
 
 
 function dialogLoading(flag) {
-    if (layui.layer) {
-        if (flag) {
-            layui.layer.load(2, {
-                shade: [0.2, '#000'],
-                time: 10 * 1000
-            });
-        } else {
-            layui.layer.closeAll('loading');
-        }
+    if (flag) {
+        layer.load(2, {
+            shade: [0.2, '#000'],
+            time: 10 * 1000
+        });
+    } else {
+        layer.closeAll('loading');
     }
 }
 

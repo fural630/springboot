@@ -45,9 +45,9 @@ public class UserFormAuthenticationFilter extends FormAuthenticationFilter {
 			// 如果是ajax请求，则返回自定义的结构，而不是重定向
 			if (isAjax(request)) {
 				response.setContentType("application/json;charset=UTF-8");
-				((HttpServletResponse) response).setStatus(HttpStatus.UNAUTHORIZED.value());
+				((HttpServletResponse) response).setStatus(HttpStatus.MOVED_PERMANENTLY.value());
 				response.getWriter().write(
-						JSON.toJSONString(R.error(HttpStatus.UNAUTHORIZED.value(), Constant.SESSION_TIMEOUT_TOOLTIP)));
+						JSON.toJSONString(R.error(HttpStatus.MOVED_PERMANENTLY.value(), Constant.SESSION_TIMEOUT_TOOLTIP)));
 			} else {
 				saveRequestAndRedirectToLogin(request, response);
 			}

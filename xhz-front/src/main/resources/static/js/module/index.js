@@ -1,11 +1,14 @@
 var vm = new Vue({
-	el : '#app',
-	data : {
-		menuItem : []
+	el: '#app',
+	data: {
+		menuItem: []
 	},
-	methods : {
-		openTab : function(title, url) {
+	methods: {
+		openTab: function (title, url) {
 			newTab(title, url);
+		},
+		login : function (){
+			openLoginDialog();
 		}
 	},
 	created : function() {

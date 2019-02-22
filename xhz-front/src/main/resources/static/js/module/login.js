@@ -44,7 +44,13 @@ var vm = new Vue({
                         },
                         success: function (result) {
                             if (result.code == 0) { //登录成功
-                                parent.location.href = '/index.html';
+                            	//如果是弹出层的登录框，为了可以直接登录后不跳转和刷新页面
+                            	if (getQueryString('target') == 'self') {	
+                            		var index = parent.layer.getFrameIndex(window.name);
+                            		parent.layer.close(index);
+                        		} else {
+                        			top.location.href = '/main.html';
+                        		}
                             } else {
                                 vm.$message.error(result.msg);
                             }

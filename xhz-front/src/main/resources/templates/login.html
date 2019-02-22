@@ -7,9 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
     <script>
-        if (self != top) {
-            top.location.href = self.location.href;
-        }
+	    function getQueryString(name) {
+	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	        var r = window.location.search.substr(1).match(reg);
+	        if (r != null) {
+	            return unescape(r[2]);
+	        }
+	        return null;
+	    }
+		if (getQueryString('target') != 'self') {
+	        if (self != top) {
+	        	top.location.href = self.location.href;
+	        }
+		}
     </script>
     <!-- font-awesome -->
     <link rel="stylesheet" href="/font/font-awesome/css/font-awesome.min.css">

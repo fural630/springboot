@@ -47,13 +47,13 @@ public class ControllerExceptionHandleAdvice {
 	}
 	
 	/**
-	 * 遇到自定义错误时，不记录日志，直接将自定义提示内容展示到前台
+	 * 遇到未授权报错时，直接提示到前端 401
 	 */
 	@ResponseBody
 	@ExceptionHandler(UnauthorizedException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public R handlerUnauthorizedException(UnauthorizedException e) {
-		return R.error(Constant.UNAUTHORIZED_TOOLTIP);
+		return R.error(HttpStatus.UNAUTHORIZED.value(),Constant.UNAUTHORIZED_TOOLTIP);
 	}
 
 	/**
