@@ -206,6 +206,12 @@ Ajax = function () {
                 var result = eval('(' + xhr.responseText + ')');
                 layui.layer.alert(result.msg, {
                     icon: 5
+                }, function (index) {
+                    layer.close(index);
+                    // 处理登录超时后台返回未授权访问的情况
+                    if (result.code == 302) {
+                        top.location.href = "/login.html"
+                    }
                 });
             }
         });

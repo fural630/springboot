@@ -21,16 +21,22 @@ public class Constant {
 	 * 错误提示模板
 	 */
 	public static final String ERROR_TOOLTIP = "此操作发生未知异常,请联系管理员！<br/>错误代码: %s";
-	
+
 	/**
 	 * 未授权提示模板
 	 */
 	public static final String UNAUTHORIZED_TOOLTIP = "您没有此操作权限，如有需要请联系管理员！";
-	
+
 	/**
-     * 当前登录用户
-     */
+	 * session超时提示模板
+	 */
+	public static final String SESSION_TIMEOUT_TOOLTIP = "登录超时，点击确定重新进行登录！";
+
+	/**
+	 * 当前登录用户
+	 */
 	public static final String CURRENT_USER = "curUser";
+
 	/**
 	 * 菜单类型
 	 */

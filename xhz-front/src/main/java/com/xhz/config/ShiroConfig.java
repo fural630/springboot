@@ -3,6 +3,8 @@ package com.xhz.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.Filter;
+
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -15,11 +17,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 
+import com.xhz.shiro.UserFormAuthenticationFilter;
 import com.xhz.shiro.UserRealm;
 
 @Configuration
 @Profile({ "pro", "test", "dev" })
-public class ShrioConfig {
+public class ShiroConfig {
 
 	@Bean
 	public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
@@ -52,6 +55,10 @@ public class ShrioConfig {
 		// 拦截其他所有请求，都需要登录允许
 		filterChainDefinitionMap.put("/**", "authc");
 		shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMap);
+		Map<String, Filter> filters = new HashMap<String, Filter>();
+		// 自定义登录权限拦截
+		filters.put("authc", new UserFormAuthenticationFilter());
+		shiroFilter.setFilters(filters);
 		return shiroFilter;
 	}
 
