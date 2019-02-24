@@ -48,6 +48,11 @@ var vm = new Vue({
                             	if (getQueryString('target') == 'self') {	
                             		var index = parent.layer.getFrameIndex(window.name);
                             		parent.layer.close(index);
+                            		this.$notify({
+                        	          title: '登录成功',
+                        	          message: '您可以继续操作',
+                        	          type: 'success'
+                        	        });
                         		} else {
                         			top.location.href = '/main.html';
                         		}

@@ -226,7 +226,8 @@ Ajax = function () {
                 	openLoginDialog(result.msg);
                 } else {
                 	layer.alert(result.msg, {
-                		icon: 5
+                		icon: 5,
+                		anim: 6
                 	}, function (index) {
                 		layer.close(index);
                 	});
