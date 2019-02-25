@@ -122,7 +122,6 @@ public class DeptController {
 	 * 查询所有机构
 	 * @return R.ok()
 	 */
-	@SysLog("查询所有机构")
 	@ApiOperation(value = "查询所有机构")
 	@RequiresPermissions("sys:dept:getAll")
 	@RequestMapping(value = "/depts", method = RequestMethod.GET)
@@ -136,7 +135,6 @@ public class DeptController {
 	 * @param params 
 	 * @return R.ok().put("data", pageInfo);
 	 */
-	@SysLog("分页查询机构")
 	@ApiOperation(value = "分页查询机构")
 	@RequiresPermissions("sys:dept:page")
 	@RequestMapping(value = "/depts/page", method = RequestMethod.GET)

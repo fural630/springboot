@@ -42,5 +42,9 @@
 	<select id="selectDeptDTOById" resultType="com.xhz.web.module.sys.entity.DeptDTO">
 		select * from SYS_DEPT where DEPT_ID = #{deptId}
 	</select>
+	
+	<select id="selectMaxCodeByParentId" resultType="String">
+		select max(CODE) from SYS_DEPT where PARENT_ID = #{parentId}
+	</select>
 
 </mapper>

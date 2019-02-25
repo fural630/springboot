@@ -23,7 +23,7 @@ var vm = new Vue({
                 trigger: 'blur'
             }]
         },
-        showList: false
+        showList: true
     },
     methods: {
         query: function () {
@@ -34,6 +34,7 @@ var vm = new Vue({
             });
         },
         add: function () {
+            vm.handleReset(vm.moduleName + 'Form');
             vm.title = '添加机构';
             vm.showList = false;
         },
@@ -45,7 +46,18 @@ var vm = new Vue({
 
         },
         saveOrUpdate: function (layerIndex) {
-
+            var type = vm.dept.deptId == '' ? 'POST' : 'PATCH';
+            Ajax.request({
+                url: vm.baseUrl,
+                params: JSON.stringify(vm.dept),
+                contentType: "application/json",
+                type: type,
+                successCallback: function () {
+                    alert('操作成功', function (index) {
+                        vm.reload();
+                    });
+                }
+            });
         },
         openDialog: function () {
 
@@ -55,6 +67,7 @@ var vm = new Vue({
             vm.dept.parentDeptName = '123';
         },
         reload: function () {
+            vm.showList = true;
             vm.query();
         },
         back: function () {
