@@ -244,9 +244,14 @@ var vm = new Vue({
 				orderNum: 4,
 				parentId: vm.permsMenu.parentId
 			}, {
+				name: '查询所有',
+				perms: perms + 'getAll',
+				orderNum: 5,
+				parentId: vm.permsMenu.parentId
+			}, {
 				name: '分页查询',
 				perms: perms + 'page',
-				orderNum: 5,
+				orderNum: 6,
 				parentId: vm.permsMenu.parentId
 			}]
 			vm.permsMenu.permsMenus = vm.permsMenu.permsMenus.concat(permsTemplate);

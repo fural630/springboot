@@ -102,10 +102,6 @@
 							</el-col>
 						</el-row>
 					</el-form>
-					<el-row>
-						<el-button type="primary" size="mini" @click="addPermsMenu"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
-						<el-button type="primary" size="mini" @click="autoBuildPermsMenu"><i class="fa fa-plus"></i>&nbsp;自动生成</el-button>
-					</el-row>
 					<br />
 					<el-form :model="permsMenu" ref="permsMenuForm">
 						<el-row type="flex" justify="space-between" style="text-align: center">
@@ -147,6 +143,10 @@
 								</el-col>
 							</el-row>
 						</template>
+						<el-row>
+							<el-button type="primary" size="mini" @click="addPermsMenu"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+							<el-button type="primary" size="mini" @click="autoBuildPermsMenu"><i class="fa fa-plus"></i>&nbsp;自动生成</el-button>
+						</el-row>
 						<el-button type="primary" @click="handleSubmit('permsMenuForm')">提交</el-button>
 						<el-button type="warning" @click="back" style="margin-left: 8px">返回</el-button>
 						<el-button @click="handleReset('permsMenuForm')" style="margin-left: 8px">重置</el-button>
