@@ -1,7 +1,9 @@
 package com.xhz;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,13 +19,11 @@ import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
-import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.xhz.util.DatabaseUtil;
-import com.xhz.util.Dumper;
 
 public class CodeGenerator {
 
@@ -76,6 +76,16 @@ public class CodeGenerator {
 		String dir = rb.getString("outputDirectory");
 
 		boolean swagger2 = Boolean.parseBoolean(rb.getString("swagger2"));
+		
+		boolean permission = Boolean.parseBoolean(rb.getString("permission"));
+		
+		boolean sysLog = Boolean.parseBoolean(rb.getString("sysLog"));
+		
+		String moduleChName = rb.getString("moduleChName");
+		
+		String title = rb.getString("title");
+		
+		
 
 		// 全局配置
 		GlobalConfig gc = new GlobalConfig();
@@ -83,8 +93,16 @@ public class CodeGenerator {
 		if (!projectPath.endsWith("\\")) {
 			projectPath = projectPath + "\\";
 		}
-		final String outputProjectPath = StringUtils.isEmpty(dir) ? projectPath
-				: projectPath.substring(0, projectPath.lastIndexOf("\\") + 1) + dir;
+		
+		if (StringUtils.isNoneBlank(dir)) {
+			String pathArry[] = projectPath.split("\\\\");
+			String result = "";
+			for (int i = 0; i < pathArry.length - 1; i++) {
+				result += pathArry[i] + "\\";
+			}
+			projectPath = result + dir;
+		}
+		final String outputProjectPath = projectPath;
 		gc.setOutputDir(outputProjectPath + "/src/main/java");
 		gc.setFileOverride(fileOverride);
 		gc.setAuthor(author);
@@ -147,11 +165,23 @@ public class CodeGenerator {
 		InjectionConfig cfg = new InjectionConfig() {
 			@Override
 			public void initMap() {
-				ConfigBuilder configBuilder = this.getConfig();
-				List<TableInfo> tableInfoList = configBuilder.getTableInfoList();
-				Dumper.dump(tableInfoList);
+				Map<String, Object> customParamMap = new HashMap<String, Object>();
+				if (permission) {
+					customParamMap.put("permission", true);
+				}
+				if (StringUtils.isNoneBlank(moduleChName)) {
+					customParamMap.put("moduleChName", moduleChName);
+				}
+				if (StringUtils.isNoneBlank(title)) {
+					customParamMap.put("title", title);
+				}
+				if (sysLog) {
+					customParamMap.put("sysLog", sysLog);
+				}
+				this.setMap(customParamMap);
 			}
 		};
+		
 		List<FileOutConfig> focList = new ArrayList<>();
 		focList.add(new FileOutConfig("/codeTemplates/mapper.xml.ftl") {
 			@Override

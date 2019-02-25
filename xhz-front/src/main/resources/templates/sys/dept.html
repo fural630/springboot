@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>机构管理</title>
+    <#include "/common/header.html" />
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <el-card v-show="showList">
+            <div slot="header">
+                <el-form ref="queryForm" :model="q" :inline="true">
+                    <el-form-item prop="code" label="机构代码">
+                        <el-input v-model="q.code" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="name" label="机构名称">
+                        <el-input v-model="q.name" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="isDeleted" label="状态">
+                        <el-input v-model="q.isDeleted" clearable></el-input>
+                    </el-form-item>
+                    <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                    <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+                </el-form>
+            </div>
+            <el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+            <el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+            <el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+            <table class="layui-hide" id="deptTable" lay-filter="deptTable"></table>
+        </el-card>
+        <el-card v-show="!showList">
+            <div slot="header">
+                {{title}}
+            </div>
+            <el-form @submit.native.prevent ref="deptForm" :model="dept" :rules="ruleValidate" label-width="80px">
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="机构名称" prop="name">
+                            <el-input v-model="dept.name" placeholder="机构名称" clearable />
+                        </el-form-item>
+                        <el-form-item label="上级机构" prop="parentDeptName">
+                            <el-input clearable readonly v-model="dept.parentDeptName" placeholder="上级机构" @focus="selectDept">
+                                <el-button slot="append" icon="el-icon-search" @click="selectDept"></el-button>
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="排序号" prop="orderNum">
+                            <el-input-number v-model="dept.orderNum"></el-input-number>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleSubmit('deptForm')">提交</el-button>
+                            <el-button type="warning" @click="back">返回</el-button>
+                            <el-button @click="handleReset('deptForm')">重置</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </el-card>
+    </div>
+    <script src="/js/module/dept.js${time}"></script>
+</body>
+
+</html>
