@@ -3,8 +3,10 @@ package ${package.Controller};
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+<#if cfg.permission>
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+</#if>
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 </#if>
-
 <#assign className = table.controllerName?replace("Controller", "") />
 <#assign classname = className?lower_case/>
 <#assign path = className?uncap_first/>
@@ -37,12 +38,27 @@ import io.swagger.annotations.ApiOperation;
 		<#assign columnType = field.columnType?lower_case?cap_first />
 	</#if>
 </#list>
-
-
+<#assign insertMethod = "insert"/>
+<#assign deleteMethod = "delete"/>
+<#assign deleteBatchMethod = "deleteBatch"/>
+<#assign updateMethod = "update"/>
+<#assign infoMethod = "info"/>
+<#assign getAllMethod = "getAll"/>
+<#assign pageMethod = "page"/>
+<#assign insertTitle = "新增${cfg.moduleChName!}"/>
+<#assign deleteTitle = "删除${cfg.moduleChName!}"/>
+<#assign deleteBatchTitle = "批量删除${cfg.moduleChName!}"/>
+<#assign updateTitle = "修改${cfg.moduleChName!}"/>
+<#assign infoTitle = "查询${cfg.moduleChName!}"/>
+<#assign getAllTitle = "查询所有${cfg.moduleChName!}"/>
+<#assign pageTitle = "分页查询${cfg.moduleChName!}"/>
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
 import org.springframework.stereotype.Controller;
+</#if>
+<#if cfg.sysLog>
+import com.xhz.annotation.SysLog;
 </#if>
 import com.xhz.util.Query;
 import com.xhz.util.R;
@@ -62,7 +78,7 @@ import ${package.Entity}.${entityDTO};
 
 /**
  * <p>
- * ${table.comment!} 前端控制器
+ * ${cfg.title!} 前端控制器 
  * </p>
  *
  * @author ${author}
@@ -76,7 +92,7 @@ import ${package.Entity}.${entityDTO};
 </#if>
 @RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>")
 <#if swagger2>
-@Api(tags = {"${table.comment!}"})
+@Api(tags = { "${cfg.title!}" })
 </#if>
 <#if kotlin>
 class ${table.controllerName}<#if superControllerClass??> : ${superControllerClass}()</#if>
@@ -87,106 +103,146 @@ public class ${table.controllerName} extends ${superControllerClass} {
 public class ${table.controllerName} {
 </#if>
 
-	private static final Logger logger = LoggerFactory.getLogger(${table.controllerName}.class);
-
 	@Autowired
 	private ${serviceName} ${servicename};
 	
 	/**
-	 * 新增
-	 * @param ${entityDTO}
+	 * ${insertTitle}
+	 * @param ${entitydto} 
 	 * @return R.ok()
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${insertTitle}")
+	</#if>
  	<#if swagger2>
-	@ApiOperation(value="新增")
+	@ApiOperation(value = "${insertTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${insertMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}", method = RequestMethod.POST)
-	public R insert(@RequestBody ${entityDTO} ${entitydto}) {
+	public R ${insertMethod}(@RequestBody ${entityDTO} ${entitydto}) {
 		ValidatorUtils.validateEntity(${entitydto}, AddGroup.class);
 		${servicename}.insert${entityDTO}(${entitydto});
 		return R.ok();
 	}
 	
 	/**
-	 * 删除
-	 * @param ${pkName}
+	 * ${deleteTitle}
+	 * @param ${pkName} 
 	 * @return R.ok()
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${deleteTitle}")
+	</#if>
 	<#if swagger2>
-	@ApiOperation(value="删除")
+	@ApiOperation(value = "${deleteTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${deleteMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}/{id}", method = RequestMethod.DELETE)
-	public R delete(@PathVariable("id") ${columnType} ${pkName}) {
+	public R ${deleteMethod}(@PathVariable("id") ${columnType} ${pkName}) {
 		${servicename}.deleteById(${pkName});
 		return R.ok();
 	}
 	
 	/**
-	 * 批量删除
-	 * @param ${pkName}s
-	 * @return
+	 * ${deleteBatchTitle}
+	 * @param ${pkName}s 
+	 * @return R.ok()
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${deleteBatchTitle}")
+	</#if>
 	<#if swagger2>
-	@ApiOperation(value="批量删除")
+	@ApiOperation(value = "${deleteBatchTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${deleteBatchMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}/deleteBatch", method = RequestMethod.POST)
-	public R deleteBatchByIds(@RequestBody List<${columnType}> ${pkName}s) {
+	public R ${deleteBatchMethod}(@RequestBody List<${columnType}> ${pkName}s) {
 		${servicename}.deleteBatchIds(${pkName}s);
 		return R.ok();
 	}
 	
 	/**
-	 * 修改
-	 * @param ${entityDTO}
+	 * ${updateTitle}
+	 * @param ${entitydto} 
 	 * @return R.ok()
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${updateTitle}")
+	</#if>
 	<#if swagger2>
-	@ApiOperation(value="修改")
+	@ApiOperation(value = "${updateTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${updateMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}", method = RequestMethod.PATCH)
-	public R update(@RequestBody ${entityDTO} ${entitydto}) {
+	public R ${updateMethod}(@RequestBody ${entityDTO} ${entitydto}) {
 		ValidatorUtils.validateEntity(${entitydto}, UpdateGroup.class);
 		${servicename}.update${entityDTO}ById(${entitydto});
 		return R.ok();
 	}
 	
 	/**
-	 * 查询
-	 * @param ${pkName}
+	 * ${infoTitle}
+	 * @param ${pkName} 
 	 * @return R.ok().put("data", ${entitydto})
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${infoTitle}")
+	</#if>
 	<#if swagger2>
-	@ApiOperation(value="查询")
+	@ApiOperation(value = "${infoTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${infoMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}/{id}", method = RequestMethod.GET)
-	public R info(@PathVariable("id") ${columnType} ${pkName}) {
+	public R ${infoMethod}(@PathVariable("id") ${columnType} ${pkName}) {
 		${entityDTO} ${entitydto} = ${servicename}.select${entityDTO}ById(${pkName});
 		return R.ok().put("data", ${entitydto});
 	}
 	
 	/**
-	 * 查询所有
+	 * ${getAllTitle}
 	 * @return R.ok()
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${getAllTitle}")
+	</#if>
 	<#if swagger2>
-	@ApiOperation(value="查询所有")
+	@ApiOperation(value = "${getAllTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${getAllMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}", method = RequestMethod.GET)
-	public R getAll() {
+	public R ${getAllMethod}() {
 		List<${entityDTO}> ${entitydto}List = ${servicename}.select${entityDTO}List();
 		return R.ok().put("data", ${entitydto}List);
 	}
 	
 	/**
-	 * 分页查询
-	 * @param params
+	 * ${pageTitle}
+	 * @param params 
 	 * @return R.ok().put("data", pageInfo);
 	 */
+	<#if cfg.sysLog>
+	@SysLog("${pageTitle}")
+	</#if>
 	<#if swagger2>
-	@ApiOperation(value="分页查询")
+	@ApiOperation(value = "${pageTitle}")
+	</#if>
+	<#if cfg.permission>
+	@RequiresPermissions("${package.ModuleName}:${path}:${pageMethod}")
 	</#if>
 	@RequestMapping(value = "/${requestPath}/page", method = RequestMethod.GET)
-	public R page(@RequestParam Map<String, Object> params) {
+	public R ${pageMethod}(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);
 		PageHelper.startPage(query.getPage(), query.getLimit());
 		PageInfo<${entityDTO}> pageInfo = new PageInfo<${entityDTO}>(${servicename}.select${entityDTO}Page(query));

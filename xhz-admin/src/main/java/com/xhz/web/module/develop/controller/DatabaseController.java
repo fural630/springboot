@@ -3,31 +3,26 @@ package com.xhz.web.module.develop.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-
-
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xhz.util.Query;
 import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-
-import com.xhz.web.module.develop.service.DatabaseService;
 import com.xhz.web.module.develop.entity.DatabaseDTO;
+import com.xhz.web.module.develop.service.DatabaseService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 
@@ -45,7 +40,6 @@ import com.xhz.web.module.develop.entity.DatabaseDTO;
 @Api(tags = {"数据源配置"})
 public class DatabaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(DatabaseController.class);
 
 	@Autowired
 	private DatabaseService databaseService;

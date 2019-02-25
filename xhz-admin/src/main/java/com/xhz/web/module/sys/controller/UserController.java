@@ -3,19 +3,7 @@ package com.xhz.web.module.sys.controller;
 import java.util.List;
 import java.util.Map;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.xhz.util.Query;
-import com.xhz.util.R;
-import com.xhz.validator.ValidatorUtils;
-import com.xhz.validator.group.AddGroup;
-import com.xhz.validator.group.UpdateGroup;
-import com.xhz.web.module.sys.entity.UserDTO;
-import com.xhz.web.module.sys.service.UserService;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.xhz.annotation.SysLog;
+import com.xhz.util.Query;
+import com.xhz.util.R;
+import com.xhz.validator.ValidatorUtils;
+import com.xhz.validator.group.AddGroup;
+import com.xhz.validator.group.UpdateGroup;
+import com.xhz.web.module.sys.entity.UserDTO;
+import com.xhz.web.module.sys.service.UserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,7 +40,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = { "用户信息" })
 public class UserController {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -52,7 +50,8 @@ public class UserController {
 	 * @param UserDTO
 	 * @return R.ok()
 	 */
-	@ApiOperation(value = "新增")
+	@SysLog("新增用户")
+	@ApiOperation(value = "新增用户")
 	@RequestMapping(value = "/users", method = RequestMethod.POST)
 	@RequiresPermissions("sys:user:insert")
 	public R insert(@RequestBody UserDTO userDTO) {
@@ -67,7 +66,8 @@ public class UserController {
 	 * @param id
 	 * @return R.ok()
 	 */
-	@ApiOperation(value = "删除")
+	@SysLog("删除用户")
+	@ApiOperation(value = "删除用户")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
 	@RequiresPermissions("sys:user:delete")
 	public R delete(@PathVariable("id") String id) {
@@ -81,7 +81,8 @@ public class UserController {
 	 * @param ids
 	 * @return
 	 */
-	@ApiOperation(value = "批量删除")
+	@SysLog("批量删除用户")
+	@ApiOperation(value = "批量删除用户")
 	@RequestMapping(value = "/users/deleteBatch", method = RequestMethod.POST)
 	@RequiresPermissions("sys:user:deleteBatch")
 	public R deleteBatchByIds(@RequestBody List<String> ids) {
@@ -95,7 +96,8 @@ public class UserController {
 	 * @param UserDTO
 	 * @return R.ok()
 	 */
-	@ApiOperation(value = "修改")
+	@SysLog("修改用户")
+	@ApiOperation(value = "修改用户")
 	@RequestMapping(value = "/users", method = RequestMethod.PATCH)
 	@RequiresPermissions("sys:user:update")
 	public R update(@RequestBody UserDTO userDTO) {
@@ -110,6 +112,7 @@ public class UserController {
 	 * @param id
 	 * @return R.ok().put("data", userDTO)
 	 */
+	@SysLog("查询用户")
 	@ApiOperation(value = "查询")
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:user:info")
@@ -148,11 +151,12 @@ public class UserController {
 	}
 
 	/**
-	 * 禁用用户
+	 * 启用用户
 	 * 
 	 * @param id
 	 * @return R.ok()
 	 */
+	@SysLog("启用用户")
 	@ApiOperation(value = "启用用户")
 	@RequestMapping(value = "/users/enable/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:user:enable")
@@ -167,6 +171,7 @@ public class UserController {
 	 * @param id
 	 * @return R.ok()
 	 */
+	@SysLog("禁用用户")
 	@ApiOperation(value = "禁用用户")
 	@RequestMapping(value = "/users/disable/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:user:disable")

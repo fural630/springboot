@@ -9,16 +9,15 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
 import com.xhz.annotation.SysLog;
+import com.xhz.shiro.ShiroUtils;
+import com.xhz.util.HttpContextUtils;
 import com.xhz.util.IPUtils;
+import com.xhz.web.module.sys.entity.LoginUser;
 import com.xhz.web.module.sys.entity.RecordLogDO;
 import com.xhz.web.module.sys.service.RecordLogService;
 
@@ -34,8 +33,6 @@ public class SysLogAspect {
     @Autowired
     RecordLogService recordLogService;
 
-    private final static Logger logger = LoggerFactory.getLogger(SysLogAspect.class);
-
     @Pointcut("@annotation(com.xhz.annotation.SysLog)")
     public void logPointCut() {
     };
@@ -46,8 +43,7 @@ public class SysLogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
+        HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
 
         RecordLogDO recordLogDO = new RecordLogDO();
 
@@ -63,13 +59,27 @@ public class SysLogAspect {
 
         // 请求的参数
         Object[] args = joinPoint.getArgs();
-        String params = JSON.toJSONString(args[0]);
+        String params = "";
+        if (args.length > 0) {
+        	params = JSON.toJSONString(args[0]);
+        }
 
         recordLogDO.setMethod(className + "." + methodName + "()");
         recordLogDO.setParams(params);
         recordLogDO.setIp(IPUtils.getIpAddr(request));
-        recordLogDO.setUserName("1");
-        recordLogDO.setAccount("2");
+        
+        LoginUser loginUser = ShiroUtils.getUserEntity();
+        String account = "";
+        String name = "";
+        if ("login".equals(methodName)) {
+        	account = params;
+        }
+        if (null != loginUser) {
+        	account = loginUser.getUserName();
+        	name = loginUser.getName();
+        }
+        recordLogDO.setUserName(name);
+        recordLogDO.setAccount(account);
         recordLogService.insert(recordLogDO);
     }
 }

@@ -21,5 +21,10 @@ public class PageController {
 	public String toUrl(@PathVariable String url) {
 		return "/" + url;
 	}
+	
+	@RequestMapping("/")
+	public String toMain() {
+		return "main.html";
+	}
 
 }

@@ -3,8 +3,20 @@ package com.xhz.web.module.sys.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xhz.annotation.SysLog;
+import com.xhz.constant.Constant;
 import com.xhz.constant.Constant.YESNO;
 import com.xhz.util.Query;
 import com.xhz.util.R;
@@ -14,18 +26,6 @@ import com.xhz.validator.group.UpdateGroup;
 import com.xhz.web.module.sys.entity.MenuDO;
 import com.xhz.web.module.sys.entity.MenuDTO;
 import com.xhz.web.module.sys.service.MenuService;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,8 +44,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = { "菜单管理" })
 public class MenuController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MenuController.class);
-
 	@Autowired
 	private MenuService menuService;
 
@@ -55,6 +53,7 @@ public class MenuController {
 	 * @param MenuDTO
 	 * @return R.ok()
 	 */
+	@SysLog("新增菜单")
 	@ApiOperation(value = "新增")
 	@RequestMapping(value = "/menus", method = RequestMethod.POST)
 	@RequiresPermissions("sys:menu:insert")
@@ -70,6 +69,7 @@ public class MenuController {
 	 * @param menuId
 	 * @return R.ok()
 	 */
+	@SysLog("删除菜单")
 	@ApiOperation(value = "删除")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.DELETE)
 	@RequiresPermissions("sys:menu:delete")
@@ -84,6 +84,7 @@ public class MenuController {
 	 * @param menuIds
 	 * @return
 	 */
+	@SysLog("批量删除菜单")
 	@ApiOperation(value = "批量删除")
 	@RequestMapping(value = "/menus/deleteBatch", method = RequestMethod.POST)
 	@RequiresPermissions("sys:menu:deleteBatch")
@@ -98,6 +99,7 @@ public class MenuController {
 	 * @param MenuDTO
 	 * @return R.ok()
 	 */
+	@SysLog("修改菜单")
 	@ApiOperation(value = "修改")
 	@RequestMapping(value = "/menus", method = RequestMethod.PATCH)
 	@RequiresPermissions("sys:menu:update")
@@ -113,6 +115,7 @@ public class MenuController {
 	 * @param menuId
 	 * @return R.ok().put("data", menuDTO)
 	 */
+	@SysLog("查询菜单")
 	@ApiOperation(value = "查询")
 	@RequestMapping(value = "/menus/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:menu:info")
@@ -128,7 +131,7 @@ public class MenuController {
 	 */
 	@ApiOperation(value = "查询所有")
 	@RequestMapping(value = "/menus", method = RequestMethod.GET)
-	// @RequiresPermissions("sys:menu:getAll")
+	@RequiresPermissions("sys:menu:getAll")
 	public R getAll(@RequestParam Map<String, Object> params) {
 		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList(params);
 		return R.ok().put("data", menuDTOList);
@@ -142,7 +145,7 @@ public class MenuController {
 	 */
 	@ApiOperation(value = "分页查询")
 	@RequestMapping(value = "/menus/page", method = RequestMethod.GET)
-	// @RequiresPermissions("sys:menu:page")
+	@RequiresPermissions("sys:menu:page")
 	public R page(@RequestParam Map<String, Object> params) {
 		Query query = new Query(params);
 		PageHelper.startPage(query.getPage(), query.getLimit());
@@ -156,6 +159,7 @@ public class MenuController {
 	 * @param menuId
 	 * @return R.ok()
 	 */
+	@SysLog("禁用菜单")
 	@ApiOperation(value = "禁用菜单", notes = "禁用菜单，子菜单都将被禁用")
 	@RequestMapping(value = "/menus/disable/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:menu:disable")
@@ -170,6 +174,7 @@ public class MenuController {
 	 * @param menuId
 	 * @return R.ok()
 	 */
+	@SysLog("启用菜单")
 	@ApiOperation(value = "启用菜单", notes = "启用菜单,子菜单都将被启用")
 	@RequestMapping(value = "/menus/enable/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:menu:enable")
@@ -198,6 +203,7 @@ public class MenuController {
 	 * @param menuDTOList
 	 * @return R.ok()
 	 */
+	@SysLog("批量修改按钮权限")
 	@ApiOperation(value = "批量修改按钮权限", notes = "批量修改按钮权限")
 	@RequestMapping(value = "/menus", method = RequestMethod.PUT)
 	@RequiresPermissions("sys:menu:updatePerms")
@@ -212,13 +218,13 @@ public class MenuController {
 			}
 			for (MenuDTO menuDTO : menuDTOList) {
 				menuDTO.setIsDeleted(YESNO.NO.getValue());
-				menuDTO.setType("2");
+				menuDTO.setType(Constant.MenuType.BUTTON.getValue());
 				menuService.insertMenuDTO(menuDTO);
 			}
 		}
 		return R.ok();
 	}
-
+	
 	@ApiOperation(value = "查询子菜单", notes = "查询子菜单")
 	@RequiresPermissions("sys:menu:querychildMenu")
 	@RequestMapping(value = "/menus/child/{id}", method = RequestMethod.GET)

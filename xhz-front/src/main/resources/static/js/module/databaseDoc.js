@@ -122,6 +122,9 @@ var vm = new Vue({
 				});
 			});
 		},
+		openTarget: function () {
+			window.open('/develop/databaseDoc.html', "_blank");
+		},
 		handleReset: function (name) {
 			handleResetForm(vm, name);
 		}

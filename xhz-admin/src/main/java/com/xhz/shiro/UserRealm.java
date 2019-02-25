@@ -6,17 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.xhz.constant.Constant;
-import com.xhz.constant.Constant.MenuType;
-import com.xhz.constant.Constant.YESNO;
-import com.xhz.util.CopyUtil;
-import com.xhz.util.Dumper;
-import com.xhz.web.module.sys.dao.UserDao;
-import com.xhz.web.module.sys.entity.LoginUser;
-import com.xhz.web.module.sys.entity.MenuDO;
-import com.xhz.web.module.sys.entity.UserDO;
-import com.xhz.web.module.sys.service.MenuService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -34,6 +23,17 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.xhz.constant.Constant;
+import com.xhz.constant.Constant.MenuType;
+import com.xhz.constant.Constant.YESNO;
+import com.xhz.util.CopyUtil;
+import com.xhz.util.Dumper;
+import com.xhz.web.module.sys.dao.UserDao;
+import com.xhz.web.module.sys.entity.LoginUser;
+import com.xhz.web.module.sys.entity.MenuDO;
+import com.xhz.web.module.sys.entity.UserDO;
+import com.xhz.web.module.sys.service.MenuService;
 
 public class UserRealm extends AuthorizingRealm {
 
@@ -130,5 +130,4 @@ public class UserRealm extends AuthorizingRealm {
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(loginUser, password, getName());
 		return info;
 	}
-
 }

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xhz.annotation.SysLog;
 import com.xhz.util.Query;
 import com.xhz.util.R;
 import com.xhz.validator.ValidatorUtils;
@@ -42,7 +41,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = { "通用字典" })
 public class DictionaryController {
 
-	private static final Logger logger = LoggerFactory.getLogger(DictionaryController.class);
 
 	@Autowired
 	private DictionaryService dictionaryService;
@@ -53,7 +51,8 @@ public class DictionaryController {
 	 * @param DictionaryDTO
 	 * @return R.ok()
 	 */
-	@ApiOperation(value = "新增")
+	@SysLog("新增字典")
+	@ApiOperation(value = "新增字典")
 	@RequestMapping(value = "/dictionarys", method = RequestMethod.POST)
 	@RequiresPermissions("sys:dictionary:insert")
 	public R insert(@RequestBody DictionaryDTO dictionaryDTO) {
@@ -70,7 +69,8 @@ public class DictionaryController {
 	 * @param id
 	 * @return R.ok()
 	 */
-	@ApiOperation(value = "删除")
+	@SysLog("删除字典")
+	@ApiOperation(value = "删除字典")
 	@RequestMapping(value = "/dictionarys/{id}", method = RequestMethod.DELETE)
 	@RequiresPermissions("sys:dictionary:delete")
 	public R delete(@PathVariable("id") String id) {
@@ -84,9 +84,10 @@ public class DictionaryController {
 	 * @param ids
 	 * @return
 	 */
-	@ApiOperation(value = "批量删除")
+	@SysLog("批量删除字典")
+	@ApiOperation(value = "批量删除字典")
 	@RequestMapping(value = "/dictionarys/deleteBatch", method = RequestMethod.POST)
-	@RequiresPermissions("")
+	@RequiresPermissions("sys:dictionary：deleteBatch")
 	public R deleteBatchByIds(@RequestBody List<String> ids) {
 		dictionaryService.deleteBatchIds(ids);
 		return R.ok();
@@ -98,7 +99,8 @@ public class DictionaryController {
 	 * @param DictionaryDTO
 	 * @return R.ok()
 	 */
-	@ApiOperation(value = "修改")
+	@SysLog("修改字典")
+	@ApiOperation(value = "修改字典")
 	@RequestMapping(value = "/dictionarys", method = RequestMethod.PATCH)
 	@RequiresPermissions("sys:dictionary:update")
 	public R update(@RequestBody DictionaryDTO dictionaryDTO) {
@@ -114,7 +116,8 @@ public class DictionaryController {
 	 * @param id
 	 * @return R.ok().put("data", dictionaryDTO)
 	 */
-	@ApiOperation(value = "查询")
+	@SysLog("查询字典")
+	@ApiOperation(value = "查询字典")
 	@RequestMapping(value = "/dictionarys/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:dictionary:info")
 	public R info(@PathVariable("id") String id) {
@@ -158,6 +161,7 @@ public class DictionaryController {
 	 * @param menuId
 	 * @return R.ok()
 	 */
+	@SysLog("禁用字典")
 	@ApiOperation(value = "禁用字典", notes = "禁用字典，子字典都将被禁用")
 	@RequestMapping(value = "/dictionarys/disable/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:dictionary:disable")
@@ -172,6 +176,7 @@ public class DictionaryController {
 	 * @param menuId
 	 * @return R.ok()
 	 */
+	@SysLog("启用字典")
 	@ApiOperation(value = "启用字典", notes = "启用字典,子字典都将被启用")
 	@RequestMapping(value = "/dictionarys/enable/{id}", method = RequestMethod.GET)
 	@RequiresPermissions("sys:dictionary:enable")

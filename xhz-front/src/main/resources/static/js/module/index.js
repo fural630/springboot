@@ -5,17 +5,18 @@ var vm = new Vue({
 	},
 	methods: {
 		openTab: function (title, url) {
-			newTab(title, url);
+			// newTab(title, url);
+			window.open(url, "_blank");
 		},
-		login : function (){
+		login: function () {
 			openLoginDialog();
 		}
 	},
-	created : function() {
+	created: function () {
 		Ajax.request({
-			url : "/sys/menus/enable/",
+			url: "/sys/menus/enable/",
 			async: true,
-			successCallback: function(r) {
+			successCallback: function (r) {
 				if (r.data.length > 0) {
 					for (var menu of r.data) {
 						if (menu.url != null) {

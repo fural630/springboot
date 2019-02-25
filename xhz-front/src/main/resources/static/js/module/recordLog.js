@@ -107,7 +107,7 @@ layui.use('table', function () {
                 title: 'ID'
             }, {
                 field: 'account',
-                width: 170,
+                width: 110,
                 title: '操作人账号'
             }, {
                 field: 'userName',
@@ -118,7 +118,7 @@ layui.use('table', function () {
                 title: '请求方法'
             }, {
                 field: 'operation',
-                width: 100,
+                width: 150,
                 title: '操作方式'
             }, {
                 field: 'params',
