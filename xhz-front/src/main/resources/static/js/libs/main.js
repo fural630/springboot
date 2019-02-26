@@ -289,9 +289,10 @@
                 }
             })
             $(window).load(function () {
-                window.setTimeout(function () {
-                    $('#ajax-loader').fadeOut();
-                }, 300);
+            	$('#ajax-loader').fadeOut();
+//                window.setTimeout(function () {
+//                    $('#ajax-loader').fadeOut();
+//                }, 300);
             });
         },
         jsonWhere: function (data, action) {

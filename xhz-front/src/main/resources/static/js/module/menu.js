@@ -313,6 +313,7 @@ layui.config({
 		iconOpen: false, //是否显示图标【默认显示】
 		isOpenDefault: false, //节点默认是展开还是折叠【默认展开】
 		page: false,
+		height: 'full-150',
 		cols: [
 			[{
 				type: 'radio'
@@ -325,7 +326,8 @@ layui.config({
 						return '&nbsp;&nbsp;<i class="' + d.icon + ' fa-lg"></i>&nbsp;&nbsp;' + d.name;
 					}
 					return d.name;
-				}
+				},
+				event: 'openChild'
 			}, {
 				field: 'parentName',
 				width: 100,
@@ -336,7 +338,8 @@ layui.config({
 					} else {
 						return d.parentName;
 					}
-				}
+				},
+				event: 'openChild'
 			}, {
 				field: 'type',
 				width: 80,
@@ -352,18 +355,22 @@ layui.config({
 					if (d.type === "2") {
 						return '<span class="layui-badge layui-bg-orange">按钮</span>';
 					}
-				}
+				},
+				event: 'openChild'
 			}, {
 				field: 'orderNum',
 				width: 60,
 				title: '排序',
-				align: 'center'
+				align: 'center',
+				event: 'openChild'
 			}, {
 				field: 'url',
-				title: '菜单URL'
+				title: '菜单URL',
+				event: 'openChild'
 			}, {
 				field: 'perms',
-				title: '授权标识'
+				title: '授权标识',
+				event: 'openChild'
 			}, {
 				field: 'isDeleted',
 				title: '操作',
@@ -375,6 +382,13 @@ layui.config({
 				}
 			}]
 		]
+	});
+
+	treeGrid.on('tool(' + vm.moduleName + 'Table)', function (obj) {
+		if (obj.event === 'openChild') {
+			var o = obj.data;
+			treeGrid.treeNodeOpen(vm.moduleName + 'Table', o, !o[treeGrid.config.cols.isOpen]);
+		}
 	});
 
 	form.on('switch(isDeleted)', function (obj) {

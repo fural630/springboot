@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
     <script>
-	    function getQueryString(name) {
+        function getQueryString(name) {
 	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 	        var r = window.location.search.substr(1).match(reg);
 	        if (r != null) {
@@ -44,7 +44,8 @@
                     <span class="svg-container">
                         <i class="fa fa-user"></i>
                     </span>|
-                    <el-input :placeholder="username" v-model="loginForm.username" type="text" auto-complete="on" />
+                    <el-input :placeholder="username" v-model="loginForm.username" type="text" auto-complete="on"
+                        @keyup.enter.native="handleLogin" autofocus="true" />
                 </el-form-item>
                 <el-form-item prop="password">
                     <span class="svg-container">

@@ -1,19 +1,13 @@
 package com.xhz.web.module.sys.entity;
 
-import com.xhz.validator.CharLength;
 import javax.validation.constraints.NotNull;
+
+import com.xhz.validator.CharLength;
 import com.xhz.validator.group.AddGroup;
 import com.xhz.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.Length;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 
 /**
  * <p>
@@ -23,85 +17,81 @@ import io.swagger.annotations.ApiModelProperty;
  * @author zhangzm
  * @since 2019-02-25
  */
-@ApiModel(value="DeptDTO对象", description="机构")
+@ApiModel(value = "DeptDTO对象", description = "机构")
 public class DeptDTO {
 
-    @ApiModelProperty(value = "机构ID")
-    @NotNull(groups = { UpdateGroup.class }, message = "修改时机构ID不能为空")
-    private String deptId;
+	@ApiModelProperty(value = "机构ID")
+	@NotNull(groups = { UpdateGroup.class }, message = "修改时机构ID不能为空")
+	private String deptId;
 
-    @ApiModelProperty(value = "机构父ID")
-    @CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "机构父ID最长度不允许超过40")
-    private String parentId;
+	@ApiModelProperty(value = "机构父ID")
+	@CharLength(max = 40, groups = { AddGroup.class, UpdateGroup.class }, message = "机构父ID最长度不允许超过40")
+	private String parentId;
 
-    @ApiModelProperty(value = "机构名称")
-    @CharLength(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "机构名称最长度不允许超过50")
-    private String name;
+	@ApiModelProperty(value = "机构名称")
+	@CharLength(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "机构名称最长度不允许超过50")
+	private String name;
 
-    @ApiModelProperty(value = "机构编号")
-    @CharLength(max = 255, groups = { AddGroup.class, UpdateGroup.class }, message = "机构编号最长度不允许超过255")
-    private String code;
+	@ApiModelProperty(value = "排序号")
+	@CharLength(max = 2, groups = { AddGroup.class, UpdateGroup.class }, message = "排序号最长度不允许超过2")
+	private String orderNum;
 
-    @ApiModelProperty(value = "拼音码")
-    @CharLength(max = 50, groups = { AddGroup.class, UpdateGroup.class }, message = "拼音码最长度不允许超过50")
-    private String pym;
+	/**
+	 * 上级机构名称
+	 */
+	private String parentDeptName;
+	
+	/**
+	 * 机构编号
+	 */
+	private String code;
 
-    @ApiModelProperty(value = "排序号")
-    @CharLength(max = 2, groups = { AddGroup.class, UpdateGroup.class }, message = "排序号最长度不允许超过2")
-    private String orderNum;
+	public String getDeptId() {
+		return deptId;
+	}
 
-    @ApiModelProperty(value = "删除标识")
-    @CharLength(max = 1, groups = { AddGroup.class, UpdateGroup.class }, message = "删除标识最长度不允许超过1")
-    private String isDeleted;
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
+	}
 
-    public String getDeptId() {
-        return deptId;
-    }
+	public String getParentId() {
+		return parentId;
+	}
 
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
-    }
-    public String getParentId() {
-        return parentId;
-    }
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getCode() {
-        return code;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-    public String getPym() {
-        return pym;
-    }
+	public String getOrderNum() {
+		return orderNum;
+	}
 
-    public void setPym(String pym) {
-        this.pym = pym;
-    }
-    public String getOrderNum() {
-        return orderNum;
-    }
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
 
-    public void setOrderNum(String orderNum) {
-        this.orderNum = orderNum;
-    }
-    public String getIsDeleted() {
-        return isDeleted;
-    }
+	public String getParentDeptName() {
+		return parentDeptName;
+	}
 
-    public void setIsDeleted(String isDeleted) {
-        this.isDeleted = isDeleted;
-    }
+	public void setParentDeptName(String parentDeptName) {
+		this.parentDeptName = parentDeptName;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 }

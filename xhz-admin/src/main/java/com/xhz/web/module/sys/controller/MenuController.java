@@ -133,7 +133,8 @@ public class MenuController {
 	@RequestMapping(value = "/menus", method = RequestMethod.GET)
 	@RequiresPermissions("sys:menu:getAll")
 	public R getAll(@RequestParam Map<String, Object> params) {
-		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList(params);
+		Query query = new Query(params);
+		List<MenuDTO> menuDTOList = menuService.selectMenuDTOList(query);
 		return R.ok().put("data", menuDTOList);
 	}
 

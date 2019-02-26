@@ -147,6 +147,9 @@ var vm = new Vue({
 			vm.showList = true;
 			vm.query();
 		},
+		back: function () {
+			vm.showList = true;
+		},
 		isDeletedById: function (id, isDeleted) {
 			var url = isDeleted ? vm.baseUrl + "/enable/" + id : vm.baseUrl + "/disable/" + id;
 			Ajax.request({

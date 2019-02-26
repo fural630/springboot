@@ -36,15 +36,32 @@
     </select>
     
     <select id="selectDeptDTOList" resultType="com.xhz.web.module.sys.entity.DeptDTO">
-		select * from SYS_DEPT
+		select t.*,tt.NAME PARENT_DEPT_NAME from SYS_DEPT t 
+		left join SYS_DEPT tt on t.PARENT_ID = tt.DEPT_ID 
+		<where>
+			t.IS_DELETED = 0
+			<if test="code != null and !code.equals('')">
+				and t.CODE like '%'||#{code}||'%'
+			</if>
+			<if test="name != null and !name.equals('')">
+				and t.NAME like '%'||#{name}||'%'
+			</if>
+		</where>
+		order by t.ORDER_NUM
 	</select>
 	
 	<select id="selectDeptDTOById" resultType="com.xhz.web.module.sys.entity.DeptDTO">
-		select * from SYS_DEPT where DEPT_ID = #{deptId}
+		select t.*,tt.NAME PARENT_DEPT_NAME from SYS_DEPT t 
+		left join SYS_DEPT tt on t.PARENT_ID = tt.DEPT_ID 
+		where t.DEPT_ID = #{deptId}
 	</select>
 	
 	<select id="selectMaxCodeByParentId" resultType="String">
 		select max(CODE) from SYS_DEPT where PARENT_ID = #{parentId}
+	</select>
+	
+	<select id="selectDeptByParentId" resultMap="BaseResultMap">
+		select * from SYS_DEPT where PARENT_ID = #{parentId}
 	</select>
 
 </mapper>

@@ -8,8 +8,8 @@ var vm = new Vue({
         rememberPwd: false,
         passwordType: 'password',
         loginForm: {
-            username: '',
-            password: ''
+            username: 'admin',
+            password: '123'
         },
         ruleValidate: {
             username: [{
@@ -44,18 +44,18 @@ var vm = new Vue({
                         },
                         success: function (result) {
                             if (result.code == 0) { //登录成功
-                            	//如果是弹出层的登录框，为了可以直接登录后不跳转和刷新页面
-                            	if (getQueryString('target') == 'self') {	
-                            		var index = parent.layer.getFrameIndex(window.name);
-                            		parent.layer.close(index);
-                            		this.$notify({
-                        	          title: '登录成功',
-                        	          message: '您可以继续操作',
-                        	          type: 'success'
-                        	        });
-                        		} else {
-                        			top.location.href = '/main.html';
-                        		}
+                                //如果是弹出层的登录框，为了可以直接登录后不跳转和刷新页面
+                                if (getQueryString('target') == 'self') {
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                    vm.$notify({
+                                        title: '登录成功',
+                                        message: '您可以继续操作',
+                                        type: 'success'
+                                    });
+                                } else {
+                                    top.location.href = '/main.html';
+                                }
                             } else {
                                 vm.$message.error(result.msg);
                             }

@@ -191,6 +191,7 @@ layui.config({
         iconOpen: false, //是否显示图标【默认显示】
         isOpenDefault: false, //节点默认是展开还是折叠【默认展开】
         page: false,
+        height: 'full-150',
         cols: [
             [{
                 type: 'radio'
@@ -206,35 +207,42 @@ layui.config({
                     if (d.type === "1") {
                         return '<span class="layui-badge layui-bg-blue">参数配置</span>';
                     }
-                }
+                },
+                event: 'openChild'
             }, {
                 field: 'name',
                 width: 200,
-                title: '名称'
+                title: '名称',
+                event: 'openChild'
             }, {
                 field: 'value',
                 width: 200,
-                title: '值'
+                title: '值',
+                event: 'openChild'
             }, {
                 field: 'orderNum',
                 width: 60,
                 title: '排序',
-                align: 'center'
+                align: 'center',
+                event: 'openChild'
             }, {
                 field: 'remark',
-                title: '备注'
+                title: '备注',
+                event: 'openChild'
             }, {
                 field: 'createTime',
                 title: '创建时间',
                 templet: function (d) {
                     return constant.transDate(d.createTime);
-                }
+                },
+                event: 'openChild'
             }, {
                 field: 'updateTime',
                 title: '修改时间',
                 templet: function (d) {
                     return constant.transDate(d.updateTime);
-                }
+                },
+                event: 'openChild'
             }, {
                 field: 'isDeleted',
                 title: '操作',
@@ -246,6 +254,13 @@ layui.config({
                 }
             }]
         ]
+    });
+
+    treeGrid.on('tool(' + vm.moduleName + 'Table)', function (obj) {
+        if (obj.event === 'openChild') {
+            var o = obj.data;
+            treeGrid.treeNodeOpen(vm.moduleName + 'Table', o, !o[treeGrid.config.cols.isOpen]);
+        }
     });
 
     form.on('switch(isDeleted)', function (obj) {

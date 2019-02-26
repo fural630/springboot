@@ -23,7 +23,9 @@ public interface DeptDao extends BaseMapper<DeptDO> {
 	
 	DeptDTO selectDeptDTOById(String deptId);
 	
-	List<DeptDTO> selectDeptDTOList();
+	List<DeptDTO> selectDeptDTOList(Map<String, Object> params);
 
 	String selectMaxCodeByParentId(String parentId);
+	
+	List<DeptDO> selectDeptByParentId(String parentId);
 }

@@ -15,13 +15,10 @@
             <div slot="header">
                 <el-form ref="queryForm" :model="q" :inline="true">
                     <el-form-item prop="code" label="机构代码">
-                        <el-input v-model="q.code" clearable></el-input>
+                        <el-input v-model.trim="q.code" clearable></el-input>
                     </el-form-item>
                     <el-form-item prop="name" label="机构名称">
-                        <el-input v-model="q.name" clearable></el-input>
-                    </el-form-item>
-                    <el-form-item prop="isDeleted" label="状态">
-                        <el-input v-model="q.isDeleted" clearable></el-input>
+                        <el-input v-model.trim="q.name" clearable></el-input>
                     </el-form-item>
                     <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
                     <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
@@ -40,10 +37,10 @@
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="机构名称" prop="name">
-                            <el-input v-model="dept.name" placeholder="机构名称" clearable />
+                            <el-input v-model.trim="dept.name" placeholder="机构名称" clearable />
                         </el-form-item>
                         <el-form-item label="上级机构" prop="parentDeptName">
-                            <el-input clearable readonly v-model="dept.parentDeptName" placeholder="上级机构" @focus="selectDept">
+                            <el-input clearable v-model="dept.parentDeptName" placeholder="上级机构" @focus="selectDept">
                                 <el-button slot="append" icon="el-icon-search" @click="selectDept"></el-button>
                             </el-input>
                         </el-form-item>
