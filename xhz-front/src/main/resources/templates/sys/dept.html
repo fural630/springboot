@@ -20,6 +20,9 @@
                     <el-form-item prop="name" label="机构名称">
                         <el-input v-model.trim="q.name" clearable></el-input>
                     </el-form-item>
+                    <el-form-item>
+                        <el-checkbox label="全部展开" v-model="isOpen" @change="openAll"></el-checkbox>
+                    </el-form-item>
                     <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
                     <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
                 </el-form>
@@ -40,12 +43,12 @@
                             <el-input v-model.trim="dept.name" placeholder="机构名称" clearable />
                         </el-form-item>
                         <el-form-item label="上级机构" prop="parentDeptName">
-                            <el-input clearable v-model="dept.parentDeptName" placeholder="上级机构" @focus="selectDept">
+                            <el-input v-model="dept.parentDeptName" readonly placeholder="上级机构">
                                 <el-button slot="append" icon="el-icon-search" @click="selectDept"></el-button>
                             </el-input>
                         </el-form-item>
                         <el-form-item label="排序号" prop="orderNum">
-                            <el-input-number v-model="dept.orderNum"></el-input-number>
+                            <el-input-number v-model="dept.orderNum" :min="0"></el-input-number>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="handleSubmit('deptForm')">提交</el-button>
@@ -56,6 +59,18 @@
                 </el-row>
             </el-form>
         </el-card>
+        <div id="orderNumDialog" class="layui-dialog">
+            <el-card>
+                <div slot="header">
+                    {{orderNumDept.name}}
+                </div>
+                <el-form ref="orderNumForm" :model="orderNumDept" label-width="70px">
+                    <el-form-item prop="orderNum" label="排序号">
+                        <el-input-number v-model="orderNumDept.orderNum" :min="0"></el-input-number>
+                    </el-form-item>
+                </el-form>
+            </el-card>
+        </div>
     </div>
     <script src="/js/module/dept.js${time}"></script>
 </body>

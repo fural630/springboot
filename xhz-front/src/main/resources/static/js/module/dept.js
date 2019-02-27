@@ -15,6 +15,11 @@ var vm = new Vue({
             name: '',
             orderNum: ''
         },
+        orderNumDept: {
+            deptId: '',
+            name: '',
+            orderNum: '0'
+        },
         ruleValidate: {
             name: [{
                 required: true,
@@ -22,11 +27,14 @@ var vm = new Vue({
                 trigger: 'blur'
             }]
         },
-        showList: true
+        showList: false,
+        isOpen: true
     },
     methods: {
         query: function () {
             treeGrid.reload(vm.moduleName + 'Table', {
+                isOpenDefault: vm.isOpen
+            }, {
                 where: {
                     code: vm.q.code,
                     name: vm.q.name
@@ -94,9 +102,51 @@ var vm = new Vue({
                 }
             });
         },
+        editOrderNum: function (data) {
+            if (data.orderNum != undefined) {
+                vm.orderNumDept = {
+                    deptId: data.deptId,
+                    name: data.name,
+                    orderNum: data.orderNum
+                };
+                openWindow({
+                    title: '修改排序号',
+                    area: ['280px', '240px'],
+                    content: jQuery("#orderNumDialog"),
+                    btn: ['保存', '取消'],
+                    yes: function (index) {
+                        Ajax.request({
+                            url: vm.baseUrl,
+                            params: JSON.stringify(vm.orderNumDept),
+                            contentType: "application/json",
+                            type: 'PATCH',
+                            successCallback: function () {
+                                layer.close(index);
+                                alert('操作成功', function (index2) {
+                                    vm.reload();
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        },
+        openAll: function () {
+            var tableId = vm.moduleName + 'Table';
+            treeGrid.treeOpenAll(tableId, vm.isOpen);
+        },
         selectDept: function () {
-            // alert(123);
-            //            vm.dept.parentDeptName = '123';
+            Ztree.request({
+                url: '',
+                radio: false,
+                checkbox: false,
+                selected: [],
+                yesCallback: function (data) {
+                    if (data != null) {
+                        alert(data[0].name);
+                    }
+                }
+            });
         },
         reload: function () {
             vm.showList = true;
@@ -130,7 +180,6 @@ layui.config({
 }).extend({
     treeGrid: 'treeGrid'
 }).use(['jquery', 'treeGrid'], function () {
-    var form = layui.form;
     treeGrid = layui.treeGrid; //很重要
     treeGrid.render({
         id: vm.moduleName + 'Table',
@@ -144,7 +193,7 @@ layui.config({
         treeUpId: 'parentId', //树形父id字段名称
         treeShowName: 'name', //以树形式显示的字段
         iconOpen: false, //是否显示图标【默认显示】
-        isOpenDefault: false, //节点默认是展开还是折叠【默认展开】
+        isOpenDefault: vm.isOpen, //节点默认是展开还是折叠【默认展开】
         page: false,
         height: 'full-150',
         cols: [
@@ -153,21 +202,24 @@ layui.config({
             }, {
                 field: 'code',
                 width: 230,
-                title: '机构代码',
-                event: 'openChild'
+                title: '机构代码'
             }, {
                 field: 'orderNum',
                 width: 100,
                 title: '排序号',
-                event: 'editOrderNmu'
+                event: 'editOrderNmu',
+                style: 'cursor: pointer;',
+                templet: function (d) {
+                    return d.orderNum + '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o"></i>';
+                }
             }, {
                 field: 'name',
                 title: '机构名称',
-                event: 'openChild'
+                event: 'openChild',
+                style: 'cursor: pointer;'
             }, {
                 field: 'parentDeptName',
                 title: '上级机构名称',
-                event: 'openChild'
             }]
         ],
     });
@@ -178,7 +230,7 @@ layui.config({
             treeGrid.treeNodeOpen(vm.moduleName + 'Table', o, !o[treeGrid.config.cols.isOpen]);
         }
         if (obj.event === 'editOrderNmu') {
-            alert(obj.data.orderNum);
+            vm.editOrderNum(obj.data);
         }
     });
 

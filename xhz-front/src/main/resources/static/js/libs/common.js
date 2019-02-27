@@ -107,20 +107,20 @@ function newTab(title, url) {
 }
 
 /**
-* 超时登录的弹出层
-*/
+ * 超时登录的弹出层
+ */
 function openLoginDialog(title) {
-	openWindow({
-		title: title,
-	 	type: 2,
-	 	top: true,
-	 	shade: [0.8, '#000'],
-	 	area:['900px', '630px'],
-	 	anim: 6,
-	 	resize: false,
-	 	closeBtn: 0,
-	 	content: '/login.html?target=self'
-	 });
+    openWindow({
+        title: title,
+        type: 2,
+        top: true,
+        shade: [0.8, '#000'],
+        area: ['900px', '630px'],
+        anim: 6,
+        resize: false,
+        closeBtn: 0,
+        content: '/login.html?target=self'
+    });
 }
 
 /**
@@ -223,14 +223,14 @@ Ajax = function () {
                 var result = eval('(' + xhr.responseText + ')');
                 // 处理登录超时后台返回session超时的情况
                 if (result.code == 301) {
-                	openLoginDialog(result.msg);
+                    openLoginDialog(result.msg);
                 } else {
-                	layer.alert(result.msg, {
-                		icon: 5,
-                		anim: 6
-                	}, function (index) {
-                		layer.close(index);
-                	});
+                    layer.alert(result.msg, {
+                        icon: 5,
+                        anim: 6
+                    }, function (index) {
+                        layer.close(index);
+                    });
                 }
             }
         });
@@ -352,5 +352,49 @@ Dict = function () {
             });
             return dictValue;
         }
+    };
+}();
+
+Ztree = function () {
+    function request(opt) {
+
+        if (typeof opt.url == 'undefined') {
+            opt.url = '';
+        }
+
+        if (typeof opt.radio == 'undefined') {
+            opt.radio = false;
+        }
+
+        if (typeof opt.checkbox == 'undefined') {
+            opt.checkbox = false;
+        }
+
+        if (typeof opt.selected == 'undefined') {
+            opt.selected = [];
+        }
+
+        openWindow({
+            type: 2,
+            area: ['300px', '460px'],
+            content: '/common/deptTree.html',
+            maxmin: true,
+            btn: ['确定', '取消'],
+            success: function (layero, index) {
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.initDeptTree(opt);
+            },
+            yes: function (index, layero) {
+                if (typeof (opt.yesCallback) != 'undefined') {
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    var data = iframeWin.getSelectedData(opt);
+                    opt.yesCallback(data);
+                }
+                layer.close(index);
+            }
+        });
+    }
+    return {
+        request: request
     };
 }();

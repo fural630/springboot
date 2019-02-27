@@ -1,0 +1,33 @@
+<#assign time="?_${.now?long?c}" />
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <#include "/common/header.html" />
+    <link rel="stylesheet" href="/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+    <script src="/plugins/ztree/js/jquery.ztree.core.min.js"></script>
+    <script src="/plugins/ztree/js/jquery.ztree.excheck.min.js"></script>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <el-card>
+            <div slot="header">
+                <el-form ref="queryForm" :model="q" :inline="true">
+                    <el-form-item prop="name">
+                        <el-input placeholder="输入搜索" v-model="q.name" clearable prefix-icon="el-icon-search"></el-input>
+                    </el-form-item>
+                    <el-button @click="query">搜索</el-button>
+                </el-form>
+            </div>
+            <ul id="deptTree" class="ztree"></ul>
+        </el-card>
+    </div>
+    <script src="/js/module/deptTree.js${time}"></script>
+</body>
+
+</html>

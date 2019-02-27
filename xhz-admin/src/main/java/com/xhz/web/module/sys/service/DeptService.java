@@ -51,6 +51,9 @@ public class DeptService {
 	
 	public void updateDeptDTOById(DeptDTO deptDTO) {
 		DeptDO deptDO = CopyUtil.copyProperties(deptDTO, DeptDO.class);
+		if (StringUtils.isNoneBlank(deptDO.getName())) {
+			deptDO.setPym(PinyinUtils.parse(deptDO.getName()));
+		}
 		this.updateById(deptDO);
 	}
 	

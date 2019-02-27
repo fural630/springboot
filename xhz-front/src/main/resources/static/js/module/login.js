@@ -2,7 +2,7 @@ var vm = new Vue({
     el: '#login',
     data: {
         baseUrl: '',
-        title: '新豪智软件开发平台',
+        title: '新豪智软件开发手脚架',
         username: '账号',
         password: '密码',
         rememberPwd: false,

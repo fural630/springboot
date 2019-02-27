@@ -47,7 +47,7 @@
 				and t.NAME like '%'||#{name}||'%'
 			</if>
 		</where>
-		order by t.ORDER_NUM
+		order by t.ORDER_NUM, t.CODE
 	</select>
 	
 	<select id="selectDeptDTOById" resultType="com.xhz.web.module.sys.entity.DeptDTO">
