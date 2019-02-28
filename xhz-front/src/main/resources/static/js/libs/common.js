@@ -381,7 +381,7 @@ Ztree = function () {
         openWindow({
             type: 2,
             area: opt.area,
-            content: '/common/deptTree.html',
+            content: '/common/commonTree.html',
             maxmin: true,
             btn: ['确定', '取消'],
             success: function (layero) {
