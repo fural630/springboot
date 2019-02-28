@@ -123,6 +123,87 @@ function openLoginDialog(title) {
     });
 }
 
+function dialogLoading(flag) {
+    if (flag) {
+        layer.load(2, {
+            shade: [0.2, '#000'],
+            time: 10 * 1000
+        });
+    } else {
+        layer.closeAll('loading');
+    }
+}
+
+
+/**
+ * 用JS获取地址栏参数的方法 使用示例 location.href = http://localhost:8080/index.html?id=123
+ * getQueryString('id') --> 123;
+ * 
+ * @param name
+ * @returns {null}
+ * @constructor
+ */
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return unescape(r[2]);
+    }
+    return null;
+}
+
+
+/**
+ * 主要功能:导出功能公共方法
+ *
+ * @param formId 表单ID,带'#'号,如'#formId'
+ * @param url 请求后台地址
+ * @param extraObj 往后台请求额外参数,对象格式,如:{'aaa': 111}
+ */
+function exportFile(formId, url, extraObj) {
+    var form = $('<form>'); //定义一个form表单
+    form.attr('style', 'display: none');
+    form.attr('target', '');
+    form.attr('method', 'post');
+    form.attr('action', url);
+
+    var json = getJson(formId);
+    if (typeof extraObj != 'undefined') {
+        json = $.extend(json, extraObj);
+    }
+
+    $('body').append(form); //将表单放置在web中
+    for (var i in json) {
+        var input = $('<input>');
+        input.attr('type', 'hidden');
+        input.attr('name', i);
+        input.attr('value', json[i]);
+        form.append(input);
+    }
+
+    form.submit(); //表单提交
+}
+
+/**
+ * 将form转化为json
+ * @param form 传入 form表单的dom $("#baseFm")
+ * @returns {___anonymous49_50}  序列化的键值对 {key:value,key2:value2,....}
+ */
+function getJson(form) {
+    var o = {};
+    var $form = $(form).find('input,textarea,select');
+    $.each($form, function (i, item) {
+        var $this = $(item);
+
+        if ($this.attr("type") == 'radio') {
+            o[$this.attr("name")] = $("input[name='" + $this.attr("name") + "']:checked").val();
+            return true;
+        }
+        o[$this.attr("name")] = $this.val();
+    })
+    return o;
+}
+
 /**
  * 
  * Ajax.request({ url: '', //访问路径 dataType: 'json', //访问类型 'json','html'等
@@ -243,88 +324,6 @@ Ajax = function () {
         request: request
     };
 }();
-
-
-function dialogLoading(flag) {
-    if (flag) {
-        layer.load(2, {
-            shade: [0.2, '#000'],
-            time: 10 * 1000
-        });
-    } else {
-        layer.closeAll('loading');
-    }
-}
-
-
-/**
- * 用JS获取地址栏参数的方法 使用示例 location.href = http://localhost:8080/index.html?id=123
- * getQueryString('id') --> 123;
- * 
- * @param name
- * @returns {null}
- * @constructor
- */
-function getQueryString(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if (r != null) {
-        return unescape(r[2]);
-    }
-    return null;
-}
-
-
-/**
- * 主要功能:导出功能公共方法
- *
- * @param formId 表单ID,带'#'号,如'#formId'
- * @param url 请求后台地址
- * @param extraObj 往后台请求额外参数,对象格式,如:{'aaa': 111}
- */
-function exportFile(formId, url, extraObj) {
-    var form = $('<form>'); //定义一个form表单
-    form.attr('style', 'display: none');
-    form.attr('target', '');
-    form.attr('method', 'post');
-    form.attr('action', url);
-
-    var json = getJson(formId);
-    if (typeof extraObj != 'undefined') {
-        json = $.extend(json, extraObj);
-    }
-
-    $('body').append(form); //将表单放置在web中
-    for (var i in json) {
-        var input = $('<input>');
-        input.attr('type', 'hidden');
-        input.attr('name', i);
-        input.attr('value', json[i]);
-        form.append(input);
-    }
-
-    form.submit(); //表单提交
-}
-
-/**
- * 将form转化为json
- * @param form 传入 form表单的dom $("#baseFm")
- * @returns {___anonymous49_50}  序列化的键值对 {key:value,key2:value2,....}
- */
-function getJson(form) {
-    var o = {};
-    var $form = $(form).find('input,textarea,select');
-    $.each($form, function (i, item) {
-        var $this = $(item);
-
-        if ($this.attr("type") == 'radio') {
-            o[$this.attr("name")] = $("input[name='" + $this.attr("name") + "']:checked").val();
-            return true;
-        }
-        o[$this.attr("name")] = $this.val();
-    })
-    return o;
-}
 
 
 /**
