@@ -69,3 +69,9 @@ body .layui-layer-dir .layui-layer-content {
 	color: #c2c2c2;
 	font-style: normal;
 }
+
+.treeExpandCollapse {
+	font-size: 12px;
+	color: #333;
+	padding-bottom: 5px;
+}

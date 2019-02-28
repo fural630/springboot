@@ -139,12 +139,13 @@ var vm = new Vue({
             Ztree.request({
                 url: '',
                 radio: false,
-                checkbox: false,
-                selected: [],
-                yesCallback: function (data) {
+                checkbox: true,
+                selected: ['234'],
+                yesCallback: function (data, index) {
                     if (data != null) {
-                        alert(data[0].name);
+                        alert(data.name);
                     }
+                    layer.close(index);
                 }
             });
         },

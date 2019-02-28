@@ -11,20 +11,26 @@
     <link rel="stylesheet" href="/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
     <script src="/plugins/ztree/js/jquery.ztree.core.min.js"></script>
     <script src="/plugins/ztree/js/jquery.ztree.excheck.min.js"></script>
+    <script src="/plugins/ztree/js/jquery.ztree.exhide.min.js"></script>
+    <script src="/plugins/ztree/js/fuzzysearch.js"></script>
 </head>
 
 <body>
-    <div id="app" v-cloak>
+    <div id="appTree" v-cloak>
         <el-card>
             <div slot="header">
                 <el-form ref="queryForm" :model="q" :inline="true">
-                    <el-form-item prop="name">
-                        <el-input placeholder="输入搜索" v-model="q.name" clearable prefix-icon="el-icon-search"></el-input>
+                    <el-form-item prop="name" label="关键字">
+                        <el-input style="width: 200px;" id="search" placeholder="输入后自动搜索" v-model.trim="q.name"
+                            clearable prefix-icon="el-icon-search"></el-input>
                     </el-form-item>
-                    <el-button @click="query">搜索</el-button>
                 </el-form>
             </div>
-            <ul id="deptTree" class="ztree"></ul>
+            <div class="treeExpandCollapse">
+                <a @click="fold" href="javascirpt:void(0)">折叠</a> / <a @click="unfold" href="javascirpt:void(0)">展开</a>
+            </div>
+            <div id="tree" class="ztree" style="overflow: auto;">
+            </div>
         </el-card>
     </div>
     <script src="/js/module/deptTree.js${time}"></script>

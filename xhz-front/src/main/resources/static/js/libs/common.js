@@ -357,40 +357,56 @@ Dict = function () {
 
 Ztree = function () {
     function request(opt) {
-
+        // 获取数据请求的url地址
         if (typeof opt.url == 'undefined') {
             opt.url = '';
         }
-
+        // ztree是否启用radio
         if (typeof opt.radio == 'undefined') {
             opt.radio = false;
         }
-
+        // ztree是否启用checkbox
         if (typeof opt.checkbox == 'undefined') {
             opt.checkbox = false;
         }
-
+        // 设置ztree的选中值，需要传ID
         if (typeof opt.selected == 'undefined') {
             opt.selected = [];
+        }
+        // 弹出层大小设置
+        if (typeof opt.area == 'undefined') {
+            opt.area = ['300px', '460px'];
         }
 
         openWindow({
             type: 2,
-            area: ['300px', '460px'],
+            area: opt.area,
             content: '/common/deptTree.html',
             maxmin: true,
             btn: ['确定', '取消'],
-            success: function (layero, index) {
+            success: function (layero) {
                 var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.resizeTreeHeight($(iframeWin).height());
                 iframeWin.initDeptTree(opt);
             },
             yes: function (index, layero) {
                 if (typeof (opt.yesCallback) != 'undefined') {
                     var iframeWin = window[layero.find('iframe')[0]['name']];
                     var data = iframeWin.getSelectedData(opt);
-                    opt.yesCallback(data);
+                    opt.yesCallback(data, index);
                 }
-                layer.close(index);
+            },
+            resizing: function (layero) { // 拉伸弹出层监听
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.resizeTreeHeight($(iframeWin).height());
+            },
+            full: function (layero) { // 最大化弹出层监听
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.resizeTreeHeight($(iframeWin).height());
+            },
+            restore: function (layero) { //重置弹出层监听
+                var iframeWin = window[layero.find('iframe')[0]['name']];
+                iframeWin.resizeTreeHeight($(iframeWin).height());
             }
         });
     }

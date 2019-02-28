@@ -1,24 +1,64 @@
+//全局树对象
 var ztree;
 
+/**
+ * 获取树的选择结果
+ * 如果是radio 返回单个选中的树节点对象
+ * 如果是checkbox 返回一个选中的树节点对象数组
+ * 如果以上都不是 返回单个选中的树节点对象
+ * 如果整个树未选择节点，返回null
+ * 注意：在radio和checkbox的时候，选中是指checkedNode，而不是selectedNodes
+ * @param opt 
+ */
 function getSelectedData(opt) {
     var selectedNodes;
-    if (opt.radio || opt.checkbox) {
+    if (opt.radio) {
+        selectedNodes = ztree.getCheckedNodes(true);
+        if (selectedNodes.length > 0) {
+            return selectedNodes[0];
+        }
+    } else if (opt.checkbox) {
         selectedNodes = ztree.getCheckedNodes(true);
     } else {
         selectedNodes = ztree.getSelectedNodes();
+        if (selectedNodes.length > 0) {
+            return selectedNodes[0];
+        }
     }
     return selectedNodes.length > 0 ? selectedNodes : null;
 }
+/**
+ * 使树可根据弹出层自适应高度
+ * @param windowHeight 弹出层窗口高度
+ */
+function resizeTreeHeight(windowHeight) {
+    // 弹出层上方搜索框区域的高度
+    var headerHeight = 107;
+    $("#tree").height(windowHeight - headerHeight);
+}
 
 var vm = new Vue({
-    el: '#app',
+    el: '#appTree',
     data: {
         q: {
             name: ''
         }
     },
     methods: {
-        query: function () {}
+        fold: function () {
+            // 折叠
+            ztree.expandAll(false);
+        },
+        unfold: function () {
+            // 展开
+            ztree.expandAll(true);
+        }
+    },
+    watch: {
+        "q.name": function (newValue) {
+            // 监听搜索框的内容，当数据变化时，对树进行过滤
+            fuzzySearch('tree', '#search', false, true, newValue);
+        }
     }
 });
 
@@ -29,6 +69,13 @@ function initDeptTree(opt) {
             simpleData: {
                 enable: true
             }
+        },
+        view: {
+            dblClickExpand: false,
+            selectedMulti: false
+        },
+        callback: {
+            onClick: onClick
         }
     };
     if (opt.radio) {
@@ -42,10 +89,23 @@ function initDeptTree(opt) {
             enable: true
         }
     }
-    ztree = $.fn.zTree.init($("#deptTree"), setting, nodes);
+    ztree = $.fn.zTree.init($("#tree"), setting, nodes);
+    if (opt.selected.length > 0) {
+        if (opt.radio || opt.checkbox) {
+            var node = ztree.getNodeByParam("id", opt.selected[0]);
+            ztree.selectNode(node);
+            ztree.checkNode(node, true, true);
+        } else {
+            var node = ztree.getNodeByParam("id", opt.selected[0]);
+            ztree.selectNode(node);
+        }
+    }
 }
 
-
+//单击展开节点
+function onClick(e, treeId, treeNode) {
+    ztree.expandNode(treeNode);
+}
 
 var nodes = [{
         id: 1,
@@ -195,5 +255,34 @@ var nodes = [{
         pId: 0,
         name: "父节点3 - 没有子节点",
         isParent: true
+    },
+    {
+        id: 31,
+        pId: 3,
+        name: "父节点3 - 31"
+    },
+    {
+        id: 32,
+        pId: 3,
+        name: "父节点3 - 32"
+    },
+    {
+        id: 33,
+        pId: 3,
+        name: "父节点3 - 33"
+    }, {
+        id: 34,
+        pId: 3,
+        name: "父节点3 - 34"
+    },
+    {
+        id: 35,
+        pId: 3,
+        name: "父节点3 - 35"
+    },
+    {
+        id: 36,
+        pId: 3,
+        name: "父节点3 - 36"
     }
 ];
