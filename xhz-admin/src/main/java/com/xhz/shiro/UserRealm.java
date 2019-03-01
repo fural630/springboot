@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.xhz.constant.Constant;
 import com.xhz.constant.Constant.MenuType;
 import com.xhz.constant.Constant.YESNO;
+import com.xhz.redis.RedisUtils;
 import com.xhz.util.CopyUtil;
 import com.xhz.util.Dumper;
 import com.xhz.web.module.sys.dao.UserDao;
@@ -41,6 +42,8 @@ public class UserRealm extends AuthorizingRealm {
 	private UserDao UserDao;
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	private RedisUtils redisUtils;
 
 	/**
 	 * 授权(验证权限时调用)
@@ -121,6 +124,8 @@ public class UserRealm extends AuthorizingRealm {
 		} else {
 
 		}
+		
+//		redisUtils.set("user_" + Constant.SUPER_ADMIN, permsList);
 
 		// 把当前用户放入到session中
 		Subject subject = SecurityUtils.getSubject();
