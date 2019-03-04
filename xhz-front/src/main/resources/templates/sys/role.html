@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>角色管理</title>
+    <#include "/common/header.html" />
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <el-card v-show="showList">
+            <div slot="header">
+                <el-form ref="queryForm" :model="q" :inline="true">
+                    <el-form-item prop="name" label="角色名称">
+                        <el-input v-model.trim="q.name" clearable></el-input>
+                    </el-form-item>
+                    <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+                    <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>
+                </el-form>
+            </div>
+            <el-button type="primary" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</el-button>
+            <el-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</el-button>
+            <el-button type="danger" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+            <table class="layui-hide" id="roleTable" lay-filter="roleTable"></table>
+        </el-card>
+        <el-card v-show="!showList">
+            <div slot="header">
+                {{title}}
+            </div>
+            <el-row>
+				<el-col :span="12">
+					<el-form @submit.native.prevent ref="roleForm" :model="role" :rules="ruleValidate" label-width="80px">
+						<el-form-item label="角色名称" prop="name">
+							<el-input v-model="role.name" placeholder="角色名称" />
+						</el-form-item>
+						<el-form-item label="备注" prop="remark">
+							<el-input type="textarea" placeholder="请输入内容" v-model="role.remark" />
+						</el-form-item>
+						<el-form-item label="功能权限">
+							
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="handleSubmit('roleForm')">提交</el-button>
+							<el-button type="warning" @click="back">返回</el-button>
+							<el-button @click="handleReset('roleForm')">重置</el-button>
+						</el-form-item>
+					</el-form>
+				</el-col>
+			</el-row>
+        </el-card>
+    </div>
+    <script src="/js/module/role.js${time}"></script>
+</body>
+
+</html>
