@@ -27,7 +27,7 @@ var vm = new Vue({
                 trigger: 'blur'
             }]
         },
-        showList: false,
+        showList: true,
         isOpen: true
     },
     methods: {
@@ -136,14 +136,15 @@ var vm = new Vue({
             treeGrid.treeOpenAll(tableId, vm.isOpen);
         },
         selectDept: function () {
+        	var selected = [];
+        	selected.push(vm.dept.parentId);
             Ztree.request({
                 url: '',
-                radio: false,
-                checkbox: true,
-                selected: ['234'],
+                selected: selected,
                 yesCallback: function (data, index) {
                     if (data != null) {
-                        alert(data.name);
+                        vm.dept.parentId = data.id;
+                        vm.dept.parentDeptName = data.name;
                     }
                     layer.close(index);
                 }

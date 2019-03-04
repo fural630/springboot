@@ -1,8 +1,6 @@
 package com.xhz.shiro;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,9 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.xhz.constant.Constant;
 import com.xhz.constant.Constant.MenuType;
 import com.xhz.constant.Constant.YESNO;
-import com.xhz.redis.RedisUtils;
+import com.xhz.redis.RedisService;
 import com.xhz.util.CopyUtil;
-import com.xhz.util.Dumper;
 import com.xhz.web.module.sys.dao.UserDao;
 import com.xhz.web.module.sys.entity.LoginUser;
 import com.xhz.web.module.sys.entity.MenuDO;
@@ -43,7 +40,7 @@ public class UserRealm extends AuthorizingRealm {
 	@Autowired
 	private MenuService menuService;
 	@Autowired
-	private RedisUtils redisUtils;
+	private RedisService redisService;
 
 	/**
 	 * 授权(验证权限时调用)
@@ -52,33 +49,9 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		LoginUser loginUser = (LoginUser) principals.getPrimaryPrincipal();
 		String userId = loginUser.getId();
-
-		List<String> permsList = new ArrayList<String>();
-		if (Constant.SUPER_ADMIN.equals(userId)) { // 如果是超级管理员
-			List<MenuDO> menuDOList = menuService.selectEnableMemu();
-			if (CollectionUtils.isNotEmpty(menuDOList)) {
-				for (MenuDO menuDO : menuDOList) {
-					if (menuDO.getType().equals(MenuType.BUTTON.getValue())
-							&& StringUtils.isNoneBlank(menuDO.getPerms())) {
-						permsList.add(menuDO.getPerms());
-					}
-				}
-			}
-		} else {
-
-		}
-
-		// 用户权限列表
-		Set<String> permsSet = new HashSet<String>();
-		if (permsList != null && permsList.size() != 0) {
-			for (String perms : permsList) {
-				if (StringUtils.isBlank(perms)) {
-					continue;
-				}
-				permsSet.addAll(Arrays.asList(perms.trim().split(",")));
-			}
-		}
-		Dumper.dump(permsSet);
+		String userPermsKey = Constant.PERMS_LIST + userId;
+		// 权限
+		Set<String> permsSet = redisService.sGet(userPermsKey);
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		info.setStringPermissions(permsSet);
 		return info;
@@ -108,30 +81,34 @@ public class UserRealm extends AuthorizingRealm {
 			throw new LockedAccountException("账号已被禁用，请联系管理员");
 		}
 
-		LoginUser loginUser = CopyUtil.copyProperties(user, LoginUser.class);
+		String userPermsKey = Constant.PERMS_LIST + user.getId();
 		// 权限
-		List<String> permsList = new ArrayList<String>();
-
-		// 如果是超级管理员权限
-		if (user.getId().equals(Constant.SUPER_ADMIN)) {
-			List<MenuDO> menuDOList = menuService.selectEnableMemu();
-			for (MenuDO menuDO : menuDOList) {
-				if (StringUtils.isNotBlank(menuDO.getPerms())) {
-					permsList.add(menuDO.getPerms());
+		Set<String> permsList = redisService.sGet(userPermsKey);
+		
+		if (CollectionUtils.isEmpty(permsList)) {
+			List<MenuDO> menuDOList = new ArrayList<MenuDO>();
+			// 如果是超级管理员权限
+			if (user.getId().equals(Constant.SUPER_ADMIN)) {
+				menuDOList = menuService.selectEnableMemu();
+			} else {
+				
+			}
+			if (CollectionUtils.isNotEmpty(menuDOList)) {
+				for (MenuDO menuDO : menuDOList) {
+					if (menuDO.getType().equals(MenuType.BUTTON.getValue()) && StringUtils.isNotBlank(menuDO.getPerms())) {
+						permsList.add(menuDO.getPerms());
+						redisService.sSet(userPermsKey, menuDO.getPerms());
+					}
 				}
 			}
-			loginUser.setPermsList(permsList);
-		} else {
-
 		}
 		
-//		redisUtils.set("user_" + Constant.SUPER_ADMIN, permsList);
-
+		LoginUser loginUser = CopyUtil.copyProperties(user, LoginUser.class);
 		// 把当前用户放入到session中
+		loginUser.setPermsList(new ArrayList<String>(permsList));
 		Subject subject = SecurityUtils.getSubject();
 		Session session = subject.getSession(true);
 		session.setAttribute(Constant.CURRENT_USER, loginUser);
-
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(loginUser, password, getName());
 		return info;
 	}
