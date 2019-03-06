@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xhz.annotation.SysLog;
 import com.xhz.util.R;
 
 @RestController
 public class LoginController {
 	
-	@SysLog("登录")
     @ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	public R login(String username, String password) {
