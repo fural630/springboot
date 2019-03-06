@@ -166,18 +166,14 @@ public class CodeGenerator {
 			@Override
 			public void initMap() {
 				Map<String, Object> customParamMap = new HashMap<String, Object>();
-				if (permission) {
-					customParamMap.put("permission", true);
-				}
+				customParamMap.put("permission", permission);
 				if (StringUtils.isNoneBlank(moduleChName)) {
 					customParamMap.put("moduleChName", moduleChName);
 				}
 				if (StringUtils.isNoneBlank(title)) {
 					customParamMap.put("title", title);
 				}
-				if (sysLog) {
-					customParamMap.put("sysLog", sysLog);
-				}
+				customParamMap.put("sysLog", sysLog);
 				this.setMap(customParamMap);
 			}
 		};

@@ -1,3 +1,23 @@
+//全局树对象
+var ztree;
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey :'menuId',
+            pIdKey : 'parentId'
+        }
+    },
+    view: {
+        dblClickExpand: false,
+        selectedMulti: false
+    },
+    check: {
+    	enable: true
+    }
+};
+
 var vm = new Vue({
 	el: '#app',
 	data: {
@@ -7,19 +27,17 @@ var vm = new Vue({
 			name: ''
 		},
 		role: {
-			id: '',
-			name : '',
-			remark : '',
-			menuList :[]
+			roleName : '',
+			remark : ''
 		},
 		ruleValidate: {
-			name: [{
+			roleName: [{
 				required: true,
 				message: '角色名称不能为空',
 				trigger: 'blur'
 			}],
 		},
-		showList: false,
+		showList: true,
 		title: ''
 	},
 	methods: {
@@ -31,8 +49,9 @@ var vm = new Vue({
 			});
 		},
 		add: function () {
-//			vm.handleReset(vm.moduleName + 'Form');
-			vm.title = '添加';
+			vm.handleReset(vm.moduleName + 'Form');
+			vm.getMenu();
+			vm.title = '添加角色';
 			vm.showList = false;
 		},
 		update: function () {
@@ -48,15 +67,17 @@ var vm = new Vue({
 				return;
 			}
 
-			var roleId = checkStatus.data[0].id;
+			var roleId = checkStatus.data[0].roleId;
 
 			Ajax.request({
 				url: vm.baseUrl + "/" + roleId,
 				async: true,
 				type: 'GET',
 				successCallback: function (r) {
-					vm.user = r.data;
-					vm.title = '修改';
+					vm.role = r.data;
+					vm.getMenu();
+					vm.getRoleMenu();
+					vm.title = '修改角色';
 					vm.showList = false;
 				}
 			});
@@ -71,7 +92,7 @@ var vm = new Vue({
 			}
 			var ids = [];
 			for (var i = 0; i < length; i++) {
-				ids.push(checkStatus.data[i].id);
+				ids.push(checkStatus.data[i].roleId);
 			}
 			confirm('确定要删除选中的记录？', function () {
 				Ajax.request({
@@ -88,10 +109,18 @@ var vm = new Vue({
 			});
 		},
 		saveOrUpdate: function () {
-			var type = vm.user.id == '' ? 'POST' : 'PATCH';
+			var type = vm.role.roleId === undefined ? 'POST' : 'PATCH';
+			var checkNodes = ztree.getCheckedNodes(true);
+			if (checkNodes.length > 0) {
+				var menuIdList = [];
+				for (var i = 0; i < checkNodes.length; i++) {
+					menuIdList.push(checkNodes[i].menuId);
+				}
+				vm.role.menuIdList = menuIdList;
+			}
 			Ajax.request({
 				url: vm.baseUrl,
-				params: JSON.stringify(vm.user),
+				params: JSON.stringify(vm.role),
 				contentType: "application/json",
 				type: type,
 				successCallback: function () {
@@ -108,16 +137,34 @@ var vm = new Vue({
 		back: function () {
 			vm.showList = true;
 		},
-		isDeletedById: function (id, isDeleted) {
-			var url = isDeleted ? vm.baseUrl + "/enable/" + id : vm.baseUrl + "/disable/" + id;
+		getMenu : function () {
 			Ajax.request({
-				url: url,
+				url: '/sys/roleMenus/',
+				type: 'GET',
+				successCallback: function (r) {
+					ztree = $.fn.zTree.init($("#tree"), setting, r.data);
+					var nodes = ztree.getNodesByParam("type", "0", null);
+					if (nodes.length > 0) {
+						for (var i = 0; i <= nodes.length; i++) {
+							ztree.expandNode(nodes[i], true, false, true);
+						}
+					}
+				}
+			});
+		},
+		getRoleMenu : function () {
+			Ajax.request({
+				url: '/sys/roleMenus/' + vm.role.roleId, 
 				async: true,
 				type: 'GET',
 				successCallback: function (r) {
-					alert('操作成功', function (index) {
-						vm.reload();
-					});
+					var menuIds = r.data;
+					if (menuIds.length > 0) {
+						for (var i = 0; i < menuIds.length; i++) {
+							var node = ztree.getNodeByParam("menuId", menuIds[i]);
+							ztree.checkNode(node, true);
+						}
+					}
 				}
 			});
 		},
@@ -152,59 +199,29 @@ layui.use('table', function () {
 			[{
 				type: 'checkbox'
 			}, {
-				field: 'name',
-				width: 130,
-				title: '姓名'
+				field: 'roleName',
+				title: '角色名称'
 			}, {
-				field: 'userName',
+				field: 'remark',
+				title: '备注'
+			}, {
+				field: 'createUser',
 				width: 200,
-				title: '账号'
+				title: '创建人'
 			}, {
-				field: 'phone',
-				width: 140,
-				title: '电话'
-			}, {
-				field: 'email',
+				field: 'createTime',
 				width: 180,
-				title: '邮箱'
-			}, {
-				field: 'sex',
-				width: 70,
-				title: '性别',
-				templet: function (d) {
-					return constant.transGender(d.sex)
-				}
-			}, {
-				field: 'birthDay',
-				width: 140,
-				title: '出生日期',
-				sort: true,
-				templet: function (d) {
-					return constant.transDate(d.birthDay, 'yyyy年MM月dd日')
-				}
-			}, {
-				field: 'deptId',
-				minWidth: 100,
-				title: '所属部门'
-			}, {
-				field: 'isDeleted',
-				width: 100,
-				title: '操作',
-				align: 'center',
-				templet: function (d) {
-					var checked = d.isDeleted === '0' ? 'checked' : '';
-					return '<input ' + checked + ' type="checkbox" name="isDeleted" value="' + d.id +
-						'" lay-skin="switch" lay-text="开启|禁用" lay-filter="isDeleted">'
-				}
+				title: '创建时间',
+				sort: true
 			}]
 		],
 		page: true
 	});
 
-	table.on('sort(userTable)', function (obj) {
+	table.on('sort(roleTable)', function (obj) {
 		var column = obj.field;
-		if (obj.field == "birthDay") {
-			column = "birth_day";
+		if (obj.field == "createTime") {
+			column = "CREATE_TIME";
 		}
 		table.reload(vm.moduleName + 'Table', {
 			initSort: obj,
@@ -215,22 +232,184 @@ layui.use('table', function () {
 		});
 	});
 
-	form.on('switch(isDeleted)', function (obj) {
-		var id = this.value;
-		if (obj.elem.checked) {
-			confirm("确认要开启吗？", function () {
-				vm.isDeletedById(id, true);
-			}, function () {
-				$("input[type='checkbox'][value='" + id + "']").prop("checked", false);
-				form.render('checkbox');
-			});
-		} else {
-			confirm("确认要禁用吗？", function () {
-				vm.isDeletedById(id, false);
-			}, function () {
-				$("input[type='checkbox'][value='" + id + "']").prop("checked", true);
-				form.render('checkbox');
-			});
-		}
-	});
 });
+
+var nodes = [{
+    id: 1,
+    pId: 0,
+    name: "广西新豪智云技术股份有限公司",
+    open: true
+},
+{
+    id: 11,
+    pId: 1,
+    name: "父节点11 - 折叠"
+},
+{
+    id: 111,
+    pId: 11,
+    name: "叶子节点111"
+},
+{
+    id: 112,
+    pId: 11,
+    name: "叶子节点112"
+},
+{
+    id: 113,
+    pId: 11,
+    name: "叶子节点113"
+},
+{
+    id: 114,
+    pId: 11,
+    name: "叶子节点114"
+},
+{
+    id: 12,
+    pId: 1,
+    name: "父节点12 - 折叠"
+},
+{
+    id: 121,
+    pId: 12,
+    name: "叶子节点121"
+},
+{
+    id: 122,
+    pId: 12,
+    name: "叶子节点122"
+},
+{
+    id: 123,
+    pId: 12,
+    name: "叶子节点123"
+},
+{
+    id: 124,
+    pId: 12,
+    name: "叶子节点124"
+},
+{
+    id: 13,
+    pId: 1,
+    name: "父节点13 - 没有子节点",
+    isParent: true
+},
+{
+    id: 2,
+    pId: 0,
+    name: "父节点2 - 折叠"
+},
+{
+    id: 21,
+    pId: 2,
+    name: "父节点21 - 展开",
+    open: true
+},
+{
+    id: 211,
+    pId: 21,
+    name: "叶子节点211"
+},
+{
+    id: 212,
+    pId: 21,
+    name: "叶子节点212"
+},
+{
+    id: 213,
+    pId: 21,
+    name: "叶子节点213"
+},
+{
+    id: 214,
+    pId: 21,
+    name: "叶子节点214"
+},
+{
+    id: 22,
+    pId: 2,
+    name: "父节点22 - 折叠"
+},
+{
+    id: 221,
+    pId: 22,
+    name: "叶子节点221"
+},
+{
+    id: 222,
+    pId: 22,
+    name: "叶子节点222"
+},
+{
+    id: 223,
+    pId: 22,
+    name: "叶子节点223"
+},
+{
+    id: 224,
+    pId: 22,
+    name: "叶子节点224"
+},
+{
+    id: 23,
+    pId: 2,
+    name: "父节点23 - 折叠"
+},
+{
+    id: 231,
+    pId: 23,
+    name: "叶子节点231"
+},
+{
+    id: 232,
+    pId: 23,
+    name: "叶子节点232"
+},
+{
+    id: 233,
+    pId: 23,
+    name: "叶子节点233"
+},
+{
+    id: 234,
+    pId: 23,
+    name: "叶子节点234"
+},
+{
+    id: 3,
+    pId: 0,
+    name: "父节点3 - 没有子节点",
+    isParent: true
+},
+{
+    id: 31,
+    pId: 3,
+    name: "父节点3 - 31"
+},
+{
+    id: 32,
+    pId: 3,
+    name: "父节点3 - 32"
+},
+{
+    id: 33,
+    pId: 3,
+    name: "父节点3 - 33"
+}, {
+    id: 34,
+    pId: 3,
+    name: "父节点3 - 34"
+},
+{
+    id: 35,
+    pId: 3,
+    name: "父节点3 - 35"
+},
+{
+    id: 36,
+    pId: 3,
+    name: "父节点3 - 36"
+}
+];

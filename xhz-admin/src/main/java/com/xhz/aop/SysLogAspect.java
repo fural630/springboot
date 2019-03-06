@@ -68,9 +68,10 @@ public class SysLogAspect {
         recordLogDO.setParams(params);
         recordLogDO.setIp(IPUtils.getIpAddr(request));
         
-        LoginUser loginUser = ShiroUtils.getUserEntity();
-        String account = "";
-        String name = "";
+        LoginUser loginUser = ShiroUtils.getUser();
+        String account = loginUser.getUserName();
+        String name = loginUser.getName();
+        // 如果是登录方法，参数不要被记录下来
         if ("login".equals(methodName)) {
         	account = params;
         }

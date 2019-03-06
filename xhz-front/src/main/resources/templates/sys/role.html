@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>角色管理</title>
     <#include "/common/header.html" />
+    <link rel="stylesheet" href="/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+    <script src="/plugins/ztree/js/jquery.ztree.core.min.js"></script>
+    <script src="/plugins/ztree/js/jquery.ztree.excheck.min.js"></script>
 </head>
 
 <body>
@@ -33,14 +36,14 @@
             <el-row>
 				<el-col :span="12">
 					<el-form @submit.native.prevent ref="roleForm" :model="role" :rules="ruleValidate" label-width="80px">
-						<el-form-item label="角色名称" prop="name">
-							<el-input v-model="role.name" placeholder="角色名称" />
+						<el-form-item label="角色名称" prop="roleName">
+							<el-input v-model="role.roleName" placeholder="角色名称" />
 						</el-form-item>
 						<el-form-item label="备注" prop="remark">
-							<el-input type="textarea" placeholder="请输入内容" v-model="role.remark" />
+							<el-input v-model="role.remark" type="textarea" placeholder="请输入内容" />
 						</el-form-item>
 						<el-form-item label="功能权限">
-							
+							<div id="tree" class="ztree" style="overflow: auto;"></div>
 						</el-form-item>
 						<el-form-item>
 							<el-button type="primary" @click="handleSubmit('roleForm')">提交</el-button>
