@@ -24,7 +24,7 @@ var vm = new Vue({
 		moduleName: 'role',
 		baseUrl: '/sys/roles',
 		q: {
-			name: ''
+			roleName: ''
 		},
 		role: {
 			roleName : '',
@@ -44,7 +44,7 @@ var vm = new Vue({
 		query: function () {
 			layui.table.reload(vm.moduleName + 'Table', {
 				where: {
-					name: vm.q.name
+					roleName: vm.q.roleName
 				}
 			});
 		},

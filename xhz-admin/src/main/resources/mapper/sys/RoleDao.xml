@@ -20,6 +20,11 @@
 
 	<select id="selectRoleDTOPage" resultType="com.xhz.web.module.sys.entity.RoleDTO">
     	select r.*, u.NAME AS CREATE_USER from SYS_ROLE r left join SYS_USER u on r.CREATE_USER_ID = u.ID
+    	<where>
+    		<if test="roleName != null and roleName.trim() != ''">
+    			and ROLE_NAME like '%'||#{roleName}||'%'
+    		</if>
+    	</where>
     	<choose>
             <when test="field != null and field.trim() != ''">
                 order by r.${field} ${order}

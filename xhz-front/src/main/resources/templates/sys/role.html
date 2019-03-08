@@ -17,8 +17,8 @@
         <el-card v-show="showList">
             <div slot="header">
                 <el-form ref="queryForm" :model="q" :inline="true">
-                    <el-form-item prop="name" label="角色名称">
-                        <el-input v-model.trim="q.name" clearable></el-input>
+                    <el-form-item prop="roleName" label="角色名称">
+                        <el-input v-model.trim="q.roleName" clearable></el-input>
                     </el-form-item>
                     <el-button type="success" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
                     <el-button @click="handleReset('queryForm')"><i class="fa fa-reply"></i></i>&nbsp;重置</el-button>

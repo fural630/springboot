@@ -33,11 +33,10 @@ var vm = new Vue({
     methods: {
         query: function () {
             treeGrid.reload(vm.moduleName + 'Table', {
-                isOpenDefault: vm.isOpen
-            }, {
+                isOpenDefault: vm.isOpen,
                 where: {
-                    code: vm.q.code,
-                    name: vm.q.name
+                	code: vm.q.code,
+                	name: vm.q.name
                 }
             });
         },
